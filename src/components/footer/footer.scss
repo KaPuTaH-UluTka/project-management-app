@@ -1,0 +1,38 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 20px 0;
+  background-color: #363d48;
+  &__logo img {
+    width: 120px;
+  }
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__developers {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    &-title {
+      color: #fff;
+      margin-right: 40px;
+    }
+    &-name {
+      margin-right: 20px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    a {
+      color: #9ca5b5;
+      transition: all .2s linear;
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+}
