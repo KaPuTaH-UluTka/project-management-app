@@ -7,6 +7,7 @@ import { Login } from '../../pages/Login/Login';
 import { Private } from '../../hoc/Private';
 import { Welcome } from '../../pages/Welcome/Welcome';
 import { pathes } from '../../pathes/pathes';
+import { FullPage } from '../FullPage';
 
 const App = () => {
   return (
@@ -15,7 +16,9 @@ const App = () => {
         path={pathes.main}
         element={
           <Private>
-            <Main />
+            <FullPage>
+              <Main />
+            </FullPage>
           </Private>
         }
       />
@@ -23,7 +26,9 @@ const App = () => {
         path={pathes.board}
         element={
           <Private>
-            <Board />
+            <FullPage>
+              <Board />
+            </FullPage>
           </Private>
         }
       />
@@ -31,12 +36,28 @@ const App = () => {
         path={pathes.edit}
         element={
           <Private>
-            <Edit />
+            <FullPage>
+              <Edit />
+            </FullPage>
           </Private>
         }
       />
-      <Route path={pathes.welcome} element={<Welcome />} />
-      <Route path={pathes.login} element={<Login />} />
+      <Route
+        path={pathes.welcome}
+        element={
+          <FullPage>
+            <Welcome />
+          </FullPage>
+        }
+      />
+      <Route
+        path={pathes.login}
+        element={
+          <FullPage>
+            <Login />
+          </FullPage>
+        }
+      />
       <Route path={pathes.error} element={<Error />} />
     </Routes>
   );
