@@ -5,8 +5,12 @@
   left: 0;
   padding: 20px 0;
   background-color: #363d48;
-  &__logo img {
-    width: 120px;
+  &__logo {
+    img {
+      width: 120px;
+      height: 100%;
+    }
+    height: 60px;
   }
   &__inner {
     display: flex;
