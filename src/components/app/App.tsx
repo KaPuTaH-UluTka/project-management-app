@@ -1,12 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
-import { Main } from './pages/Main/Main';
-import { Board } from './pages/Board/Board';
-import { Error } from './pages/Error/Error';
-import { Edit } from './pages/Edit/Edit';
-import { Login } from './pages/Login/Login';
-import { Private } from './hoc/Private';
-import { Welcome } from './pages/Welcome/Welcome';
-import { pathes } from './pathes/pathes';
+import { Main } from '../../pages/Main/Main';
+import { Board } from '../../pages/Board/Board';
+import { Error } from '../../pages/Error/Error';
+import { Edit } from '../../pages/Edit/Edit';
+import { Login } from '../../pages/Login/Login';
+import { Private } from '../../hoc/Private';
+import { Welcome } from '../../pages/Welcome/Welcome';
+import { pathes } from '../../pathes/pathes';
 
 const App = () => {
   return (
