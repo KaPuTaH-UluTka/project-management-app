@@ -9,7 +9,7 @@ export const Error = () => {
   return (
     <div className="error">
       <div className="error__block">
-        <img src={robot} alt="Error 404" />
+        <img className="error__block-img" src={robot} alt="Error 404" />
         <p>Ooops...</p>
         <p>Anything want wrong...</p>
         <NavLink to={pathes.main}>
