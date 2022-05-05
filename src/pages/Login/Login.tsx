@@ -17,6 +17,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import { useState } from 'react';
 import { rootStyles, violetTheme } from '../../style/rootStyles';
+import { pathes } from '../../pathes/pathes';
+import { Navigate } from 'react-router-dom';
 
 export const Login = () => {
   const { isLogined } = useAppSelector((state) => state.loginReducer);
@@ -26,7 +28,9 @@ export const Login = () => {
     setSignUp(!signUp);
   }
 
-  return (
+  return isLogined ? (
+    <Navigate to={pathes.main} />
+  ) : (
     <ThemeProvider theme={violetTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
