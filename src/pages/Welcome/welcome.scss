@@ -1,0 +1,30 @@
+.welcome {
+  height: 100%;
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__info {
+    &-title {
+      font-size: 42px;
+      margin-bottom: 40px;
+    }
+    &-descr {
+      font-size: 20px;
+      line-height: 25px;
+      color: #737373;
+      margin-bottom: 20px;
+    }
+    &-developers {
+      line-height: 25px;
+      a {
+        color: #737373;
+        &:hover {
+          color: #464646;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
