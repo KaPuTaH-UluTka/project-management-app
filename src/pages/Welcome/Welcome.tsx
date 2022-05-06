@@ -1,3 +1,4 @@
+import { Container } from '@mui/material';
 import { useAppSelector } from '../../hooks/hooks';
 import { Navigate } from 'react-router-dom';
 import { pathes } from '../../pathes/pathes';
@@ -12,7 +13,7 @@ export const Welcome = () => {
     <Navigate to={pathes.main} />
   ) : (
     <section className="welcome">
-      <div className="container">
+      <Container maxWidth="lg">
         <div className="welcome__inner">
           <div className="welcome__info">
             <h1 className="welcome__info-title"> Welcome to our Tello</h1>
@@ -31,7 +32,7 @@ export const Welcome = () => {
             <img src={welcome} alt="greeting image" />
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };
