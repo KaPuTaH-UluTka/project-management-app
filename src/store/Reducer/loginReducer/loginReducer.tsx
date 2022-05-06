@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { signUp } from '../../Thunk/api';
 const loginState = {
   isLogined: false,
 };
