@@ -23,9 +23,7 @@ const Header = () => {
                 <Link to={pathes.main}>
                   <div className="header__nav-link">Home</div>
                 </Link>
-                <Link to={pathes.board}>
-                  <div className="header__nav-link">Add board</div>
-                </Link>
+                <div className="header__nav-link">Add board</div>
                 <Link to={pathes.edit}>
                   <div className="header__nav-link">Edit Profile</div>
                 </Link>
