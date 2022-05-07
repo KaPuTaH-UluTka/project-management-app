@@ -7,6 +7,14 @@ const boardState = {
     { title: 'Secont task', id: '2' },
     { title: 'First task', id: '2' },
     { title: 'Secont task', id: '2' },
+    { title: 'First task', id: '2' },
+    { title: 'Secont task', id: '2' },
+    { title: 'First task', id: '2' },
+    { title: 'Secont task', id: '2' },
+    { title: 'First task', id: '2' },
+    { title: 'Secont task', id: '2' },
+    { title: 'First task', id: '2' },
+    { title: 'Secont task', id: '2' },
   ],
 };
 

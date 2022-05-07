@@ -13,6 +13,7 @@ const style = {
   width: 400,
   bgcolor: 'background.paper',
   border: '2px solid #000',
+  borderRadius: '10px',
   boxShadow: 24,
   p: 4,
 };
@@ -20,14 +21,18 @@ const style = {
 export default function BasicModal() {
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.openModalReducer);
+  if (open) {
+    console.log(document);
+    document.body.style.overflow = 'none !important';
+  }
 
   return (
     <div>
       <Modal
         open={open}
         onClose={() => dispatch(closeModal())}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        // aria-labelledby="modal-modal-title"
+        // aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -42,7 +47,7 @@ export default function BasicModal() {
             sx={{ marginRight: 1 }}
             onClick={() => {
               dispatch(closeModal());
-              // add deleted functional
+              // add delet board functional
             }}
           >
             Agree
