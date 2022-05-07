@@ -20,13 +20,14 @@ import { useState } from 'react';
 import { rootStyles, violetTheme } from '../../style/rootStyles';
 import { pathes } from '../../pathes/pathes';
 import { Navigate } from 'react-router-dom';
-import { signIn, signUp } from '../../store/Thunk/api';
 import { useFormik } from 'formik';
 import { ILoginUser, ISignUpUser } from '../../types/types';
+import { signIn, signUp } from '../../store/Reducer/loginReducer/loginReducer';
 
 export const Login = () => {
   const dispatch = useAppDispatch();
   const { isLogined } = useAppSelector((state) => state.loginReducer);
+  const [showHidePass, setShowHidePass] = useState(false);
   const [isSignUp, setSignUp] = useState(false);
 
   function changeForm() {
@@ -51,8 +52,8 @@ export const Login = () => {
     validationSchema: validationSchema,
     onSubmit: () => {
       if (isSignUp) {
-        signUp(signUpUser as ISignUpUser);
-      } else signIn(loginUser as ILoginUser);
+        dispatch(signUp(signUpUser as ISignUpUser));
+      } else dispatch(signIn(loginUser as ILoginUser));
     },
   });
 
@@ -66,6 +67,21 @@ export const Login = () => {
     email: formik.values.email,
     password: formik.values.password,
   };
+
+  function activeSubmit() {
+    if (
+      isSignUp &&
+      !(
+        formik.values.name &&
+        formik.values.email &&
+        formik.values.password &&
+        !formik.errors.name &&
+        !formik.errors.password
+      )
+    ) {
+      return true;
+    } else return !(formik.values.email && formik.values.password && !formik.errors.password);
+  }
 
   return isLogined ? (
     <Navigate to={pathes.main} />
@@ -123,7 +139,7 @@ export const Login = () => {
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type={showHidePass ? 'text' : 'password'}
               id="password"
               autoComplete="current-password"
               color="primary"
@@ -134,13 +150,15 @@ export const Login = () => {
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="Show password"
+              onClick={() => setShowHidePass(!showHidePass)}
             />
             {isSignUp ? (
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
+                disabled={activeSubmit()}
                 sx={{
                   mt: 3,
                   mb: 2,
@@ -149,7 +167,6 @@ export const Login = () => {
                     background: rootStyles.violetDark,
                   },
                 }}
-                // onClick={() => signUp(signUpUser as ISignUpUser)}
               >
                 Sign Up
               </Button>
@@ -158,6 +175,7 @@ export const Login = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
+                disabled={activeSubmit()}
                 sx={{
                   mt: 3,
                   mb: 2,
@@ -166,21 +184,21 @@ export const Login = () => {
                     background: rootStyles.violetDark,
                   },
                 }}
-                // onClick={() => signIn(loginUser as ILoginUser)}
               >
                 Sign In
               </Button>
             )}
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2" onClick={changeForm}>
-                  {"Don't have an account? Sign Up"}
-                </Link>
+                {isSignUp ? (
+                  <Link href="#" variant="body2" onClick={changeForm}>
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                ) : (
+                  <Link href="#" variant="body2" onClick={changeForm}>
+                    {'Have an account? Sign Ip'}
+                  </Link>
+                )}
               </Grid>
             </Grid>
           </Box>
