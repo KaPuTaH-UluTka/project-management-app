@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { closeModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 
@@ -15,26 +16,29 @@ const style = {
   border: '2px solid #000',
   borderRadius: '10px',
   boxShadow: 24,
-  p: 4,
+  p: 2.5,
 };
 
 export default function BasicModal() {
   const dispatch = useAppDispatch();
-  const { open } = useAppSelector((state) => state.openModalReducer);
-  if (open) {
-    console.log(document);
-    document.body.style.overflow = 'none !important';
-  }
+  const { modal } = useAppSelector((state) => state.openModalReducer);
 
   return (
     <div>
       <Modal
-        open={open}
+        open={modal}
         onClose={() => dispatch(closeModal())}
-        // aria-labelledby="modal-modal-title"
-        // aria-describedby="modal-modal-description"
+        sx={{ width: '100vw', height: '100vh' }}
       >
         <Box sx={style}>
+          <Button
+            onClick={() => {
+              dispatch(closeModal());
+            }}
+            style={{ position: 'absolute', right: 5, top: 5 }}
+          >
+            <CloseIcon fontSize="small" color="inherit" />
+          </Button>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Confirm
           </Typography>

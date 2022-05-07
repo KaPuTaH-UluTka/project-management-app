@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { addLogin } from '../../store/Reducer/loginReducer/loginReducer';
 import './header.scss';
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,9 +12,11 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
+import { toggleBar } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { useEffect, useState } from 'react';
+import MenuItem from '@mui/material/MenuItem';
 const Header = () => {
-  const { open } = useAppSelector((state) => state.openModalReducer);
+  const { modal, headerBar } = useAppSelector((state) => state.openModalReducer);
   const { isLogined } = useAppSelector((state) => state.loginReducer);
   const dispatch = useAppDispatch();
   const [posTop, setPosTop] = useState(0);
@@ -36,7 +37,7 @@ const Header = () => {
       position="sticky"
       style={{
         backgroundColor: bgStyle,
-        width: open ? '100vw' : '100%',
+        width: modal ? '100vw' : '100%',
         transition: 'background 1s linear',
       }}
     >
@@ -58,10 +59,37 @@ const Header = () => {
           </Typography>
 
           {isLogined ? (
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <Box
+              sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+              onClick={() => {
+                dispatch(toggleBar());
+              }}
+            >
               <IconButton size="large" color="inherit">
                 <MenuIcon />
               </IconButton>
+              {headerBar ? (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 50,
+                  }}
+                >
+                  <Link to={pathes.main}>
+                    <MenuItem onClick={toggleBar} className="header__bar-item">
+                      <Typography textAlign="center">Home</Typography>
+                    </MenuItem>
+                  </Link>
+                  <MenuItem onClick={toggleBar} className="header__bar-item">
+                    <Typography textAlign="center">Add Board</Typography>
+                  </MenuItem>
+                  <Link to={pathes.edit}>
+                    <MenuItem onClick={toggleBar} className="header__bar-item">
+                      <Typography textAlign="center">Edit profile</Typography>
+                    </MenuItem>
+                  </Link>
+                </div>
+              ) : null}
             </Box>
           ) : null}
           <Typography
