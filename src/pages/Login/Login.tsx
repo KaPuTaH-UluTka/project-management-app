@@ -196,7 +196,7 @@ export const Login = () => {
                   </Link>
                 ) : (
                   <Link href="#" variant="body2" onClick={changeForm}>
-                    {'Have an account? Sign Ip'}
+                    {'Have an account? Sign In'}
                   </Link>
                 )}
               </Grid>
