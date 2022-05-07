@@ -59,12 +59,12 @@ export const Login = () => {
 
   const signUpUser = {
     name: formik.values.name,
-    email: formik.values.email,
+    login: formik.values.email,
     password: formik.values.password,
   };
 
   const loginUser = {
-    email: formik.values.email,
+    login: formik.values.email,
     password: formik.values.password,
   };
 

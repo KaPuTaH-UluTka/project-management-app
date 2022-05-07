@@ -2,11 +2,11 @@ export type SimpleType = string;
 
 export interface ISignUpUser {
   name: 'string';
-  email: 'string';
+  login: 'string';
   password: 'string';
 }
 
 export interface ILoginUser {
-  email: 'string';
+  login: 'string';
   password: 'string';
 }

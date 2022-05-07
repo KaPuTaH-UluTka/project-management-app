@@ -4,25 +4,35 @@ import { ILoginUser, ISignUpUser } from '../../../types/types';
 const loginState = {
   isLogined: false,
   user: {
-    id: '',
     name: '',
     login: '',
+    password: '',
   },
 };
 
-const url = 'http://localhost:4000/';
+const url = 'https://rs-trello.herokuapp.com/';
 
 export const signIn = createAsyncThunk(
   'signIn',
   async (action: ILoginUser, { rejectWithValue }) => {
+    console.log(action);
     try {
-      const data = axios.get(`${url}/signin`, {
+      //   const data = axios.post(`${url}signin`, {
+      //     headers: {
+      //       accept: 'application/json',
+      //       body: JSON.stringify(action),
+      //       'content-type': 'application/json',
+      //     },
+      //   });
+      const data = await fetch(`${url}signin`, {
+        method: 'POST',
         headers: {
           accept: 'application/json',
-          body: JSON.stringify(action),
           'content-type': 'application/json',
         },
-      });
+        body: JSON.stringify(action),
+      }).then((res) => res.json());
+      console.log(data);
       return { data };
     } catch {
       return rejectWithValue({});
@@ -34,13 +44,22 @@ export const signUp = createAsyncThunk(
   'signUp',
   async (action: ISignUpUser, { rejectWithValue }) => {
     try {
-      const data = axios.get(`${url}/signup`, {
+      // const data = await axios.post(`${url}signup`, {
+      //   headers: {
+      //     accept: 'application/json',
+      //     'content-type': 'application/json',
+      //   },
+      //   body: JSON.stringify(action),
+      // });
+      const data = await fetch(`${url}signup`, {
+        method: 'POST',
         headers: {
           accept: 'application/json',
-          body: JSON.stringify(action),
           'content-type': 'application/json',
         },
-      });
+        body: JSON.stringify(action),
+      }).then((res) => res.json());
+      console.log(data);
       return { data };
     } catch {
       return rejectWithValue({});
@@ -58,9 +77,11 @@ const loginSlice = createSlice({
   },
   extraReducers: {
     [signIn.fulfilled.type]: (state, action) => {
-      state.user = action.payload.data;
+      console.log(action.data);
     },
-    [signUp.fulfilled.type]: (state, action) => {},
+    [signUp.fulfilled.type]: (state, action) => {
+      console.log(action.data);
+    },
   },
 });
 
