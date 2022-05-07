@@ -23,7 +23,7 @@ const App = () => {
         }
       />
       <Route
-        path={pathes.board}
+        path={pathes.board + '/:id'}
         element={
           <Private>
             <FullPage>
