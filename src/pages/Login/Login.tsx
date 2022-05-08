@@ -192,11 +192,11 @@ export const Login = () => {
               <Grid item>
                 {isSignUp ? (
                   <Link href="#" variant="body2" onClick={changeForm}>
-                    {"Don't have an account? Sign Up"}
+                    {'Have an account? Sign In'}
                   </Link>
                 ) : (
                   <Link href="#" variant="body2" onClick={changeForm}>
-                    {'Have an account? Sign In'}
+                    {"Don't have an account? Sign Up"}
                   </Link>
                 )}
               </Grid>

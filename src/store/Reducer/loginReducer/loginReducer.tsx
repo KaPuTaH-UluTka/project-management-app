@@ -1,12 +1,27 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { ILoginUser, ISignUpUser } from '../../../types/types';
+import jwt_decode from 'jwt-decode';
+export interface ISignUpUser {
+  name: string;
+  login: string;
+  password: string;
+}
+
+export interface ILoginUser {
+  login: string;
+  password: string;
+}
+
+export interface IDecodedUser {
+  iat: number;
+  login: string;
+  id: string;
+}
 const loginState = {
   isLogined: false,
   user: {
-    name: '',
     login: '',
-    password: '',
+    token: '',
+    id: '',
   },
 };
 
@@ -15,15 +30,7 @@ const url = 'https://rs-trello.herokuapp.com/';
 export const signIn = createAsyncThunk(
   'signIn',
   async (action: ILoginUser, { rejectWithValue }) => {
-    console.log(action);
     try {
-      //   const data = axios.post(`${url}signin`, {
-      //     headers: {
-      //       accept: 'application/json',
-      //       body: JSON.stringify(action),
-      //       'content-type': 'application/json',
-      //     },
-      //   });
       const data = await fetch(`${url}signin`, {
         method: 'POST',
         headers: {
@@ -31,8 +38,14 @@ export const signIn = createAsyncThunk(
           'content-type': 'application/json',
         },
         body: JSON.stringify(action),
-      }).then((res) => res.json());
-      console.log(data);
+      }).then(async (response) => {
+        console.log(response);
+        const loginData = {
+          ...action,
+          token: await response.text().then((res) => JSON.parse(res).token),
+        };
+        return loginData;
+      });
       return { data };
     } catch {
       return rejectWithValue({});
@@ -44,13 +57,6 @@ export const signUp = createAsyncThunk(
   'signUp',
   async (action: ISignUpUser, { rejectWithValue }) => {
     try {
-      // const data = await axios.post(`${url}signup`, {
-      //   headers: {
-      //     accept: 'application/json',
-      //     'content-type': 'application/json',
-      //   },
-      //   body: JSON.stringify(action),
-      // });
       const data = await fetch(`${url}signup`, {
         method: 'POST',
         headers: {
@@ -58,8 +64,10 @@ export const signUp = createAsyncThunk(
           'content-type': 'application/json',
         },
         body: JSON.stringify(action),
-      }).then((res) => res.json());
-      console.log(data);
+      }).then(async (response) => {
+        const body = await response.text().then((res) => JSON.parse(res));
+        return { ...body };
+      });
       return { data };
     } catch {
       return rejectWithValue({});
@@ -76,11 +84,12 @@ const loginSlice = createSlice({
     },
   },
   extraReducers: {
+    [signUp.fulfilled.type]: (state, action) => {},
     [signIn.fulfilled.type]: (state, action) => {
-      console.log(action.data);
-    },
-    [signUp.fulfilled.type]: (state, action) => {
-      console.log(action.data);
+      state.user.token = action.payload.data.token;
+      const decodedUser: IDecodedUser = jwt_decode(action.payload.data.token);
+      state.user.login = decodedUser.login;
+      state.user.id = decodedUser.id;
     },
   },
 });
