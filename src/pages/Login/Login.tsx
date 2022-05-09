@@ -8,31 +8,32 @@ import {
   CssBaseline,
   FormControlLabel,
   Grid,
-  Link,
   TextField,
   ThemeProvider,
   Typography,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
 import { useState } from 'react';
 import { rootStyles, violetTheme } from '../../style/rootStyles';
 import { pathes } from '../../pathes/pathes';
 import { Navigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { ILoginUser, ISignUpUser } from '../../types/types';
-import { signIn, signUp } from '../../store/Reducer/loginReducer/loginReducer';
+import { signUp, signIn } from '../../store/api/signApi';
+import { useParams } from 'react-router-dom';
+
+const styleLink = {
+  color: '#0000FF',
+  textDecoration: 'underline',
+};
 
 export const Login = () => {
+  const { signState } = useParams();
   const dispatch = useAppDispatch();
-  const { isLogined } = useAppSelector((state) => state.loginReducer);
+  const { token } = useAppSelector((state) => state.loginReducer);
   const [showHidePass, setShowHidePass] = useState(false);
-  const [isSignUp, setSignUp] = useState(false);
-
-  function changeForm() {
-    setSignUp(!isSignUp);
-  }
 
   const validationSchema = yup.object({
     name: yup.string().min(4, 'Name should be of minimum 8 characters length'),
@@ -51,7 +52,7 @@ export const Login = () => {
     },
     validationSchema: validationSchema,
     onSubmit: () => {
-      if (isSignUp) {
+      if (signState === 'signUp') {
         dispatch(signUp(signUpUser as ISignUpUser));
       } else dispatch(signIn(loginUser as ILoginUser));
     },
@@ -70,7 +71,7 @@ export const Login = () => {
 
   function activeSubmit() {
     if (
-      isSignUp &&
+      signState === 'signUp' &&
       !(
         formik.values.name &&
         formik.values.email &&
@@ -83,9 +84,9 @@ export const Login = () => {
     } else return !(formik.values.email && formik.values.password && !formik.errors.password);
   }
 
-  return isLogined ? (
+  return token ? (
     <Navigate to={pathes.main} />
-  ) : (
+  ) : signState === 'signIn' || signState === 'signUp' ? (
     <ThemeProvider theme={violetTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -104,7 +105,7 @@ export const Login = () => {
             Sign in
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={formik.handleSubmit}>
-            {isSignUp && (
+            {signState === 'signUp' && (
               <TextField
                 margin="normal"
                 required
@@ -153,7 +154,7 @@ export const Login = () => {
               label="Show password"
               onClick={() => setShowHidePass(!showHidePass)}
             />
-            {isSignUp ? (
+            {signState === 'signUp' ? (
               <Button
                 type="submit"
                 fullWidth
@@ -190,12 +191,12 @@ export const Login = () => {
             )}
             <Grid container>
               <Grid item>
-                {isSignUp ? (
-                  <Link href="#" variant="body2" onClick={changeForm}>
+                {signState === 'signUp' ? (
+                  <Link to={pathes.login + '/signIn'} style={styleLink}>
                     {'Have an account? Sign In'}
                   </Link>
                 ) : (
-                  <Link href="#" variant="body2" onClick={changeForm}>
+                  <Link to={pathes.login + '/signUp'} style={styleLink}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 )}
@@ -205,5 +206,7 @@ export const Login = () => {
         </Box>
       </Container>
     </ThemeProvider>
+  ) : (
+    <Navigate to={`/${pathes.error}`} />
   );
 };

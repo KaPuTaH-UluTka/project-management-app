@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { closeModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
+import { deleteBoard } from '../../store/api/boardApi';
 
 const style = {
   position: 'absolute',
@@ -21,8 +22,7 @@ const style = {
 
 export default function BasicModal() {
   const dispatch = useAppDispatch();
-  const { modal } = useAppSelector((state) => state.openModalReducer);
-
+  const { modal, deleteBoardId } = useAppSelector((state) => state.openModalReducer);
   return (
     <div>
       <Modal
@@ -51,6 +51,7 @@ export default function BasicModal() {
             sx={{ marginRight: 1 }}
             onClick={() => {
               dispatch(closeModal());
+              dispatch(deleteBoard({ id: deleteBoardId }));
               // add delet board functional
             }}
           >
