@@ -32,7 +32,7 @@ const styleLink = {
 export const Login = () => {
   const { signState } = useParams();
   const dispatch = useAppDispatch();
-  const { token } = useAppSelector((state) => state.loginReducer);
+  const { token } = useAppSelector((state) => state.apiReducer);
   const [showHidePass, setShowHidePass] = useState(false);
 
   const validationSchema = yup.object({

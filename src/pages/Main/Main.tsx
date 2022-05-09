@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import Container from '@mui/material/Container';
 export const Main = () => {
   const dispatch = useAppDispatch();
-  const { boards } = useAppSelector((state) => state.loginReducer);
+  const { boards } = useAppSelector((state) => state.apiReducer);
   useEffect(() => {
     dispatch(checkBoards(null));
   }, []);

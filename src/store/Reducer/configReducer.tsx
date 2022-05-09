@@ -1,9 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import loginReducer from './apiReducer/apiReducer';
+import apiReducer from './apiReducer/apiReducer';
 import openModalReducer from './confirmationReducer/confirmationReducer';
 
 const rootReducer = combineReducers({
-  loginReducer,
+  apiReducer,
   openModalReducer,
 });
 export const store = () =>

@@ -19,7 +19,7 @@ import { addBoard } from '../../store/api/boardApi';
 
 const Header = () => {
   const { modal, headerBar } = useAppSelector((state) => state.openModalReducer);
-  const { token } = useAppSelector((state) => state.loginReducer);
+  const { token } = useAppSelector((state) => state.apiReducer);
   const dispatch = useAppDispatch();
   const [posTop, setPosTop] = useState(0);
   const [bgStyle, setBgColor] = useState('#6751f6');

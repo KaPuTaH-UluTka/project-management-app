@@ -8,7 +8,7 @@ import './welcome.scss';
 import welcome from '../../assets/welcome.png';
 
 export const Welcome = () => {
-  const { token } = useAppSelector((state) => state.loginReducer);
+  const { token } = useAppSelector((state) => state.apiReducer);
   return token ? (
     <Navigate to={pathes.main} />
   ) : (
