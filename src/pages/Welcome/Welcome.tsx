@@ -8,8 +8,8 @@ import './welcome.scss';
 import welcome from '../../assets/welcome.png';
 
 export const Welcome = () => {
-  const { isLogined } = useAppSelector((state) => state.loginReducer);
-  return isLogined ? (
+  const { token } = useAppSelector((state) => state.loginReducer);
+  return token ? (
     <Navigate to={pathes.main} />
   ) : (
     <section className="welcome">

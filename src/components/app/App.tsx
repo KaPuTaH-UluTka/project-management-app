@@ -8,8 +8,15 @@ import { Private } from '../../hoc/Private';
 import { Welcome } from '../../pages/Welcome/Welcome';
 import { pathes } from '../../pathes/pathes';
 import { FullPage } from '../FullPage';
+import { useEffect } from 'react';
+import { addToken } from '../../store/Reducer/loginReducer/loginReducer';
+import { useAppDispatch } from '../../hooks/hooks';
 
 const App = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(addToken());
+  });
   return (
     <Routes>
       <Route
