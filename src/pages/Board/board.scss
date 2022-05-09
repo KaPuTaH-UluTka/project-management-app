@@ -1,0 +1,8 @@
+.board {
+
+  &__list {
+    display: flex;
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+  }
+}

@@ -74,3 +74,29 @@ export const deleteBoard = createAsyncThunk(
     }
   }
 );
+
+export const openBoard = createAsyncThunk(
+  'deleteBoard',
+  async (action: { id: string }, { rejectWithValue }) => {
+    const token = localStorage.getItem('token');
+    const { id } = action;
+    try {
+      const data = await fetch(`${url}boards/${id}`, {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ` + token,
+        },
+      }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error();
+        }
+        return await response.text().then((res) => JSON.parse(res));
+      });
+      // console.log(data);
+      return { data };
+    } catch {
+      return rejectWithValue({});
+    }
+  }
+);

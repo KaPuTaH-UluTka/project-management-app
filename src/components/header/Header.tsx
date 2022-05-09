@@ -119,7 +119,7 @@ const Header = () => {
               <div
                 className="header__nav-link"
                 // add function for opening modal add board
-                // onClick={() => dispatch(addBoard({ title: 'name' }))}
+                onClick={() => dispatch(addBoard({ title: 'name' }))}
               >
                 Add board
               </div>
