@@ -6,7 +6,6 @@ import Container from '@mui/material/Container';
 export const Main = () => {
   const dispatch = useAppDispatch();
   const { boards } = useAppSelector((state) => state.loginReducer);
-  // use in future when complete problems with back-end
   useEffect(() => {
     dispatch(checkBoards(null));
   }, []);
