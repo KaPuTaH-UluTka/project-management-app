@@ -15,6 +15,8 @@ import Container from '@mui/material/Container';
 import { toggleBar } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { useEffect, useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
+import { addBoard } from '../../store/api/boardApi';
+
 const Header = () => {
   const { modal, headerBar } = useAppSelector((state) => state.openModalReducer);
   const { token } = useAppSelector((state) => state.loginReducer);
@@ -114,7 +116,13 @@ const Header = () => {
               <Link to={pathes.main}>
                 <div className="header__nav-link">Home</div>
               </Link>
-              <div className="header__nav-link">Add board</div>
+              <div
+                className="header__nav-link"
+                // add function for opening modal add board
+                // onClick={() => dispatch(addBoard({ title: 'name' }))}
+              >
+                Add board
+              </div>
               <Link to={pathes.edit}>
                 <div className="header__nav-link">Edit Profile</div>
               </Link>

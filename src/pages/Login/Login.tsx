@@ -26,7 +26,7 @@ import { useParams } from 'react-router-dom';
 
 const styleLink = {
   color: '#0000FF',
-  'text-decoration': 'underline',
+  textDecoration: 'underline',
 };
 
 export const Login = () => {

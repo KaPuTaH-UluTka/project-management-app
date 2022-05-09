@@ -2,13 +2,15 @@ import { createSlice } from '@reduxjs/toolkit';
 const openModalState = {
   modal: false,
   headerBar: false,
+  deleteBoardId: '',
 };
 const openModalSlice = createSlice({
   name: 'openModal',
   initialState: { ...openModalState },
   reducers: {
-    openModal: (state) => {
+    openModal: (state, action) => {
       state.modal = true;
+      state.deleteBoardId = action.payload.id;
     },
     closeModal: (state) => {
       state.modal = false;

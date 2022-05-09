@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
 import { signIn } from '../../api/signApi';
-import { checkBoards } from '../../api/boardApi';
+import { checkBoards, addBoard, deleteBoard } from '../../api/boardApi';
 
 const apiState = {
   token: '',
   boards: [] as Array<{ title: string; id: string }>,
+  deleteBoardId: '',
 };
 
 const apiSlice = createSlice({
@@ -33,9 +34,28 @@ const apiSlice = createSlice({
       state.token = token;
     },
     [checkBoards.fulfilled.type]: (state, action) => {
-      state.boards = [...state.boards, ...action.payload.data];
+      state.boards = [...action.payload.data];
     },
     [checkBoards.rejected.type]: (state) => {
+      localStorage.setItem('token', '');
+      state.token = '';
+    },
+    [addBoard.fulfilled.type]: (state, action) => {
+      state.boards.push({ ...action.payload.data });
+    },
+    [addBoard.rejected.type]: (state) => {
+      localStorage.setItem('token', '');
+      state.token = '';
+    },
+    [deleteBoard.fulfilled.type]: (state, action) => {
+      const boards = state.boards.filter((item) => action.payload.id !== item.id) as Array<{
+        title: string;
+        id: string;
+      }>;
+      state.deleteBoardId = '';
+      state.boards = boards;
+    },
+    [deleteBoard.rejected.type]: (state) => {
       localStorage.setItem('token', '');
       state.token = '';
     },

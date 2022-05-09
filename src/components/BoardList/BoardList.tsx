@@ -37,7 +37,7 @@ export default function BoardList(props: {
                 variant="contained"
                 onClick={(e) => {
                   e.preventDefault();
-                  dispatch(openModal());
+                  dispatch(openModal({ id: board.id }));
                 }}
               >
                 Delete
