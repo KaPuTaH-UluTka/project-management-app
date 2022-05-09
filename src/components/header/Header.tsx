@@ -3,7 +3,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import { pathes } from '../../pathes/pathes';
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { addLogin } from '../../store/Reducer/loginReducer/loginReducer';
+import { logout } from '../../store/Reducer/loginReducer/loginReducer';
 import './header.scss';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 const Header = () => {
   const { modal, headerBar } = useAppSelector((state) => state.openModalReducer);
-  const { isLogined } = useAppSelector((state) => state.loginReducer);
+  const { token } = useAppSelector((state) => state.loginReducer);
   const dispatch = useAppDispatch();
   const [posTop, setPosTop] = useState(0);
   const [bgStyle, setBgColor] = useState('#6751f6');
@@ -58,7 +58,7 @@ const Header = () => {
             TRELLO
           </Typography>
 
-          {isLogined ? (
+          {token ? (
             <Box
               sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
               onClick={() => {
@@ -109,7 +109,7 @@ const Header = () => {
           >
             TRELLO
           </Typography>
-          {isLogined ? (
+          {token ? (
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               <Link to={pathes.main}>
                 <div className="header__nav-link">Home</div>
@@ -121,9 +121,9 @@ const Header = () => {
             </Box>
           ) : null}
 
-          {isLogined ? (
+          {token ? (
             <Box sx={{ flexGrow: 0 }}>
-              <button className="header__user-entry output" onClick={() => dispatch(addLogin())}>
+              <button className="header__user-entry output" onClick={() => dispatch(logout())}>
                 <LoginIcon />
                 Logout
               </button>

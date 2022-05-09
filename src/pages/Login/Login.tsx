@@ -22,11 +22,11 @@ import { pathes } from '../../pathes/pathes';
 import { Navigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { ILoginUser, ISignUpUser } from '../../types/types';
-import { signIn, signUp } from '../../store/Reducer/loginReducer/loginReducer';
+import { signUp, signIn } from '../../store/api/api';
 
 export const Login = () => {
   const dispatch = useAppDispatch();
-  const { isLogined } = useAppSelector((state) => state.loginReducer);
+  const { token } = useAppSelector((state) => state.loginReducer);
   const [showHidePass, setShowHidePass] = useState(false);
   const [isSignUp, setSignUp] = useState(false);
 
@@ -83,7 +83,7 @@ export const Login = () => {
     } else return !(formik.values.email && formik.values.password && !formik.errors.password);
   }
 
-  return isLogined ? (
+  return token ? (
     <Navigate to={pathes.main} />
   ) : (
     <ThemeProvider theme={violetTheme}>
