@@ -1,4 +1,4 @@
-import { signUp, signIn } from '../store/api/api';
+import { signUp, signIn } from '../store/api/signApi';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import Header from './header/Header';
 import Footer from './footer/Footer';

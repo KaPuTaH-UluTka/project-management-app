@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import BoardList from '../../components/BoardList/BoardList';
-import { checkBoards } from '../../store/api/api';
+import { checkBoards } from '../../store/api/boardApi';
 import { useEffect } from 'react';
 import Container from '@mui/material/Container';
 export const Main = () => {

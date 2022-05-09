@@ -3,7 +3,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import { pathes } from '../../pathes/pathes';
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { logout } from '../../store/Reducer/loginReducer/loginReducer';
+import { logout } from '../../store/Reducer/apiReducer/apiReducer';
 import './header.scss';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -130,13 +130,13 @@ const Header = () => {
             </Box>
           ) : (
             <Box sx={{ display: 'flex', position: 'absolute', right: 0 }}>
-              <Link to={pathes.login}>
+              <Link to={pathes.login + '/signIn'}>
                 <button className="header__user-entry">
                   <LoginIcon />
                   Login
                 </button>
               </Link>
-              <Link to={pathes.login}>
+              <Link to={pathes.login + '/signUp'}>
                 <button className="header__user-registr">
                   <PersonIcon />
                   Sign up

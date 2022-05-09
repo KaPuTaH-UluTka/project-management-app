@@ -31,6 +31,9 @@
         cursor: pointer;
         color: #fff;
       }
+      &:active {
+        color: red;
+      }
     }
   }
 

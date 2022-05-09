@@ -1,15 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
-import { checkBoards, signIn } from '../../api/api';
+import { signIn } from '../../api/signApi';
+import { checkBoards } from '../../api/boardApi';
 
-const loginState = {
+const apiState = {
   token: '',
   boards: [] as Array<{ title: string; id: string }>,
 };
 
-const loginSlice = createSlice({
+const apiSlice = createSlice({
   name: 'login',
-  initialState: { ...loginState },
+  initialState: { ...apiState },
   reducers: {
     addToken: (state) => {
       state.token = localStorage.getItem('token')
@@ -32,7 +33,7 @@ const loginSlice = createSlice({
       state.token = token;
     },
     [checkBoards.fulfilled.type]: (state, action) => {
-      state.boards = [...action.payload.data];
+      state.boards = [...state.boards, ...action.payload.data];
     },
     [checkBoards.rejected.type]: (state) => {
       localStorage.setItem('token', '');
@@ -41,5 +42,5 @@ const loginSlice = createSlice({
   },
 });
 
-export default loginSlice.reducer;
-export const { addToken, logout } = loginSlice.actions;
+export default apiSlice.reducer;
+export const { addToken, logout } = apiSlice.actions;
