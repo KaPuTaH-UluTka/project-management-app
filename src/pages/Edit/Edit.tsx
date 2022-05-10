@@ -3,7 +3,7 @@ import { Avatar, Box, Container, TextField, ThemeProvider, Typography } from '@m
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import noAvatar from '../../assets/no-avatar.png';
-import { getUser, updateUser } from '../../store/api/signApi';
+import { getUser, updateUser, uploadAvatar } from '../../store/api/signApi';
 import { useAppDispatch } from '../../hooks/hooks';
 import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
@@ -79,7 +79,9 @@ export const Edit = () => {
       avatar: noAvatar,
       avatarFile: Blob,
     },
-    onSubmit: () => {},
+    onSubmit: () => {
+      dispatch(uploadAvatar(URL.createObjectURL(avatarForm.values.avatarFile)));
+    },
   });
   return (
     <ThemeProvider theme={violetTheme}>

@@ -101,8 +101,9 @@ export const uploadAvatar = createAsyncThunk(
       await fetch(`${url}file`, {
         method: 'POST',
         headers: {
-          accept: 'application/json',
+          accept: 'accept: */*',
           Authorization: `Bearer ` + token,
+          'Content-Type': 'multipart/form-data',
         },
         body: JSON.stringify(action),
       });
