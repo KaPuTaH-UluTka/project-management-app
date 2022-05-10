@@ -6,6 +6,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { closeModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { deleteBoard } from '../../store/api/boardApi';
+import { deleteColumn } from '../../store/api/columnApi';
+import { deleteTask } from '../../store/api/taskApi';
 
 const style = {
   position: 'absolute',
@@ -22,7 +24,9 @@ const style = {
 
 export default function BasicModal() {
   const dispatch = useAppDispatch();
-  const { modal, deleteBoardId } = useAppSelector((state) => state.openModalReducer);
+  const { modal, deleteBoardId, deleteColumnId, deleteTaskId } = useAppSelector(
+    (state) => state.openModalReducer
+  );
   return (
     <div>
       <Modal
@@ -51,7 +55,20 @@ export default function BasicModal() {
             sx={{ marginRight: 1 }}
             onClick={() => {
               dispatch(closeModal());
-              dispatch(deleteBoard({ id: deleteBoardId }));
+              if (deleteBoardId && deleteColumnId && deleteTaskId) {
+                dispatch(
+                  deleteTask({
+                    boardId: deleteBoardId,
+                    columnId: deleteColumnId,
+                    taskId: deleteTaskId,
+                  })
+                );
+              } else if (deleteBoardId && deleteColumnId) {
+                console.log(deleteBoardId, deleteColumnId, deleteTaskId);
+                dispatch(deleteColumn({ boardId: deleteBoardId, columnId: deleteColumnId }));
+              } else if (deleteBoardId) {
+                dispatch(deleteBoard({ boardId: deleteBoardId }));
+              }
               // add delet board functional
             }}
           >

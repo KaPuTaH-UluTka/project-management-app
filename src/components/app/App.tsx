@@ -30,7 +30,7 @@ const App = () => {
         }
       />
       <Route
-        path={pathes.board + '/:id'}
+        path={pathes.board + '/:boardId'}
         element={
           <Private>
             <FullPage>

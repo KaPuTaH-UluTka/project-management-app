@@ -9,19 +9,22 @@ import { openBoard } from '../../store/api/boardApi';
 import { useEffect } from 'react';
 import { Column } from '../../components/Column/Column';
 import { ListItem } from '@mui/material';
+import { addColumn } from '../../store/api/columnApi';
+import BasicModal from '../../components/confirmation/Confirmation';
 export const Board = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { boardId } = useParams();
   const dispatch = useAppDispatch();
   const { board } = useAppSelector((state) => state.apiReducer);
   useEffect(() => {
-    if (id) {
-      dispatch(openBoard({ id }));
+    if (boardId) {
+      dispatch(openBoard({ boardId }));
     }
   }, []);
-  // console.log(board);
+  // useEffect(() => console.log(board.columns), [board]);
   return (
     <Container fixed className="board">
+      <BasicModal />
       <ListItem style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h1>{board.title}</h1>
         <Button
@@ -34,11 +37,19 @@ export const Board = () => {
           Return
         </Button>
       </ListItem>
-      <Grid container className="board__list">
+      <Grid className="board__list">
         {board.columns.length > 0
           ? board.columns.map((column, index) => {
               return (
-                <Grid key={index}>
+                <Grid
+                  key={index}
+                  style={{
+                    margin: '10px 5px',
+                    minWidth: 270,
+                    boxShadow: '2px 2px 5px 0px black',
+                    background: 'ede8e8',
+                  }}
+                >
                   <Column column={column} />
                 </Grid>
               );
@@ -51,6 +62,21 @@ export const Board = () => {
               position: 'relative',
               top: 10,
               left: 20,
+            }}
+            onClick={() => {
+              let order = 1;
+              if (board.columns?.length > 0) {
+                order = Number(board.columns[board.columns.length - 1].order) + 1;
+              }
+              if (boardId) {
+                dispatch(
+                  addColumn({
+                    boardId,
+                    title: 'new task',
+                    order,
+                  })
+                );
+              }
             }}
           >
             <Add /> add column

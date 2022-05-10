@@ -3,52 +3,17 @@ import jwt_decode from 'jwt-decode';
 import { signIn } from '../../api/signApi';
 import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardApi';
 import { BoardType } from '../../../types/types';
+import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
+import { ColumnType, TaskType } from '../../../types/types';
+import { addTask, deleteTask } from '../../api/taskApi';
 
 const apiState = {
   token: '',
   boards: [] as Array<{ title: string; id: string }>,
   deleteBoardId: '',
-  board: {
-    id: '9a111e19-24ec-43e1-b8c4-13776842b8d5',
-    title: 'Homework tasks',
-    columns: [
-      {
-        id: '7b0b41b3-c01e-4139-998f-3ff25d20dc4f',
-        title: 'Done',
-        order: 1,
-        tasks: [
-          {
-            id: '6e3abe9c-ceb1-40fa-9a04-eb2b2184daf9',
-            title: 'Task: pet the cat',
-            order: 1,
-            done: false,
-            description: 'Domestic cat needs to be stroked gently',
-            userId: 'b2d92061-7d23-4641-af52-dd39f95b99f8',
-            files: [
-              {
-                filename: 'foto.jpg',
-                fileSize: 6105000,
-              },
-            ],
-          },
-          {
-            id: '6e3abe9c-ceb1-40fa-9a04-eb2b2184daf9',
-            title: 'Task: pet the cat',
-            order: 1,
-            done: false,
-            description: 'Domestic cat needs to be stroked gently',
-            userId: 'b2d92061-7d23-4641-af52-dd39f95b99f8',
-            files: [
-              {
-                filename: 'foto.jpg',
-                fileSize: 6105000,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  } as BoardType,
+  deleteColumnId: '',
+  deleteTaskId: '',
+  board: { id: '', title: '', columns: [] } as BoardType,
 };
 
 const apiSlice = createSlice({
@@ -64,9 +29,6 @@ const apiSlice = createSlice({
       localStorage.setItem('token', '');
       state.token = '';
     },
-    // changeInputValue: (state, action) =>{
-
-    // }
   },
   extraReducers: {
     [signIn.fulfilled.type]: (state, action) => {
@@ -105,12 +67,51 @@ const apiSlice = createSlice({
       state.token = '';
     },
     [openBoard.fulfilled.type]: (state, action) => {
-      console.log(action);
-      // state.boards.push({ ...action.payload.data });
+      const board = { ...action.payload.data };
+      board.columns = board.columns.sort((a: ColumnType, b: ColumnType) => a.order - b.order);
+      board.columns = board.columns.map((column: ColumnType) => {
+        column.tasks = [...column.tasks?.sort((a: TaskType, b: TaskType) => a.order - b.order)];
+        return column;
+      });
+      state.board = board;
     },
     [openBoard.rejected.type]: (state) => {
       // localStorage.setItem('token', '');
       // state.token = '';
+    },
+    [addColumn.fulfilled.type]: (state, action) => {
+      state.board.columns.push(action.payload.data);
+      console.log(state.board.columns);
+    },
+    [deleteColumn.fulfilled.type]: (state, action) => {
+      const columnId = action.payload.columnId;
+      const columns = state.board.columns.filter((column) => columnId !== column.id);
+      state.deleteColumnId = '';
+      state.board.columns = columns;
+    },
+    [addTask.fulfilled.type]: (state, action) => {
+      const columnId = action.payload.data.columnId;
+      const indexColumnChanges = state.board.columns.findIndex((item) => item.id === columnId);
+      if (state.board.columns[indexColumnChanges].tasks) {
+        state.board.columns[indexColumnChanges].tasks.push(action.payload.data);
+      } else {
+        state.board.columns[indexColumnChanges].tasks = [action.payload.data];
+      }
+    },
+    [deleteTask.fulfilled.type]: (state, action) => {
+      const { columnId, taskId } = action.payload;
+      const indexColumn = state.board.columns.findIndex((item) => item.id === columnId);
+      const indexTask = state.board.columns[indexColumn].tasks?.findIndex(
+        (item) => item.id === taskId
+      );
+      state.deleteColumnId = '';
+      state.deleteTaskId = '';
+      if (indexTask !== -1) {
+        state.board.columns[indexColumn].tasks?.splice(indexTask, 1);
+      }
+    },
+    [updateColumn.fulfilled.type]: (state, action) => {
+      //update
     },
   },
 });
