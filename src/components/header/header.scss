@@ -1,35 +1,56 @@
 .header {
-  background-color: #6751f6;
+  background-color: #9ec6cd;
+
   &__inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
   }
+
   &__left {
     display: flex;
     align-items: center;
   }
+
   &__logo {
     color: #fff;
   }
+
   &__nav {
     display: flex;
     font-size: 20px;
     margin-left: 50px;
+
     &-link {
       color: #e1e1e1;
       margin-right: 30px;
-      transition: all .2s linear;
+      transition: all 0.2s linear;
+
+      button {
+        color: #e1e1e1;
+        font-weight: normal;
+        padding: 0;
+        text-transform: none;
+        font-size: 16px;
+        line-height: 16px;
+      }
+
       &:hover {
         cursor: pointer;
         color: #fff;
       }
     }
   }
+
   &__user {
     display: flex;
     color: #e1e1e1;
+
+    &-entry {
+      margin-right: 15px;
+    }
+
     &-entry,
     &-registr {
       display: flex;
@@ -39,16 +60,24 @@
       cursor: pointer;
       border: none;
       color: inherit;
-      transition: all .2s linear;
+      transition: all 0.2s linear;
+
       &:hover {
         color: #fff;
       }
+
       svg {
         margin-right: 5px;
       }
     }
-    &-entry {
-      margin-right: 15px;
-    }
+  }
+  &__bar-item {
+    border-radius: 3px !important;
+    background: #9ec6cd !important;
+    opacity: .7 !important;
+    transition: ease-in .3s;
+  }
+  &__bar-item:hover {
+    opacity: 1 !important;
   }
 }

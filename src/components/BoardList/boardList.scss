@@ -1,0 +1,23 @@
+.list {
+  position: relative;
+  margin: 20px !important;
+  &__item {
+    border-radius: 10px;
+    background: radial-gradient(at top, #FEFFFF, #A7CECC);
+    transition: ease-in 1s;
+    color: black;
+    cursor: pointer;
+    &-avatar {
+      background: red !important;
+    }
+  }
+  &__item:hover {
+    transform: translateX(-20px) scale(1.02);
+    transition: ease-in 1s;
+    z-index: 2;
+    color: white;
+    border-radius: 10px;
+    background: orange;
+  }
+
+}

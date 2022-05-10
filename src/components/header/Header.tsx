@@ -1,40 +1,168 @@
 import PersonIcon from '@mui/icons-material/Person';
 import LoginIcon from '@mui/icons-material/Login';
+import MenuIcon from '@mui/icons-material/Menu';
 import { pathes } from '../../pathes/pathes';
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { addLogin } from '../../store/Reducer/loginReducer/loginReducer';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Container,
+  MenuItem,
+  Button,
+} from '@mui/material';
+import { toggleBar } from '../../store/Reducer/confirmationReducer/confirmationReducer';
+import { useEffect, useState } from 'react';
+import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
+import BasicModal from '../../hoc/BasicModal';
+import CreateBoardModal from '../createBoardModal/CreateBoardModal';
+
 import './header.scss';
 
 const Header = () => {
+  const { confirmModal, createBoardModal, headerBar } = useAppSelector(
+    (state) => state.openModalReducer
+  );
   const { isLogined } = useAppSelector((state) => state.loginReducer);
   const dispatch = useAppDispatch();
+  const [posTop, setPosTop] = useState(0);
+  const [bgStyle, setBgColor] = useState('#6751f6');
+  useEffect(() => {
+    if (posTop > 1) {
+      setBgColor('black');
+    } else {
+      setBgColor('#6751f6');
+    }
+  }, [posTop]);
+  window.addEventListener('scroll', () => {
+    setPosTop(window.pageYOffset);
+  });
+
   return (
-    <header className="header">
-      <div className="container">
-        <div className="header__inner">
-          <div className="header__left">
-            <div className="header__logo">
-              <h1>Trello</h1>
-            </div>
+    <AppBar
+      position="sticky"
+      style={{
+        backgroundColor: bgStyle,
+        width: confirmModal || createBoardModal ? '100vw' : '100%',
+        transition: 'background 1s linear',
+      }}
+    >
+      <BasicModal title="Create Board">
+        <CreateBoardModal />
+      </BasicModal>
+      <Container>
+        <Toolbar disableGutters>
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            sx={{
+              mr: 3,
+              display: { xs: 'none', md: 'flex' },
+              fontSize: 24,
+              fontWeight: 700,
+              textDecoration: 'none',
+            }}
+          >
+            TRELLO
+          </Typography>
 
-            {isLogined ? (
-              <nav className="header__nav">
-                <Link to={pathes.main}>
-                  <div className="header__nav-link">Home</div>
-                </Link>
-                <Link to={pathes.board}>
-                  <div className="header__nav-link">Add board</div>
-                </Link>
-                <Link to={pathes.edit}>
-                  <div className="header__nav-link">Edit Profile</div>
-                </Link>
-              </nav>
-            ) : null}
-          </div>
+          {isLogined ? (
+            <Box
+              sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+              onClick={() => {
+                dispatch(toggleBar());
+              }}
+            >
+              <IconButton size="large" color="inherit">
+                <MenuIcon />
+              </IconButton>
+              {headerBar ? (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 50,
+                  }}
+                >
+                  <Link to={pathes.main}>
+                    <MenuItem onClick={toggleBar} className="header__bar-item">
+                      <Typography textAlign="center">Home</Typography>
+                    </MenuItem>
+                  </Link>
+                  <MenuItem onClick={toggleBar} className="header__bar-item">
+                    <Typography textAlign="center">
+                      <Button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          console.log('click');
+                          dispatch(openModal('createBoardModal'));
+                        }}
+                      >
+                        Add board
+                      </Button>
+                    </Typography>
+                  </MenuItem>
+                  <Link to={pathes.edit}>
+                    <MenuItem onClick={toggleBar} className="header__bar-item">
+                      <Typography textAlign="center">Edit profile</Typography>
+                    </MenuItem>
+                  </Link>
+                </div>
+              ) : null}
+            </Box>
+          ) : null}
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            sx={{
+              mr: 2,
+              display: { xs: 'flex', md: 'none' },
+              flexGrow: 1,
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            TRELLO
+          </Typography>
+          {isLogined ? (
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+              <Link to={pathes.main}>
+                <div className="header__nav-link">Home</div>
+              </Link>
+              <div className="header__nav-link">
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    console.log('click');
+                    dispatch(openModal('createBoardModal'));
+                  }}
+                >
+                  Add board
+                </Button>
+              </div>
+              <Link to={pathes.edit}>
+                <div className="header__nav-link">Edit Profile</div>
+              </Link>
+            </Box>
+          ) : null}
 
-          {!isLogined ? (
-            <div className="header__user">
+          {isLogined ? (
+            <Box sx={{ flexGrow: 0 }}>
+              <button className="header__user-entry output" onClick={() => dispatch(addLogin())}>
+                <LoginIcon />
+                Logout
+              </button>
+            </Box>
+          ) : (
+            <Box sx={{ display: 'flex', position: 'absolute', right: 0 }}>
               <Link to={pathes.login}>
                 <button className="header__user-entry">
                   <LoginIcon />
@@ -47,16 +175,11 @@ const Header = () => {
                   Sign up
                 </button>
               </Link>
-            </div>
-          ) : (
-            <button className="header__user-entry output" onClick={() => dispatch(addLogin())}>
-              <LoginIcon />
-              Logout
-            </button>
+            </Box>
           )}
-        </div>
-      </div>
-    </header>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 };
 

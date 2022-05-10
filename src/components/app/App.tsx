@@ -15,15 +15,15 @@ const App = () => {
       <Route
         path={pathes.main}
         element={
-          <Private>
-            <FullPage>
-              <Main />
-            </FullPage>
-          </Private>
+          //<Private>
+          <FullPage>
+            <Main />
+          </FullPage>
+          //</Private>
         }
       />
       <Route
-        path={pathes.board}
+        path={pathes.board + '/:id'}
         element={
           <Private>
             <FullPage>
