@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { addTask } from '../../store/api/taskApi';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
+import { updateColumn } from '../../store/api/columnApi';
 
 export const Column = (props: { column: ColumnType }) => {
   const dispatch = useAppDispatch();
@@ -43,7 +44,18 @@ export const Column = (props: { column: ColumnType }) => {
             color="warning"
             variant="contained"
             size="small"
-            onClick={() => setTitleColumnState(false)}
+            onClick={() => {
+              setTitleColumnState(false);
+              dispatch(
+                updateColumn({
+                  boardId: boardId || '',
+                  columnId: props.column.id,
+                  title: titleColumn,
+                  order: props.column.order,
+                  event: 'changeName',
+                })
+              );
+            }}
           >
             Submit
           </Button>

@@ -111,7 +111,21 @@ const apiSlice = createSlice({
       }
     },
     [updateColumn.fulfilled.type]: (state, action) => {
-      //update
+      const columnId = action.payload.data.id;
+      const { title, order } = action.payload.data;
+      switch (action.payload.event) {
+        case 'changeName':
+          console.log('changeName');
+          const indexColumn = state.board.columns.findIndex((item) => item.id === columnId);
+          state.board.columns[indexColumn].title = title;
+          break;
+        case 'addEndPosition':
+          console.log('addEndPosition');
+          break;
+        case 'changePosition':
+          console.log('changePosition');
+          break;
+      }
     },
   },
 });

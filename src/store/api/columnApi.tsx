@@ -53,15 +53,16 @@ export const deleteColumn = createAsyncThunk(
 );
 
 export const updateColumn = createAsyncThunk(
-  'updateCulumn',
+  'updateColumn',
   async (
-    action: { boardId: string; columnId: string; title: string; order: number },
+    action: { boardId: string; columnId: string; title: string; order: number; event: string },
     { rejectWithValue }
   ) => {
     try {
       const token = localStorage.getItem('token');
-      const { boardId, columnId, title, order } = action;
-      const data = await fetch(`${url}/boards/${boardId}/columns/${columnId}`, {
+      const { boardId, columnId, title, order, event } = action;
+      console.log(action);
+      const data = await fetch(`${url}boards/${boardId}/columns/${columnId}`, {
         method: 'PUT',
         headers: {
           accept: 'application/json',
@@ -75,7 +76,7 @@ export const updateColumn = createAsyncThunk(
         }
         return await response.text().then((res) => JSON.parse(res));
       });
-      return { data };
+      return { data, event };
     } catch {
       return rejectWithValue({});
     }
