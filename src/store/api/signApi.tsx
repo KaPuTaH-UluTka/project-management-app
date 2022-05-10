@@ -87,28 +87,3 @@ export const getUser = createAsyncThunk('getUser', async (id: string, { rejectWi
     return rejectWithValue({});
   }
 });
-
-export const uploadAvatar = createAsyncThunk(
-  'uploadAvatar',
-  async (
-    action: {
-      id: string;
-      file: string;
-    },
-    { rejectWithValue }
-  ) => {
-    try {
-      await fetch(`${url}file`, {
-        method: 'POST',
-        headers: {
-          accept: 'accept: */*',
-          Authorization: `Bearer ` + token,
-          'Content-Type': 'multipart/form-data',
-        },
-        body: JSON.stringify(action),
-      });
-    } catch {
-      return rejectWithValue({});
-    }
-  }
-);
