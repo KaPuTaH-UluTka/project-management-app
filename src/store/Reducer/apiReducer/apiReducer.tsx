@@ -1,12 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
 import { signIn } from '../../api/signApi';
-import { checkBoards, addBoard, deleteBoard } from '../../api/boardApi';
+import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardApi';
+import { BoardType } from '../../../types/types';
+import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
+import { ColumnType, TaskType } from '../../../types/types';
+import { addTask, deleteTask } from '../../api/taskApi';
 
 const apiState = {
   token: '',
   boards: [] as Array<{ title: string; id: string }>,
   deleteBoardId: '',
+  deleteColumnId: '',
+  deleteTaskId: '',
+  board: { id: '', title: '', columns: [] } as BoardType,
 };
 
 const apiSlice = createSlice({
@@ -58,6 +65,67 @@ const apiSlice = createSlice({
     [deleteBoard.rejected.type]: (state) => {
       localStorage.setItem('token', '');
       state.token = '';
+    },
+    [openBoard.fulfilled.type]: (state, action) => {
+      const board = { ...action.payload.data };
+      board.columns = board.columns.sort((a: ColumnType, b: ColumnType) => a.order - b.order);
+      board.columns = board.columns.map((column: ColumnType) => {
+        column.tasks = [...column.tasks?.sort((a: TaskType, b: TaskType) => a.order - b.order)];
+        return column;
+      });
+      state.board = board;
+    },
+    [openBoard.rejected.type]: (state) => {
+      // localStorage.setItem('token', '');
+      // state.token = '';
+    },
+    [addColumn.fulfilled.type]: (state, action) => {
+      state.board.columns.push(action.payload.data);
+      console.log(state.board.columns);
+    },
+    [deleteColumn.fulfilled.type]: (state, action) => {
+      const columnId = action.payload.columnId;
+      const columns = state.board.columns.filter((column) => columnId !== column.id);
+      state.deleteColumnId = '';
+      state.board.columns = columns;
+    },
+    [addTask.fulfilled.type]: (state, action) => {
+      const columnId = action.payload.data.columnId;
+      const indexColumnChanges = state.board.columns.findIndex((item) => item.id === columnId);
+      if (state.board.columns[indexColumnChanges].tasks) {
+        state.board.columns[indexColumnChanges].tasks.push(action.payload.data);
+      } else {
+        state.board.columns[indexColumnChanges].tasks = [action.payload.data];
+      }
+    },
+    [deleteTask.fulfilled.type]: (state, action) => {
+      const { columnId, taskId } = action.payload;
+      const indexColumn = state.board.columns.findIndex((item) => item.id === columnId);
+      const indexTask = state.board.columns[indexColumn].tasks?.findIndex(
+        (item) => item.id === taskId
+      );
+      state.deleteColumnId = '';
+      state.deleteTaskId = '';
+      if (indexTask !== -1) {
+        state.board.columns[indexColumn].tasks?.splice(indexTask, 1);
+      }
+    },
+    [updateColumn.fulfilled.type]: (state, action) => {
+      const columnId = action.payload.data.id;
+      const { title, order } = action.payload.data;
+      switch (action.payload.event) {
+        case 'changeName':
+          console.log('changeName');
+          const indexColumn = state.board.columns.findIndex((item) => item.id === columnId);
+          state.board.columns[indexColumn].title = title;
+          break;
+        case 'addEndPosition':
+          console.log('addEndPosition');
+          break;
+        case 'changePosition':
+          console.log('changePosition');
+          break;
+      }
     },
   },
 });

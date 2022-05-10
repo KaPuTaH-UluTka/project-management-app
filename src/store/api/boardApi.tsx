@@ -54,11 +54,11 @@ export const addBoard = createAsyncThunk(
 
 export const deleteBoard = createAsyncThunk(
   'deleteBoard',
-  async (action: { id: string }, { rejectWithValue }) => {
+  async (action: { boardId: string }, { rejectWithValue }) => {
     const token = localStorage.getItem('token');
-    const { id } = action;
+    const { boardId } = action;
     try {
-      const data = await fetch(`${url}boards/${id}`, {
+      const data = await fetch(`${url}boards/${boardId}`, {
         method: 'DELETE',
         headers: {
           accept: '*/*',
@@ -68,7 +68,32 @@ export const deleteBoard = createAsyncThunk(
       if (!data.ok) {
         throw new Error();
       }
-      return { id };
+      return { boardId };
+    } catch {
+      return rejectWithValue({});
+    }
+  }
+);
+
+export const openBoard = createAsyncThunk(
+  'openBoard',
+  async (action: { boardId: string }, { rejectWithValue }) => {
+    const token = localStorage.getItem('token');
+    const { boardId } = action;
+    try {
+      const data = await fetch(`${url}boards/${boardId}`, {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ` + token,
+        },
+      }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error();
+        }
+        return await response.text().then((res) => JSON.parse(res));
+      });
+      return { data };
     } catch {
       return rejectWithValue({});
     }

@@ -1,0 +1,10 @@
+.board {
+  margin: 0 auto;
+  max-width: 100% !important;
+  padding: 10 !important;
+  &__list {
+    display: flex;
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+  }
+}
