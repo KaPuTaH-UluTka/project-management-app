@@ -55,7 +55,7 @@ const apiSlice = createSlice({
       state.token = '';
     },
     [deleteBoard.fulfilled.type]: (state, action) => {
-      const boards = state.boards.filter((item) => action.payload.id !== item.id) as Array<{
+      const boards = state.boards.filter((item) => action.payload.boardId !== item.id) as Array<{
         title: string;
         id: string;
       }>;

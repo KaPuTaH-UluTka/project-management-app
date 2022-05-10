@@ -64,7 +64,6 @@ export default function BasicModal() {
                   })
                 );
               } else if (deleteBoardId && deleteColumnId) {
-                console.log(deleteBoardId, deleteColumnId, deleteTaskId);
                 dispatch(deleteColumn({ boardId: deleteBoardId, columnId: deleteColumnId }));
               } else if (deleteBoardId) {
                 dispatch(deleteBoard({ boardId: deleteBoardId }));

@@ -18,7 +18,6 @@ export const checkBoards = createAsyncThunk(
         }
         return await response.text().then((res) => JSON.parse(res));
       });
-
       return { data };
     } catch (err) {
       return rejectWithValue({});
