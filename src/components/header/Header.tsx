@@ -1,21 +1,21 @@
 import PersonIcon from '@mui/icons-material/Person';
 import LoginIcon from '@mui/icons-material/Login';
-import MenuIcon from '@mui/icons-material/Menu';
 import { pathes } from '../../pathes/pathes';
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { addLogin } from '../../store/Reducer/loginReducer/loginReducer';
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  IconButton,
-  Typography,
-  Container,
-  MenuItem,
-  Button,
-} from '@mui/material';
+import { logout } from '../../store/Reducer/apiReducer/apiReducer';
+import './header.scss';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
 import { toggleBar } from '../../store/Reducer/confirmationReducer/confirmationReducer';
+import { addBoard } from '../../store/api/boardApi';
 import { useEffect, useState } from 'react';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import BasicModal from '../../hoc/BasicModal';
@@ -27,7 +27,7 @@ const Header = () => {
   const { confirmModal, createBoardModal, headerBar } = useAppSelector(
     (state) => state.openModalReducer
   );
-  const { isLogined } = useAppSelector((state) => state.loginReducer);
+  const { token } = useAppSelector((state) => state.apiReducer);
   const dispatch = useAppDispatch();
   const [posTop, setPosTop] = useState(0);
   const [bgStyle, setBgColor] = useState('#6751f6');
@@ -71,7 +71,7 @@ const Header = () => {
             TRELLO
           </Typography>
 
-          {isLogined ? (
+          {token ? (
             <Box
               sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
               onClick={() => {
@@ -98,8 +98,7 @@ const Header = () => {
                       <Button
                         onClick={(e) => {
                           e.preventDefault();
-                          console.log('click');
-                          dispatch(openModal('createBoardModal'));
+                          dispatch(openModal({ createBoardModal: 'createBoardModal' }));
                         }}
                       >
                         Add board
@@ -132,7 +131,7 @@ const Header = () => {
           >
             TRELLO
           </Typography>
-          {isLogined ? (
+          {token ? (
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               <Link to={pathes.main}>
                 <div className="header__nav-link">Home</div>
@@ -141,8 +140,8 @@ const Header = () => {
                 <Button
                   onClick={(e) => {
                     e.preventDefault();
-                    console.log('click');
-                    dispatch(openModal('createBoardModal'));
+                    dispatch(openModal({ createBoardModal: 'createBoardModal' }));
+                    // dispatch(addBoard({ title: 'name' }));
                   }}
                 >
                   Add board
@@ -154,22 +153,22 @@ const Header = () => {
             </Box>
           ) : null}
 
-          {isLogined ? (
+          {token ? (
             <Box sx={{ flexGrow: 0 }}>
-              <button className="header__user-entry output" onClick={() => dispatch(addLogin())}>
+              <button className="header__user-entry output" onClick={() => dispatch(logout())}>
                 <LoginIcon />
                 Logout
               </button>
             </Box>
           ) : (
             <Box sx={{ display: 'flex', position: 'absolute', right: 0 }}>
-              <Link to={pathes.login}>
+              <Link to={pathes.login + '/signIn'}>
                 <button className="header__user-entry">
                   <LoginIcon />
                   Login
                 </button>
               </Link>
-              <Link to={pathes.login}>
+              <Link to={pathes.login + '/signUp'}>
                 <button className="header__user-registr">
                   <PersonIcon />
                   Sign up

@@ -40,7 +40,7 @@ export default function BoardList(props: {
                 variant="contained"
                 onClick={(e) => {
                   e.preventDefault();
-                  dispatch(openModal('confirmModal'));
+                  dispatch(openModal({ boardId: board.id, confirmModal: 'confirmModal' }));
                 }}
               >
                 Delete

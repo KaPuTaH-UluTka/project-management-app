@@ -8,22 +8,29 @@ import { Private } from '../../hoc/Private';
 import { Welcome } from '../../pages/Welcome/Welcome';
 import { pathes } from '../../pathes/pathes';
 import { FullPage } from '../FullPage';
+import { useEffect } from 'react';
+import { addToken } from '../../store/Reducer/apiReducer/apiReducer';
+import { useAppDispatch } from '../../hooks/hooks';
 
 const App = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(addToken());
+  });
   return (
     <Routes>
       <Route
         path={pathes.main}
         element={
-          //<Private>
-          <FullPage>
-            <Main />
-          </FullPage>
-          //</Private>
+          <Private>
+            <FullPage>
+              <Main />
+            </FullPage>
+          </Private>
         }
       />
       <Route
-        path={pathes.board + '/:id'}
+        path={pathes.board + '/:boardId'}
         element={
           <Private>
             <FullPage>
@@ -51,7 +58,7 @@ const App = () => {
         }
       />
       <Route
-        path={pathes.login}
+        path={pathes.login + '/:signState'}
         element={
           <FullPage>
             <Login />

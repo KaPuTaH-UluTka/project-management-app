@@ -1,11 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import boardReducer from './boardReducer/boardReducer';
-import loginReducer from './loginReducer/loginReducer';
+import apiReducer from './apiReducer/apiReducer';
 import openModalReducer from './confirmationReducer/confirmationReducer';
 
 const rootReducer = combineReducers({
-  boardReducer,
-  loginReducer,
+  apiReducer,
   openModalReducer,
 });
 export const store = () =>
