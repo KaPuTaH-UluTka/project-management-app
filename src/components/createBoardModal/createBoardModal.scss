@@ -4,24 +4,28 @@
     display: block;
     width: 100%;
     padding: 16.5px 14px;
-    color: rgba(0, 0, 0, 0.6);
-    font-family: "Roboto", "Helvetica", "Arial",sans-serif;
+    color: rgb(0 0 0 / 60%);
+    font-family: Roboto, Helvetica, Arial, sans-serif;
     font-size: 1rem;
     border-radius: 4px;
-    border: 1px solid rgba(21, 21, 21, 0.6);
+    border: 1px solid rgb(21 21 21 / 60%);
     margin-bottom: 20px;
+
     &:focus {
       outline: none;
-      border: 2px solid rgba(30, 30, 30, 0.6);
+      border: 2px solid rgb(30 30 30 / 60%);
     }
   }
+
   &__title {
     height: 56px;
   }
+
   &__descr {
     resize: none;
     height: 200px;
   }
+
   &__button {
     display: flex;
     justify-content: right;

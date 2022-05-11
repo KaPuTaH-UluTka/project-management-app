@@ -39,6 +39,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src/ --fix",
+    "stylelint": "npx stylelint src/**/*.scss",
+    "prettier": "prettier  --write src/**/*.tsx",
     "precommit": "lint-staged"
   },
   "eslintConfig": {
