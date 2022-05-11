@@ -38,7 +38,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "node_modules/.bin/eslint src/",
+    "eslint": "eslint ./src",
     "precommit": "lint-staged"
   },
   "eslintConfig": {
@@ -76,7 +76,7 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx, jsx}": [
-      "lint --quiet --fix",
+      "eslint --quiet --fix",
       "prettier --write"
     ]
   }
