@@ -73,9 +73,13 @@
     "stylelint-config-standard": "^25.0.0",
     "typescript": "^4.6.2"
   },
-
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
-    "*.{js,ts,tsx, jsx}": [
+    "*.{ts,tsx}": [
       "eslint --quiet --fix",
       "prettier --write"
     ]
