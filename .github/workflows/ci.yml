@@ -1,0 +1,47 @@
+name: rs-trello-actions
+
+on:
+  push:
+    branches:
+          - develop
+
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Prettier Checking
+        if: ${{ always() && (steps.get_file_changes.outputs.files_added || steps.get_file_changes.outputs.files_modified) }}
+        run: npm prettier --config ./.prettierrc --ignore-path ./.prettierignore  ${{ steps.get_file_changes.outputs.files_added }} ${{ steps.get_file_changes.outputs.files_modified }} --fix
+
+      - name: ESLint Checking
+        if: ${{ always() && (steps.get_file_changes.outputs.files_added || steps.get_file_changes.outputs.files_modified) }}
+        run: npm eslint --config ./.eslintrc --ignore-path ./.eslintignore ${{ steps.get_file_changes.outputs.files_added }} ${{ steps.get_file_changes.outputs.files_modified }} --fix
+
+      - name: StyleLint Checking
+        if: ${{ always() && (steps.get_file_changes.outputs.files_added || steps.get_file_changes.outputs.files_modified) }}
+        run: npm stylelint --config ./.stylelintrc  --ignore-path ./.stylelintignore --allow-empty-input ${{ steps.get_file_changes.outputs.files_added }} ${{ steps.get_file_changes.outputs.files_modified }} --fix
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: './build'
+          production-branch: develop
+          github-token: ${{ secrets.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 }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.RJdjSXkbpFIatA36Q6Y9jYbcnbVM9FAuAu9uS9BcfGM }}
+          NETLIFY_SITE_ID: ${{ secrets.edbdbcda-3f04-49a7-b57b-20bb3e7229ed }}
+          timeout-minutes: 1
