@@ -17,6 +17,9 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
+      - name: Install Dependencies
+        run: npm ci
+
       - name: Get file changes
         id: get_file_changes
         uses: trilom/file-changes-action@v1.2.3
