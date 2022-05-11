@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
-import { signIn } from '../../api/signApi';
 import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardApi';
 import { BoardType } from '../../../types/types';
 import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
 import { ColumnType, TaskType } from '../../../types/types';
 import { addTask, deleteTask } from '../../api/taskApi';
+import { getUser, signIn, updateUser } from '../../api/signApi';
 
 const apiState = {
   token: '',
@@ -39,6 +39,15 @@ const apiSlice = createSlice({
       localStorage.setItem('userID', userId);
       localStorage.setItem('login', login);
       state.token = token;
+    },
+    [getUser.fulfilled.type]: (state, action) => {
+      const user = action.payload.data;
+      localStorage.setItem('userName', user.name);
+    },
+    [updateUser.fulfilled.type]: (state, action) => {
+      const updatedUser = action.payload.data;
+      localStorage.setItem('userName', updatedUser.name);
+      localStorage.setItem('login', updatedUser.login);
     },
     [checkBoards.fulfilled.type]: (state, action) => {
       state.boards = [...action.payload.data];
