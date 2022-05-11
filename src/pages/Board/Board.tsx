@@ -8,9 +8,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { openBoard } from '../../store/api/boardApi';
 import { useEffect } from 'react';
 import { Column } from '../../components/Column/Column';
-import { ListItem } from '@mui/material';
+import { Box, ListItem } from '@mui/material';
 import { addColumn } from '../../store/api/columnApi';
 import BasicModal from '../../components/confirmation/Confirmation';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+
 export const Board = () => {
   const navigate = useNavigate();
   const { boardId } = useParams();
@@ -37,28 +39,37 @@ export const Board = () => {
           Return
         </Button>
       </ListItem>
-      <Grid className="board__list">
-        {board.columns.length > 0
-          ? board.columns.map((column, index) => {
-              return (
-                <Grid
-                  key={index}
-                  style={{
-                    margin: '10px 5px',
-                    minWidth: 270,
-                    boxShadow: '2px 2px 5px 0px black',
-                    background: 'ede8e8',
-                  }}
-                >
-                  <Column column={column} />
-                </Grid>
-              );
-            })
-          : null}
-        <Grid>
+      <DragDropContext onDragEnd={() => {}}>
+        <Grid className="board__list">
+          <Droppable droppableId="all-columns" direction="horizontal" type="column">
+            {(provided) => (
+              <Box
+                style={{ display: 'flex', flexWrap: 'nowrap' }}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {board.columns.map((column, index) => {
+                  return (
+                    <Draggable key={index} draggableId={column.id} index={index}>
+                      {(provided) => (
+                        <Grid {...provided.draggableProps} ref={provided.innerRef}>
+                          <div {...provided.dragHandleProps}>
+                            <Column column={column} />
+                          </div>
+                        </Grid>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </Box>
+            )}
+          </Droppable>
           <Button
             size="large"
             style={{
+              height: 40,
+              minWidth: '150px',
               position: 'relative',
               top: 10,
               left: 20,
@@ -82,7 +93,7 @@ export const Board = () => {
             <Add /> add column
           </Button>
         </Grid>
-      </Grid>
+      </DragDropContext>
     </Container>
   );
 };
