@@ -5,7 +5,7 @@
 
   &__list {
     display: flex;
-    overflow-x: scroll;
+    overflow: scroll;
     flex-wrap: nowrap;
   }
 }

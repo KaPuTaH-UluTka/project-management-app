@@ -11,6 +11,8 @@ import { addTask } from '../../store/api/taskApi';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { updateColumn } from '../../store/api/columnApi';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { Box } from '@mui/material';
 
 export const Column = (props: { column: ColumnType }) => {
   const dispatch = useAppDispatch();
@@ -19,7 +21,15 @@ export const Column = (props: { column: ColumnType }) => {
   const [titleColumnState, setTitleColumnState] = useState(false);
   const [titleColumn, setTitleColumn] = useState(props.column.title);
   return (
-    <>
+    <Box
+      style={{
+        backgroundColor: 'white',
+        margin: '10px 5px',
+        minWidth: 270,
+        boxShadow: '2px 2px 5px 0px black',
+        background: 'ede8e8',
+      }}
+    >
       {titleColumnState ? (
         <ListItem
           style={{
@@ -86,39 +96,59 @@ export const Column = (props: { column: ColumnType }) => {
           </ListItemText>
         </ListItem>
       )}
-      <List style={{ background: 'gainsboro', margin: 5 }}>
-        {props.column?.tasks?.map((task, index) => {
-          return (
-            <ListItem
-              key={index}
-              style={{
-                background: 'white',
-                fontSize: 14,
-                width: '95%',
-                justifyContent: 'space-between',
-                margin: '0px auto',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                borderBottom: '1px solid black',
-              }}
-            >
-              {task.title}
-              <Button
-                color="error"
-                variant="contained"
-                size="small"
-                onClick={() => {
-                  dispatch(
-                    openModal({ boardId: boardId, columnId: props.column.id, taskId: task.id })
-                  );
-                }}
-              >
-                Delete
-              </Button>
-            </ListItem>
-          );
-        })}
-      </List>
+      <Droppable droppableId={props.column.id}>
+        {(provided) => (
+          <List
+            style={{ background: 'gainsboro', margin: 5, maxHeight: '50vh', overflowY: 'scroll' }}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {props.column?.tasks?.map((task, index) => (
+              <Draggable key={task.id} draggableId={task.id} index={index}>
+                {(provided) => (
+                  <ListItem
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                  >
+                    <ListItem
+                      style={{
+                        background: 'white',
+                        fontSize: 14,
+                        width: '95%',
+                        justifyContent: 'space-between',
+                        margin: '0px auto',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        borderBottom: '1px solid black',
+                      }}
+                    >
+                      {task.title}
+                      <Button
+                        color="error"
+                        variant="contained"
+                        size="small"
+                        onClick={() => {
+                          dispatch(
+                            openModal({
+                              boardId: boardId,
+                              columnId: props.column.id,
+                              taskId: task.id,
+                            })
+                          );
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </ListItem>
+                  </ListItem>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </List>
+        )}
+      </Droppable>
       <ListItem style={{ margin: '0px auto' }}>
         <Button
           style={{ width: '90%', margin: '0 auto' }}
@@ -129,7 +159,6 @@ export const Column = (props: { column: ColumnType }) => {
             const userId = localStorage.getItem('userID') || '';
             const columnId = props.column.id;
             const tasks = props.column.tasks;
-            // console.log(props.column.tasks);
             if (tasks?.length > 0) {
               order = Number(tasks[tasks.length - 1].order) + 1;
             }
@@ -150,6 +179,6 @@ export const Column = (props: { column: ColumnType }) => {
           <Add /> <ListItemText style={{ fontSize: 20 }}>Add Task</ListItemText>
         </Button>
       </ListItem>
-    </>
+    </Box>
   );
 };
