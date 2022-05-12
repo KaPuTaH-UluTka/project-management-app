@@ -15,7 +15,6 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { toggleBar } from '../../store/Reducer/confirmationReducer/confirmationReducer';
-import { addBoard } from '../../store/api/boardApi';
 import { useEffect, useState } from 'react';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import BasicModal from '../../hoc/BasicModal';
@@ -141,7 +140,6 @@ const Header = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     dispatch(openModal({ createBoardModal: 'createBoardModal' }));
-                    // dispatch(addBoard({ title: 'name' }));
                   }}
                 >
                   Add board
