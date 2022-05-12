@@ -141,7 +141,6 @@ const Header = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     dispatch(openModal({ createBoardModal: 'createBoardModal' }));
-                    // dispatch(addBoard({ title: 'name' }));
                   }}
                 >
                   Add board
