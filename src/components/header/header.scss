@@ -27,6 +27,15 @@
       margin-right: 30px;
       transition: all 0.2s linear;
 
+      button {
+        color: #e1e1e1;
+        font-weight: normal;
+        padding: 0;
+        text-transform: none;
+        font-size: 16px;
+        line-height: 16px;
+      }
+
       &:hover {
         cursor: pointer;
         color: #fff;
@@ -62,12 +71,14 @@
       }
     }
   }
+
   &__bar-item {
     border-radius: 3px !important;
     background: #9ec6cd !important;
-    opacity: .7 !important;
-    transition: ease-in .3s;
+    opacity: 0.7 !important;
+    transition: ease-in 0.3s;
   }
+
   &__bar-item:hover {
     opacity: 1 !important;
   }

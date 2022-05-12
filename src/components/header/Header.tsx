@@ -12,13 +12,21 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import { toggleBar } from '../../store/Reducer/confirmationReducer/confirmationReducer';
-import { useEffect, useState } from 'react';
+import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import { toggleBar } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { addBoard } from '../../store/api/boardApi';
+import { useEffect, useState } from 'react';
+import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
+import BasicModal from '../../hoc/BasicModal';
+import CreateBoardModal from '../createBoardModal/CreateBoardModal';
+
+import './header.scss';
 
 const Header = () => {
-  const { modal, headerBar } = useAppSelector((state) => state.openModalReducer);
+  const { confirmModal, createBoardModal, headerBar } = useAppSelector(
+    (state) => state.openModalReducer
+  );
   const { token } = useAppSelector((state) => state.apiReducer);
   const dispatch = useAppDispatch();
   const [posTop, setPosTop] = useState(0);
@@ -39,10 +47,13 @@ const Header = () => {
       position="sticky"
       style={{
         backgroundColor: bgStyle,
-        width: modal ? '100vw' : '100%',
+        width: confirmModal || createBoardModal ? '100vw' : '100%',
         transition: 'background 1s linear',
       }}
     >
+      <BasicModal title="Create Board">
+        <CreateBoardModal />
+      </BasicModal>
       <Container>
         <Toolbar disableGutters>
           <Typography
@@ -83,7 +94,16 @@ const Header = () => {
                     </MenuItem>
                   </Link>
                   <MenuItem onClick={toggleBar} className="header__bar-item">
-                    <Typography textAlign="center">Add Board</Typography>
+                    <Typography textAlign="center">
+                      <Button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          dispatch(openModal({ createBoardModal: 'createBoardModal' }));
+                        }}
+                      >
+                        Add board
+                      </Button>
+                    </Typography>
                   </MenuItem>
                   <Link to={pathes.edit}>
                     <MenuItem onClick={toggleBar} className="header__bar-item">
@@ -116,12 +136,16 @@ const Header = () => {
               <Link to={pathes.main}>
                 <div className="header__nav-link">Home</div>
               </Link>
-              <div
-                className="header__nav-link"
-                // add function for opening modal add board
-                onClick={() => dispatch(addBoard({ title: 'name' }))}
-              >
-                Add board
+              <div className="header__nav-link">
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(openModal({ createBoardModal: 'createBoardModal' }));
+                    // dispatch(addBoard({ title: 'name' }));
+                  }}
+                >
+                  Add board
+                </Button>
               </div>
               <Link to={pathes.edit}>
                 <div className="header__nav-link">Edit Profile</div>

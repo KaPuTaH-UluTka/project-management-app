@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 const openModalState = {
-  modal: false,
+  createBoardModal: false,
+  confirmModal: false,
   headerBar: false,
   deleteBoardId: '',
   deleteColumnId: '',
@@ -17,16 +18,28 @@ const openModalSlice = createSlice({
           boardId?: string;
           columnId?: string;
           taskId?: string;
+          createBoardModal?: string;
+          confirmModal?: string;
         };
       }
     ) => {
-      state.modal = true;
+      if (action.payload.createBoardModal == 'createBoardModal') {
+        state.createBoardModal = true;
+      }
+      if (action.payload.confirmModal == 'confirmModal') {
+        state.confirmModal = true;
+      }
       state.deleteBoardId = action.payload.boardId || '';
       state.deleteColumnId = action.payload.columnId || '';
       state.deleteTaskId = action.payload.taskId || '';
     },
-    closeModal: (state) => {
-      state.modal = false;
+    closeModal: (state, action) => {
+      if (action.payload == 'createBoardModal') {
+        state.createBoardModal = false;
+      }
+      if (action.payload == 'confirmModal') {
+        state.confirmModal = false;
+      }
     },
     toggleBar: (state) => {
       state.headerBar = !state.headerBar;

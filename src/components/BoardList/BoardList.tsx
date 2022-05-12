@@ -8,7 +8,8 @@ import Star from '@mui/icons-material/StarBorder';
 import Button from '@mui/material/Button';
 import { pathes } from '../../pathes/pathes';
 import { useAppDispatch } from '../../hooks/hooks';
-import BasicModal from '../confirmation/Confirmation';
+import ConfirmationModal from '../confirmationModal/ConfirmationModal';
+import BasicModal from '../../hoc/BasicModal';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import './boardList.scss';
 
@@ -21,7 +22,9 @@ export default function BoardList(props: {
   const dispatch = useAppDispatch();
   return (
     <List className="list">
-      <BasicModal />
+      <BasicModal title="Confirmation">
+        <ConfirmationModal />
+      </BasicModal>
       {props.boards.map((board, index) => {
         return (
           <Link to={`${pathes.board}/${board.id}`} key={index}>
@@ -37,7 +40,7 @@ export default function BoardList(props: {
                 variant="contained"
                 onClick={(e) => {
                   e.preventDefault();
-                  dispatch(openModal({ boardId: board.id }));
+                  dispatch(openModal({ boardId: board.id, confirmModal: 'confirmModal' }));
                 }}
               >
                 Delete

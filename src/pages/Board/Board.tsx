@@ -10,8 +10,9 @@ import { useEffect } from 'react';
 import { Column } from '../../components/Column/Column';
 import { Box, ListItem } from '@mui/material';
 import { addColumn } from '../../store/api/columnApi';
-import BasicModal from '../../components/confirmation/Confirmation';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import BasicModal from '../../hoc/BasicModal';
+import ConfirmationModal from '../../components/confirmationModal/ConfirmationModal';
 
 export const Board = () => {
   const navigate = useNavigate();
@@ -26,7 +27,9 @@ export const Board = () => {
   // useEffect(() => console.log(board.columns), [board]);
   return (
     <Container fixed className="board">
-      <BasicModal />
+      <BasicModal title="Confirmation">
+        <ConfirmationModal />
+      </BasicModal>
       <ListItem style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h1>{board.title}</h1>
         <Button
