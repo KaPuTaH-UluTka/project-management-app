@@ -1,0 +1,67 @@
+name: rs-trello-actions
+
+on:
+  push:
+    branches:
+          - develop
+
+  workflow_dispatch:
+
+jobs:
+  linting:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Get file changes
+        id: get_file_changes
+        uses: trilom/file-changes-action@v1.2.3
+        with:
+          output: ' '
+
+      - name: Echo file changes
+        id: hello
+        run: |
+          echo Added files: ${{ steps.get_file_changes.outputs.files_added }}
+          echo Changed files: ${{ steps.get_file_changes.outputs.files_modified }}
+          echo Removed files: ${{ steps.get_file_changes.outputs.files_removed }}
+
+      - name: Prettier Checking
+        if: ${{ always() && (steps.get_file_changes.outputs.files_added || steps.get_file_changes.outputs.files_modified) }}
+        run: npm run prettier ${{ steps.get_file_changes.outputs.files_added }} ${{ steps.get_file_changes.outputs.files_modified }} --fix
+
+      - name: ESLint Checking
+        if: ${{ always() && (steps.get_file_changes.outputs.files_added || steps.get_file_changes.outputs.files_modified) }}
+        run: npm run lint ${{ steps.get_file_changes.outputs.files_added }} ${{ steps.get_file_changes.outputs.files_modified }} --fix
+
+      - name: StyleLint Checking
+        if: ${{ always() && (steps.get_file_changes.outputs.files_added || steps.get_file_changes.outputs.files_modified) }}
+        run: npm run stylelint ${{ steps.get_file_changes.outputs.files_added }} ${{ steps.get_file_changes.outputs.files_modified }} --fix
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [linting]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: './build'
+          production-branch: develop
+          github-token: ${{ secrets.GH_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: false
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          timeout-minutes: 1

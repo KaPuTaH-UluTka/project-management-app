@@ -20,6 +20,7 @@
     "formik": "^2.2.9",
     "jwt-decode": "^3.1.2",
     "react": "^18.1.0",
+    "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.1.0",
     "react-hook-form": "^7.30.0",
     "react-redux": "^8.0.1",
@@ -37,7 +38,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src/",
+    "precommit": "lint-staged",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -59,6 +63,7 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.8",
+    "@types/react-beautiful-dnd": "^13.1.2",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
     "eslint-config-prettier": "^8.5.0",
@@ -66,23 +71,15 @@
     "eslint-plugin-prettier": "^4.0.0",
     "history": "^5.3.0",
     "husky": "^7.0.4",
-    "lint-staged": "^12.3.7",
-    "prettier": "2.6.1",
+    "lint-staged": "^12.4.1",
+    "prettier": "^2.6.2",
     "stylelint": "^14.8.2",
     "stylelint-config-standard": "^25.0.0",
     "typescript": "^4.6.2"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "*.{js,ts,tsx, jsx}": [
-      "eslint --quiet --fix"
-    ],
-    "*.{json,md,html,js,jsx,ts,tsx}": [
-      "prettier --write"
-    ]
+    "src/**/*.{js,jsx,ts,tsx}": "eslint --fix",
+    "src/**/*.{js,jsx,ts,tsx,css,scss,md}": "prettier --write --ignore-unknown",
+    "src/**/*.{css,scss}": "stylelint"
   }
 }

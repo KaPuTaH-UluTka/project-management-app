@@ -36,7 +36,6 @@ export default function ConfirmationModal() {
           } else if (deleteBoardId) {
             dispatch(deleteBoard({ boardId: deleteBoardId }));
           }
-          // add delet board functional
         }}
       >
         Agree
