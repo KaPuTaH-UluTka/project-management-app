@@ -2,7 +2,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: Ruda, sans-serif;
-  background-color: #f3f3f3;
+  background-color: #fff;
 }
 
 *,
@@ -31,4 +31,18 @@ h6 {
   max-width: 1230px;
   padding: 0 15px;
   margin: 0 auto;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #6751f6;
+  border: 1px solid #f3f3f3;
+  border-radius: 8px;
 }

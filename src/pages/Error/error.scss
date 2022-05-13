@@ -1,17 +1,17 @@
 .error {
-  text-align: center;
-  height: 100vh;
-  width: 100vw;
-  background: white;
-
-  &__block {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-
-    &-img {
-      max-width: 300px;
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    button {
+      margin-top: 20px;
     }
+  }
+  &__img {
+    width: auto !important;
+  }
+  &__block {
+    text-align: center;
   }
 }
