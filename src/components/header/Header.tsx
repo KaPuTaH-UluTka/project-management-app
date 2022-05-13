@@ -22,6 +22,7 @@ import BasicModal from '../../hoc/BasicModal';
 import CreateBoardModal from '../createBoardModal/CreateBoardModal';
 
 import './header.scss';
+import LangSwitch from '../langSwitch/langSwitch';
 
 const Header = () => {
   const { confirmModal, createBoardModal, headerBar } = useAppSelector(
@@ -175,6 +176,7 @@ const Header = () => {
               </Link>
             </Box>
           )}
+          <LangSwitch />
         </Toolbar>
       </Container>
     </AppBar>
