@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
 import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardApi';
 import { BoardType } from '../../../types/types';
@@ -14,6 +14,8 @@ const apiState = {
   deleteColumnId: '',
   deleteTaskId: '',
   board: { id: '', title: '', columns: [] } as BoardType,
+  oldOrder: '',
+  column: {} as ColumnType,
 };
 
 const apiSlice = createSlice({
@@ -28,6 +30,62 @@ const apiSlice = createSlice({
     logout: (state) => {
       localStorage.setItem('token', '');
       state.token = '';
+    },
+
+    endDragnColumn: (state, action) => {
+      state.board.columns = action.payload.currentColumns;
+      // const { destination, source, draggableId } = action.payload.result;
+      // const beforeIndex = source.index;
+      // const currentIndex = destination.index;
+      // const currentState = [...state.board.columns];
+
+      // currentState.splice(beforeIndex, 1);
+      // currentState.splice(currentIndex, 0, action.payload.currentColumn);
+      // state.board.columns = currentState.map((column, index) => {
+      //   if (index >= beforeIndex && index <= currentIndex) {
+      //     column.order -= 1;
+      //   }
+      //   return column;
+      // });
+    },
+
+    endDragnTask: (state, action) => {
+      const { destination, source, draggableId } = action.payload.result;
+      const currentTask = action.payload.currentTask[0];
+      const currentState = [...state.board.columns];
+      const oldColumnIndex = currentState.findIndex((column) => column.id === source.droppableId);
+      currentState[oldColumnIndex].tasks = currentState[oldColumnIndex].tasks.map((task, index) => {
+        if (task.id !== currentTask.id) {
+          if (index > source.index) {
+            task.order -= 1;
+          }
+          return task;
+        }
+        return;
+      }) as Array<TaskType>;
+      currentState[oldColumnIndex].tasks = currentState[oldColumnIndex].tasks.filter(
+        (task) => task !== undefined
+      );
+      const newColumnIndex = currentState.findIndex(
+        (column) => column.id === destination.droppableId
+      );
+      currentState[newColumnIndex].tasks.splice(destination.index, 0, { ...currentTask });
+      currentState[newColumnIndex].tasks = currentState[newColumnIndex].tasks.map((task, index) => {
+        const currentOrder =
+          index !== 0
+            ? index + 1 !== currentState[newColumnIndex].tasks.length
+              ? currentState[newColumnIndex].tasks[index + 1].order
+              : currentState[newColumnIndex].tasks[index - 1].order + 1
+            : 1;
+        if (index === destination.index && currentOrder !== task.order) {
+          task.order = currentOrder;
+        } else if (index > destination.index) {
+          task.order += 1;
+        }
+        return task;
+      }) as Array<TaskType>;
+
+      state.board.columns = currentState;
     },
   },
   extraReducers: {
@@ -140,4 +198,4 @@ const apiSlice = createSlice({
 });
 
 export default apiSlice.reducer;
-export const { addToken, logout } = apiSlice.actions;
+export const { addToken, logout, endDragnColumn, endDragnTask } = apiSlice.actions;

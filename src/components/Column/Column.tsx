@@ -96,7 +96,7 @@ export const Column = (props: { column: ColumnType }) => {
           </ListItemText>
         </ListItem>
       )}
-      <Droppable droppableId={props.column.id}>
+      <Droppable droppableId={props.column.id} type="task">
         {(provided) => (
           <List
             style={{ background: 'gainsboro', margin: 5, maxHeight: '50vh', overflowY: 'scroll' }}
