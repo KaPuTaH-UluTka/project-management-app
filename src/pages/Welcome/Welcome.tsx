@@ -6,6 +6,8 @@ import { pathes } from '../../pathes/pathes';
 import './welcome.scss';
 
 import welcome from '../../assets/welcome.png';
+import Typography from '@mui/material/Typography';
+import { FormattedMessage } from 'react-intl';
 
 export const Welcome = () => {
   const { token } = useAppSelector((state) => state.apiReducer);
@@ -16,14 +18,19 @@ export const Welcome = () => {
       <Container maxWidth="lg">
         <div className="welcome__inner">
           <div className="welcome__info">
-            <h1 className="welcome__info-title"> Welcome to our Tello</h1>
+            <h1 className="welcome__info-title">
+              <FormattedMessage id="welcome.title" defaultMessage="Welcome to our RS-Trello" />
+            </h1>
             <div className="welcome__info-descr">
-              Trello is a visual tool that allows your team to manage projects, workflows, and tasks
-              of all types. Add files, task lists - and customize it all so that it is convenient
-              for the team to work.
+              <FormattedMessage id="welcome.info" />
             </div>
             <div className="welcome__info-developers">
-              <b>The project was created by: </b>
+              <b>
+                <FormattedMessage
+                  id="welcome.created"
+                  defaultMessage="The project was created by:"
+                />{' '}
+              </b>
               <a href="">@KaPuTaH-UluTka</a>, <a href="">@anterebol</a>, <a href="">@Mikel2003</a>
             </div>
           </div>
@@ -32,6 +39,23 @@ export const Welcome = () => {
             <img src={welcome} alt="greeting image" />
           </div>
         </div>
+      </Container>
+      <Container
+        sx={{ mx: 'auto', p: 10, display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      >
+        <Typography sx={{ fontSize: 20 }}>
+          <FormattedMessage id="welcome.review" defaultMessage="Short review" />
+        </Typography>
+        <iframe
+          className="welcome__iframe"
+          width="560"
+          height="315"
+          src="https://www.youtube.com/watch?v=NIrZZu_Put0"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
       </Container>
     </section>
   );

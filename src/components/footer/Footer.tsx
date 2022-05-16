@@ -9,7 +9,9 @@ const Footer = () => {
       <div className="container">
         <div className="footer__inner">
           <div className="footer__logo">
-            <img src={logo} alt="rs logo" />
+            <a href="https://rs.school/" target="_blank" rel="noreferrer">
+              <img src={logo} alt="rs logo" />
+            </a>
           </div>
 
           <div className="footer__developers">
@@ -17,13 +19,19 @@ const Footer = () => {
               <FormattedMessage id="footer.devs" defaultMessage="Developers:" />
             </div>
             <div className="footer__developers-name">
-              <a href="https://github.com/KaPuTaH-UluTka">Alex</a>
+              <a href="https://github.com/KaPuTaH-UluTka" target="_blank" rel="noreferrer">
+                Alex
+              </a>
             </div>
             <div className="footer__developers-name">
-              <a href="https://github.com/anterebol">Aleksey</a>
+              <a href="https://github.com/anterebol" target="_blank" rel="noreferrer">
+                Aleksey
+              </a>
             </div>
             <div className="footer__developers-name">
-              <a href="https://github.com/Mikel2003">Mikhail</a>
+              <a href="https://github.com/Mikel2003" target="_blank" rel="noreferrer">
+                Mikhail
+              </a>
             </div>
           </div>
         </div>
