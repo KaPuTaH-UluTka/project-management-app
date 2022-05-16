@@ -18,5 +18,11 @@
   "login.emailValidation": "Введите правильный адрес",
   "login.passwordValidation": "Пароль должен содержать минимум 8 символов",
   "login.emailReq": "Введите электронную почту",
-  "login.passwordReq": "Введите пароль"
+  "login.passwordReq": "Введите пароль",
+  "board.return": "Назад",
+  "board.addColumn": "Добавить колонку",
+  "column.del": "Удалить",
+  "column.addTask": "Добавить задачу",
+  "column.submit": "Добавить",
+  "column.cancel": "Отмена"
 }

@@ -13,6 +13,7 @@ import { openModal } from '../../store/Reducer/confirmationReducer/confirmationR
 import { updateColumn } from '../../store/api/columnApi';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Box } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
 
 export const Column = (props: { column: ColumnType }) => {
   const dispatch = useAppDispatch();
@@ -48,7 +49,7 @@ export const Column = (props: { column: ColumnType }) => {
               setTitleColumnState(false);
             }}
           >
-            Cancel
+            <FormattedMessage id="column.cancel" defaultMessage="Cancel" />
           </Button>
           <Button
             color="warning"
@@ -67,7 +68,7 @@ export const Column = (props: { column: ColumnType }) => {
               );
             }}
           >
-            Submit
+            <FormattedMessage id="column.submit" defaultMessage="Submit" />
           </Button>
           <Input
             style={{ maxWidth: 100 }}
@@ -89,7 +90,7 @@ export const Column = (props: { column: ColumnType }) => {
               dispatch(openModal({ boardId: boardId, columnId: props.column.id }));
             }}
           >
-            Delete
+            <FormattedMessage id="column.del" defaultMessage="Delete" />
           </Button>
           <ListItemText style={{ textAlign: 'right' }} onClick={() => setTitleColumnState(true)}>
             {titleColumn}
@@ -138,7 +139,7 @@ export const Column = (props: { column: ColumnType }) => {
                           );
                         }}
                       >
-                        Delete
+                        <FormattedMessage id="column.del" defaultMessage="Delete" />
                       </Button>
                     </ListItem>
                   </ListItem>
@@ -176,7 +177,10 @@ export const Column = (props: { column: ColumnType }) => {
             }
           }}
         >
-          <Add /> <ListItemText style={{ fontSize: 20 }}>Add Task</ListItemText>
+          <Add />{' '}
+          <ListItemText style={{ fontSize: 20 }}>
+            <FormattedMessage id="column.addTask" defaultMessage="Add task" />
+          </ListItemText>
         </Button>
       </ListItem>
     </Box>

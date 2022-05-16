@@ -18,5 +18,11 @@
   "login.emailValidation": "Enter a valid email",
   "login.passwordValidation": "Password should be of minimum 8 characters length",
   "login.emailReq": "Email is required",
-  "login.passwordReq": "Password is required"
+  "login.passwordReq": "Password is required",
+  "board.return": "Return",
+  "board.addColumn": "Add column",
+  "column.del": "Delete",
+  "column.addTask": "Add task",
+  "column.submit": "Submit",
+  "column.cancel": "Cancel"
 }
