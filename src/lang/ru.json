@@ -24,5 +24,16 @@
   "column.del": "Удалить",
   "column.addTask": "Добавить задачу",
   "column.submit": "Добавить",
-  "column.cancel": "Отмена"
+  "column.cancel": "Отмена",
+  "boardList.del": "Удалить",
+  "editProfile.title": "Изменение профиля",
+  "editProfile.name": "Имя:",
+  "editProfile.email": "Почта:",
+  "editProfile.password": "Пароль",
+  "editProfile.saveChanges": "Сохранить изменения",
+  "confirmModal.action": "Подтвердите  действие на страницу",
+  "confirmModal.agree": "Принимаю",
+  "confirmModal.return": "Отмена",
+  "boardModal.title": "Заголовок",
+  "boardModal.create": "Создать"
 }

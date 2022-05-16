@@ -24,5 +24,16 @@
   "column.del": "Delete",
   "column.addTask": "Add task",
   "column.submit": "Submit",
-  "column.cancel": "Cancel"
+  "column.cancel": "Cancel",
+  "boardList.del": "Delete",
+  "editProfile.title": "Edit profile",
+  "editProfile.name": "Name:",
+  "editProfile.email": "Email:",
+  "editProfile.password": "Password",
+  "editProfile.saveChanges": "Save changes",
+  "confirmModal.action": "Confirm the action on the page",
+  "confirmModal.agree": "Agree",
+  "confirmModal.return": "Return",
+  "boardModal.title": "Title",
+  "boardModal.create": "Create"
 }

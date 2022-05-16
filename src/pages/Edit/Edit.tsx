@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import { editProfileContainer, editSection, editSubmitContainer } from './editStyle';
 import * as yup from 'yup';
 import IconButton from '@mui/material/IconButton';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 export const Edit = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +26,8 @@ export const Edit = () => {
   }, []);
   const [nameState, setNameState] = useState(false);
   const [emailState, setEmailState] = useState(false);
+  const intl = useIntl();
+
   function changeName() {
     setNameState(!nameState);
   }
@@ -40,12 +43,9 @@ export const Edit = () => {
     changeEmail();
   }
   const validationSchema = yup.object({
-    name: yup.string().min(4, 'Name should be of minimum 8 characters length'),
-    email: yup.string().email('Enter a valid email').required('Email is required'),
-    password: yup
-      .string()
-      .min(8, 'Password should be of minimum 8 characters length')
-      .required('Password is required'),
+    name: yup.string().min(4),
+    email: yup.string().required(),
+    password: yup.string().min(8, 'login.passwordValidation').required('login.passwordReq'),
   });
   const editProfileForm = useFormik({
     initialValues: {
@@ -75,6 +75,11 @@ export const Edit = () => {
       }
     },
   });
+
+  function getTranslate(key: string) {
+    return intl.formatMessage({ id: key });
+  }
+
   function activeSubmit() {
     return !(
       editProfileForm.values.name &&
@@ -89,7 +94,7 @@ export const Edit = () => {
       <Container component="main" maxWidth="xs">
         <Box sx={editSection}>
           <Typography component="h1" variant="h5">
-            Edit profile
+            <FormattedMessage id="editProfile.title" defaultMessage="Edit profile" />
           </Typography>
           <Avatar sx={{ m: 1, width: 100, height: 100 }} src={noAvatar} />
           <Box
@@ -99,7 +104,9 @@ export const Edit = () => {
             onSubmit={editProfileForm.handleSubmit}
           >
             <Container sx={editProfileContainer}>
-              <Typography sx={{ pr: 1 }}>Name:</Typography>
+              <Typography sx={{ pr: 1 }}>
+                <FormattedMessage id="editProfile.name" defaultMessage="Name:" />
+              </Typography>
               {nameState ? (
                 <>
                   <Input
@@ -121,7 +128,9 @@ export const Edit = () => {
               )}
             </Container>
             <Container sx={editProfileContainer}>
-              <Typography sx={{ pr: 1 }}>Email:</Typography>
+              <Typography sx={{ pr: 1 }}>
+                <FormattedMessage id="editProfile.email" defaultMessage="Email:" />
+              </Typography>
               {emailState ? (
                 <>
                   <Input
@@ -145,16 +154,21 @@ export const Edit = () => {
             <Container sx={editSubmitContainer}>
               <TextField
                 id="password"
-                label="Password"
+                label={<FormattedMessage id="editProfile.password" defaultMessage="Password" />}
                 variant="standard"
                 name="password"
                 type="password"
                 value={editProfileForm.values.password}
                 onChange={editProfileForm.handleChange}
                 error={editProfileForm.touched.password && Boolean(editProfileForm.errors.password)}
+                helperText={
+                  editProfileForm.touched.password &&
+                  editProfileForm.errors.password &&
+                  getTranslate(editProfileForm.errors.password)
+                }
               />
               <Button variant="contained" size="small" type="submit" disabled={activeSubmit()}>
-                Save changes
+                <FormattedMessage id="editProfile.saveChanges" defaultMessage="Save changes" />
               </Button>
             </Container>
           </Box>

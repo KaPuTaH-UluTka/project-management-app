@@ -12,6 +12,7 @@ import ConfirmationModal from '../confirmationModal/ConfirmationModal';
 import BasicModal from '../../hoc/BasicModal';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import './boardList.scss';
+import { FormattedMessage } from 'react-intl';
 
 export default function BoardList(props: {
   boards: {
@@ -43,7 +44,7 @@ export default function BoardList(props: {
                   dispatch(openModal({ boardId: board.id, confirmModal: 'confirmModal' }));
                 }}
               >
-                Delete
+                <FormattedMessage id="boardList.del" defaultMessage="Delete" />
               </Button>
             </ListItem>
           </Link>
