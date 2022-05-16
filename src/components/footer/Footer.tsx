@@ -1,6 +1,7 @@
 import logo from '../../assets/rs-school.png';
 
 import './footer.scss';
+import { FormattedMessage } from 'react-intl';
 
 const Footer = () => {
   return (
@@ -12,7 +13,9 @@ const Footer = () => {
           </div>
 
           <div className="footer__developers">
-            <div className="footer__developers-title">Developers:</div>
+            <div className="footer__developers-title">
+              <FormattedMessage id="footer.devs" defaultMessage="Developers:" />
+            </div>
             <div className="footer__developers-name">
               <a href="https://github.com/KaPuTaH-UluTka">Alex</a>
             </div>

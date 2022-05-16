@@ -20,9 +20,10 @@ import { useEffect, useState } from 'react';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import BasicModal from '../../hoc/BasicModal';
 import CreateBoardModal from '../createBoardModal/CreateBoardModal';
+import LangSwitch from '../langSwitch/LangSwitch';
+import { FormattedMessage } from 'react-intl';
 
 import './header.scss';
-import LangSwitch from '../langSwitch/langSwitch';
 
 const Header = () => {
   const { confirmModal, createBoardModal, headerBar } = useAppSelector(
@@ -135,7 +136,9 @@ const Header = () => {
           {token ? (
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               <Link to={pathes.main}>
-                <div className="header__nav-link">Home</div>
+                <div className="header__nav-link">
+                  <FormattedMessage id="nav.home" defaultMessage="Home" />
+                </div>
               </Link>
               <div className="header__nav-link">
                 <Button
@@ -144,11 +147,13 @@ const Header = () => {
                     dispatch(openModal({ createBoardModal: 'createBoardModal' }));
                   }}
                 >
-                  Add board
+                  <FormattedMessage id="nav.addBoard" defaultMessage="Add board" />
                 </Button>
               </div>
               <Link to={pathes.edit}>
-                <div className="header__nav-link">Edit Profile</div>
+                <div className="header__nav-link">
+                  <FormattedMessage id="nav.editProfile" defaultMessage="Edit Profile" />
+                </div>
               </Link>
             </Box>
           ) : null}
@@ -157,7 +162,7 @@ const Header = () => {
             <Box sx={{ flexGrow: 0 }}>
               <button className="header__user-entry output" onClick={() => dispatch(logout())}>
                 <LoginIcon />
-                Logout
+                <FormattedMessage id="logout" defaultMessage="Logout" />
               </button>
             </Box>
           ) : (
@@ -165,13 +170,13 @@ const Header = () => {
               <Link to={pathes.login + '/signIn'}>
                 <button className="header__user-entry">
                   <LoginIcon />
-                  Login
+                  <FormattedMessage id="nav.login" defaultMessage="Login" />
                 </button>
               </Link>
               <Link to={pathes.login + '/signUp'}>
                 <button className="header__user-registr">
                   <PersonIcon />
-                  Sign up
+                  <FormattedMessage id="nav.signUp" defaultMessage="Sign up" />
                 </button>
               </Link>
             </Box>

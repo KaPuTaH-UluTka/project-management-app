@@ -1,0 +1,22 @@
+{
+  "logout": "Выход",
+  "nav.home": "Домой",
+  "nav.addBoard": "Создать доску",
+  "nav.editProfile": "Изменить профиль",
+  "nav.login": "Войти",
+  "nav.signUp": "Зарегистрироваться",
+  "footer.devs": "Разработчики:",
+  "login.signIn": "Войти",
+  "login.signUp": "Зарегистрироваться",
+  "login.name": "Имя",
+  "login.email": "Электронная почта",
+  "login.password": "Пароль",
+  "login.haveAcc": "Есть аккаунт? Войти",
+  "login.haveNotAcc": "Нет аккаунта? Зарегистрироваться",
+  "login.showPass": "Показать пароль",
+  "login.nameValidation": "Имя должно содержать минимум 4 символа",
+  "login.emailValidation": "Введите правильный адрес",
+  "login.passwordValidation": "Пароль должен содержать минимум 8 символов",
+  "login.emailReq": "Введите электронную почту",
+  "login.passwordReq": "Введите пароль"
+}

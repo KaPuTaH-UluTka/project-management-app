@@ -4,11 +4,14 @@ import App from './components/app/App';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store/Reducer/configReducer';
+import LocaleWrapper from './components/localeWrapper/LocaleWrapper';
 
 const app = (
   <BrowserRouter>
     <Provider store={store()}>
-      <App />
+      <LocaleWrapper>
+        <App />
+      </LocaleWrapper>
     </Provider>
   </BrowserRouter>
 );
