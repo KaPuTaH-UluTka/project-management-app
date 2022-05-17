@@ -69,7 +69,9 @@ const apiSlice = createSlice({
       const newColumnIndex = currentState.findIndex(
         (column) => column.id === destination.droppableId
       );
-      currentState[newColumnIndex].tasks.splice(destination.index, 0, { ...currentTask });
+      currentState[newColumnIndex].tasks.length > 0
+        ? currentState[newColumnIndex].tasks.splice(destination.index, 0, { ...currentTask })
+        : (currentState[newColumnIndex].tasks = [{ ...currentTask }]);
       currentState[newColumnIndex].tasks = currentState[newColumnIndex].tasks.map((task, index) => {
         const currentOrder =
           index !== 0

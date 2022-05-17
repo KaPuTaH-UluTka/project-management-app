@@ -86,7 +86,7 @@ export const Board = () => {
                         })
                       );
                     }, timer);
-                    timer += 20;
+                    timer += 100;
                   } else if (index === currentIndex) {
                     column.order = index !== 0 ? currentState[index - 1].order : 1;
                     setTimeout(() => {
@@ -126,7 +126,7 @@ export const Board = () => {
                         })
                       );
                     }, timer);
-                    timer += 20;
+                    timer += 100;
                   } else if (index === revArray.length - 1 - currentIndex) {
                     column.order =
                       index !== revArray.length - 1 ? currentState[index - 1].order : 1;
