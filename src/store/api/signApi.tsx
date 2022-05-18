@@ -69,6 +69,7 @@ export const updateUser = createAsyncThunk(
 );
 
 export const getUser = createAsyncThunk('getUser', async (id: string, { rejectWithValue }) => {
+  console.log(token);
   try {
     const data = await fetch(`${url}users/${id}`, {
       method: 'GET',

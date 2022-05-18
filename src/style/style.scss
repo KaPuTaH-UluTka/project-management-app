@@ -1,8 +1,19 @@
+:root {
+  --violet-dark: #6766ab;
+  --violet-light: #b8b4ff;
+  --yellow-dark: #fdc04e;
+  --yellow-light: #ffcc57;
+  --red: #bd1929;
+}
+
+html,
 body {
   padding: 0;
   margin: 0;
   font-family: Ruda, sans-serif;
   background-color: #fff;
+  scrollbar-color: var(--violet-dark) transparent;
+  scrollbar-width: thin;
 }
 
 *,
@@ -38,11 +49,12 @@ h6 {
 }
 
 ::-webkit-scrollbar-track {
+  height: 12px;
   background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #6751f6;
   border: 1px solid #f3f3f3;
-  border-radius: 8px;
+  background-color: var(--violet-dark);
+  border-radius: 10px;
 }

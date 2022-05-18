@@ -13,6 +13,7 @@ import { addColumn } from '../../store/api/columnApi';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import BasicModal from '../../hoc/BasicModal';
 import ConfirmationModal from '../../components/confirmationModal/ConfirmationModal';
+import { FormattedMessage } from 'react-intl';
 
 export const Board = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ export const Board = () => {
             navigate(-1);
           }}
         >
-          Return
+          <FormattedMessage id="board.return" defaultMessage="Return" />
         </Button>
       </ListItem>
       <DragDropContext onDragEnd={() => {}}>
@@ -72,7 +73,7 @@ export const Board = () => {
             size="large"
             style={{
               height: 40,
-              minWidth: '150px',
+              minWidth: '210px',
               position: 'relative',
               top: 10,
               left: 20,
@@ -93,7 +94,7 @@ export const Board = () => {
               }
             }}
           >
-            <Add /> add column
+            <Add /> <FormattedMessage id="board.addColumn" defaultMessage="Add column" />
           </Button>
         </Grid>
       </DragDropContext>
