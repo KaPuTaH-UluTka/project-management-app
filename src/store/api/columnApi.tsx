@@ -78,18 +78,16 @@ export const updateColumn = createAsyncThunk(
       });
       return { data, event };
     } catch {
-      update({ boardId, columnId, title, order, event });
       return rejectWithValue({});
     }
   }
 );
 
-export const update = async (action: any) => {
+export const changePositionColumn = async (action: any) => {
   {
     try {
       const token = localStorage.getItem('token');
       const { boardId, columnId, title, order, event } = action;
-      console.log(order);
       const data = await fetch(`${url}boards/${boardId}/columns/${columnId}`, {
         method: 'PUT',
         headers: {

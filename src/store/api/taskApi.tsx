@@ -16,6 +16,7 @@ export const addTask = createAsyncThunk(
   ) => {
     const token = localStorage.getItem('token');
     const { boardId, title, order, columnId, userId, description } = action;
+    console.log({ title, order, description, userId });
     try {
       const data = await fetch(`${url}boards/${boardId}/columns/${columnId}/tasks`, {
         method: 'POST',
@@ -24,7 +25,7 @@ export const addTask = createAsyncThunk(
           'Content-Type': 'application/json',
           Authorization: `Bearer ` + token,
         },
-        body: JSON.stringify({ title, order, description, userId }),
+        body: JSON.stringify({ title, order, description, userId, done: false }),
       }).then(async (response) => {
         if (!response.ok) {
           throw new Error();
@@ -56,6 +57,66 @@ export const deleteTask = createAsyncThunk(
         throw new Error();
       }
       return { columnId, taskId };
+    } catch {
+      return rejectWithValue({});
+    }
+  }
+);
+
+export const updateTask = createAsyncThunk(
+  'updateTask',
+  async (
+    action: {
+      boardId?: string;
+      oldColumnId?: string;
+      newColumnId?: string;
+      title?: string;
+      order?: number;
+      event?: string;
+      description?: string;
+      userId?: string;
+      taskId?: string;
+      done: boolean;
+    },
+    { rejectWithValue }
+  ) => {
+    const token = localStorage.getItem('token');
+    const {
+      boardId,
+      oldColumnId,
+      newColumnId,
+      title,
+      order,
+      event,
+      description,
+      userId,
+      taskId,
+      done,
+    } = action;
+    try {
+      const data = await fetch(`${url}boards/${boardId}/columns/${oldColumnId}/tasks/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ` + token,
+        },
+        body: JSON.stringify({
+          title,
+          order,
+          description,
+          userId,
+          boardId,
+          columnId: newColumnId,
+          done,
+        }),
+      }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error();
+        }
+        return await response.text().then((res) => JSON.parse(res));
+      });
+      return { data, event };
     } catch {
       return rejectWithValue({});
     }

@@ -16,15 +16,19 @@ const CreateBoardModal = () => {
 
   const validationSchema = yup.object({
     title: yup.string().required('Title is required'),
+    description: yup.string().required('Title is required'),
   });
 
   const formik = useFormik({
     initialValues: {
       title: '',
+      description: '',
     },
     validationSchema: validationSchema,
     onSubmit: () => {
-      dispatch(addBoard({ title: `${formik.values.title}` }));
+      dispatch(
+        addBoard({ title: `${formik.values.title}`, description: `${formik.values.description}` })
+      );
       dispatch(closeModal(createBoardModal ? 'createBoardModal' : 'confirmModal'));
     },
   });
@@ -47,6 +51,20 @@ const CreateBoardModal = () => {
           name="title"
           fullWidth
           value={formik.values.title}
+          onChange={(e) => {
+            formik.handleChange(e);
+            activeSubmit();
+          }}
+          error={formik.touched.title}
+        />
+        <TextField
+          style={{ marginTop: 20 }}
+          label="Description"
+          variant="outlined"
+          id="description"
+          name="description"
+          fullWidth
+          value={formik.values.description}
           onChange={(e) => {
             formik.handleChange(e);
             activeSubmit();

@@ -4,7 +4,7 @@ import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardAp
 import { BoardType } from '../../../types/types';
 import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
 import { ColumnType, TaskType } from '../../../types/types';
-import { addTask, deleteTask } from '../../api/taskApi';
+import { addTask, deleteTask, updateTask } from '../../api/taskApi';
 import { getUser, signIn, updateUser } from '../../api/signApi';
 
 const apiState = {
@@ -34,60 +34,12 @@ const apiSlice = createSlice({
 
     endDragnColumn: (state, action) => {
       state.board.columns = action.payload.currentColumns;
-      // const { destination, source, draggableId } = action.payload.result;
-      // const beforeIndex = source.index;
-      // const currentIndex = destination.index;
-      // const currentState = [...state.board.columns];
-
-      // currentState.splice(beforeIndex, 1);
-      // currentState.splice(currentIndex, 0, action.payload.currentColumn);
-      // state.board.columns = currentState.map((column, index) => {
-      //   if (index >= beforeIndex && index <= currentIndex) {
-      //     column.order -= 1;
-      //   }
-      //   return column;
-      // });
     },
 
     endDragnTask: (state, action) => {
-      const { destination, source, draggableId } = action.payload.result;
-      const currentTask = action.payload.currentTask[0];
-      const currentState = [...state.board.columns];
-      const oldColumnIndex = currentState.findIndex((column) => column.id === source.droppableId);
-      currentState[oldColumnIndex].tasks = currentState[oldColumnIndex].tasks.map((task, index) => {
-        if (task.id !== currentTask.id) {
-          if (index > source.index) {
-            task.order -= 1;
-          }
-          return task;
-        }
-        return;
-      }) as Array<TaskType>;
-      currentState[oldColumnIndex].tasks = currentState[oldColumnIndex].tasks.filter(
-        (task) => task !== undefined
-      );
-      const newColumnIndex = currentState.findIndex(
-        (column) => column.id === destination.droppableId
-      );
-      currentState[newColumnIndex].tasks.length > 0
-        ? currentState[newColumnIndex].tasks.splice(destination.index, 0, { ...currentTask })
-        : (currentState[newColumnIndex].tasks = [{ ...currentTask }]);
-      currentState[newColumnIndex].tasks = currentState[newColumnIndex].tasks.map((task, index) => {
-        const currentOrder =
-          index !== 0
-            ? index + 1 !== currentState[newColumnIndex].tasks.length
-              ? currentState[newColumnIndex].tasks[index + 1].order
-              : currentState[newColumnIndex].tasks[index - 1].order + 1
-            : 1;
-        if (index === destination.index && currentOrder !== task.order) {
-          task.order = currentOrder;
-        } else if (index > destination.index) {
-          task.order += 1;
-        }
-        return task;
-      }) as Array<TaskType>;
-
-      state.board.columns = currentState;
+      const { newColumnIndex, oldColumnIndex, oldColumnTasks, currentColumnTasks } = action.payload;
+      state.board.columns[oldColumnIndex].tasks = oldColumnTasks;
+      state.board.columns[newColumnIndex].tasks = currentColumnTasks;
     },
   },
   extraReducers: {
@@ -196,6 +148,7 @@ const apiSlice = createSlice({
           break;
       }
     },
+    [updateTask.fulfilled.type]: (state, action) => {},
   },
 });
 
