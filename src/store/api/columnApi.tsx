@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { url } from './url';
 
@@ -21,7 +22,6 @@ export const addColumn = createAsyncThunk(
         }
         return await response.text().then((res) => JSON.parse(res));
       });
-      // console.log(data);
       return { data };
     } catch {
       return rejectWithValue({});
@@ -55,13 +55,12 @@ export const deleteColumn = createAsyncThunk(
 export const updateColumn = createAsyncThunk(
   'updateColumn',
   async (
-    action: { boardId: string; columnId: string; title: string; order: number; event: string },
+    action: { boardId?: string; columnId?: string; title?: string; order?: number; event?: string },
     { rejectWithValue }
   ) => {
+    const token = localStorage.getItem('token');
+    const { boardId, columnId, title, order, event } = action;
     try {
-      const token = localStorage.getItem('token');
-      const { boardId, columnId, title, order, event } = action;
-      console.log(action);
       const data = await fetch(`${url}boards/${boardId}/columns/${columnId}`, {
         method: 'PUT',
         headers: {
@@ -82,3 +81,29 @@ export const updateColumn = createAsyncThunk(
     }
   }
 );
+
+export const changePositionColumn = async (action: any) => {
+  {
+    try {
+      const token = localStorage.getItem('token');
+      const { boardId, columnId, title, order, event } = action;
+      const data = await fetch(`${url}boards/${boardId}/columns/${columnId}`, {
+        method: 'PUT',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ` + token,
+        },
+        body: JSON.stringify({ title, order }),
+      }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error();
+        }
+        return await response.text().then((res) => JSON.parse(res));
+      });
+      return { data, event };
+    } catch {
+      console.log('x');
+    }
+  }
+};

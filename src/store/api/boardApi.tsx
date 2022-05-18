@@ -27,7 +27,7 @@ export const checkBoards = createAsyncThunk(
 
 export const addBoard = createAsyncThunk(
   'addBoard',
-  async (action: { title: string }, { rejectWithValue }) => {
+  async (action: { title: string; description: string }, { rejectWithValue }) => {
     const token = localStorage.getItem('token');
     try {
       const data = await fetch(`${url}boards`, {

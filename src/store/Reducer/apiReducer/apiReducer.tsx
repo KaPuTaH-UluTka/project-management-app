@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
 import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardApi';
 import { BoardType } from '../../../types/types';
 import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
 import { ColumnType, TaskType } from '../../../types/types';
-import { addTask, deleteTask } from '../../api/taskApi';
+import { addTask, deleteTask, updateTask } from '../../api/taskApi';
 import { getUser, signIn, updateUser } from '../../api/signApi';
 
 const apiState = {
@@ -14,6 +14,8 @@ const apiState = {
   deleteColumnId: '',
   deleteTaskId: '',
   board: { id: '', title: '', columns: [] } as BoardType,
+  oldOrder: '',
+  column: {} as ColumnType,
 };
 
 const apiSlice = createSlice({
@@ -28,6 +30,16 @@ const apiSlice = createSlice({
     logout: (state) => {
       localStorage.setItem('token', '');
       state.token = '';
+    },
+
+    endDragnColumn: (state, action) => {
+      state.board.columns = [...action.payload.currentColumns];
+    },
+
+    endDragnTask: (state, action) => {
+      const { newColumnIndex, oldColumnIndex, oldColumnTasks, currentColumnTasks } = action.payload;
+      state.board.columns[oldColumnIndex].tasks = [...oldColumnTasks];
+      state.board.columns[newColumnIndex].tasks = [...currentColumnTasks];
     },
   },
   extraReducers: {
@@ -89,8 +101,9 @@ const apiSlice = createSlice({
       // state.token = '';
     },
     [addColumn.fulfilled.type]: (state, action) => {
-      state.board.columns.push(action.payload.data);
-      console.log(state.board.columns);
+      const column = action.payload.data;
+      column.tasks = [];
+      state.board.columns.push(column);
     },
     [deleteColumn.fulfilled.type]: (state, action) => {
       const columnId = action.payload.columnId;
@@ -124,20 +137,18 @@ const apiSlice = createSlice({
       const { title, order } = action.payload.data;
       switch (action.payload.event) {
         case 'changeName':
-          console.log('changeName');
           const indexColumn = state.board.columns.findIndex((item) => item.id === columnId);
           state.board.columns[indexColumn].title = title;
           break;
         case 'addEndPosition':
-          console.log('addEndPosition');
           break;
         case 'changePosition':
-          console.log('changePosition');
           break;
       }
     },
+    [updateTask.fulfilled.type]: (state, action) => {},
   },
 });
 
 export default apiSlice.reducer;
-export const { addToken, logout } = apiSlice.actions;
+export const { addToken, logout, endDragnColumn, endDragnTask } = apiSlice.actions;

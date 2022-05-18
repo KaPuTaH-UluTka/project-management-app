@@ -22,7 +22,7 @@ export const Column = (props: { column: ColumnType }) => {
   const [titleColumnState, setTitleColumnState] = useState(false);
   const [titleColumn, setTitleColumn] = useState(props.column.title);
   return (
-    <Box
+    <List
       style={{
         backgroundColor: 'white',
         margin: '10px 5px',
@@ -87,7 +87,9 @@ export const Column = (props: { column: ColumnType }) => {
             variant="contained"
             size="small"
             onClick={() => {
-              dispatch(openModal({ boardId: boardId, columnId: props.column.id }));
+              dispatch(
+                openModal({ boardId: boardId, columnId: props.column.id, modal: 'confirmModal' })
+              );
             }}
           >
             <FormattedMessage id="column.del" defaultMessage="Delete" />
@@ -97,7 +99,7 @@ export const Column = (props: { column: ColumnType }) => {
           </ListItemText>
         </ListItem>
       )}
-      <Droppable droppableId={props.column.id}>
+      <Droppable droppableId={props.column.id} type="task">
         {(provided) => (
           <List
             style={{ background: 'gainsboro', margin: 5, maxHeight: '50vh', overflowY: 'scroll' }}
@@ -107,7 +109,7 @@ export const Column = (props: { column: ColumnType }) => {
             {props.column?.tasks?.map((task, index) => (
               <Draggable key={task.id} draggableId={task.id} index={index}>
                 {(provided) => (
-                  <ListItem
+                  <List
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
@@ -135,6 +137,7 @@ export const Column = (props: { column: ColumnType }) => {
                               boardId: boardId,
                               columnId: props.column.id,
                               taskId: task.id,
+                              modal: 'confirmModal',
                             })
                           );
                         }}
@@ -142,7 +145,7 @@ export const Column = (props: { column: ColumnType }) => {
                         <FormattedMessage id="column.del" defaultMessage="Delete" />
                       </Button>
                     </ListItem>
-                  </ListItem>
+                  </List>
                 )}
               </Draggable>
             ))}
@@ -165,12 +168,10 @@ export const Column = (props: { column: ColumnType }) => {
             }
             if (boardId) {
               dispatch(
-                addTask({
+                openModal({
                   columnId,
                   userId,
-                  boardId,
-                  title: 'new task',
-                  description: 'blabla',
+                  modal: 'createTaskModal',
                   order,
                 })
               );
@@ -183,6 +184,6 @@ export const Column = (props: { column: ColumnType }) => {
           </ListItemText>
         </Button>
       </ListItem>
-    </Box>
+    </List>
   );
 };

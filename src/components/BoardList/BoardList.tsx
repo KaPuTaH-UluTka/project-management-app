@@ -23,9 +23,9 @@ export default function BoardList(props: {
   const dispatch = useAppDispatch();
   return (
     <List className="list">
-      <BasicModal title="Confirmation">
+      {/* <BasicModal>
         <ConfirmationModal />
-      </BasicModal>
+      </BasicModal> */}
       {props.boards.map((board, index) => {
         return (
           <Link to={`${pathes.board}/${board.id}`} key={index}>
@@ -41,7 +41,7 @@ export default function BoardList(props: {
                 variant="contained"
                 onClick={(e) => {
                   e.preventDefault();
-                  dispatch(openModal({ boardId: board.id, confirmModal: 'confirmModal' }));
+                  dispatch(openModal({ boardId: board.id, modal: 'confirmModal' }));
                 }}
               >
                 <FormattedMessage id="boardList.del" defaultMessage="Delete" />

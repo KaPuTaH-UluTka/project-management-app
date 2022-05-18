@@ -52,9 +52,7 @@ const Header = () => {
         transition: 'background 1s linear',
       }}
     >
-      <BasicModal title="Create Board">
-        <CreateBoardModal />
-      </BasicModal>
+      <BasicModal />
       <Container>
         <Toolbar disableGutters>
           <Typography
@@ -99,7 +97,7 @@ const Header = () => {
                       <Button
                         onClick={(e) => {
                           e.preventDefault();
-                          dispatch(openModal({ createBoardModal: 'createBoardModal' }));
+                          dispatch(openModal({ modal: 'createBoardModal' }));
                         }}
                       >
                         Add board
@@ -143,7 +141,7 @@ const Header = () => {
                 <Button
                   onClick={(e) => {
                     e.preventDefault();
-                    dispatch(openModal({ createBoardModal: 'createBoardModal' }));
+                    dispatch(openModal({ modal: 'createBoardModal' }));
                   }}
                 >
                   <FormattedMessage id="nav.addBoard" defaultMessage="Add board" />
