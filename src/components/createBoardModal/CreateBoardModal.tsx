@@ -12,6 +12,7 @@ import './createBoardModal.scss';
 import { addColumn } from '../../store/api/columnApi';
 import { useParams } from 'react-router-dom';
 import { addTask } from '../../store/api/taskApi';
+import { FormattedMessage } from 'react-intl';
 
 const CreateBoardModal = () => {
   const dispatch = useAppDispatch();
@@ -65,18 +66,14 @@ const CreateBoardModal = () => {
   });
 
   const activeSubmit = () => {
-    if (formik.errors.title == undefined) {
-      return false;
-    } else {
-      return true;
-    }
+    return formik.errors.title != undefined;
   };
 
   return (
     <form className="form" onSubmit={formik.handleSubmit}>
       <Box sx={{ padding: '10px 0' }}>
         <TextField
-          label="Title"
+          label={<FormattedMessage id="boardModal.title" defaultMessage="Title" />}
           variant="outlined"
           id="title"
           name="title"
@@ -112,7 +109,7 @@ const CreateBoardModal = () => {
             endIcon={<AddIcon />}
             disabled={activeSubmit()}
           >
-            Create
+            <FormattedMessage id="boardModal.create" defaultMessage="Create" />
           </Button>
         </div>
       </Box>

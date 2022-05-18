@@ -16,6 +16,7 @@ import { endDragnColumn, endDragnTask } from '../../store/Reducer/apiReducer/api
 import { updateTask } from '../../store/api/taskApi';
 import { TaskType } from '../../types/types';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
+import { FormattedMessage } from 'react-intl';
 
 export const Board = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export const Board = () => {
             navigate(-1);
           }}
         >
-          Return
+          <FormattedMessage id="board.return" defaultMessage="Return" />
         </Button>
       </div>
       <DragDropContext
@@ -300,7 +301,7 @@ export const Board = () => {
             size="large"
             style={{
               height: 40,
-              minWidth: '150px',
+              minWidth: '210px',
               position: 'relative',
               top: 10,
               left: 20,
@@ -322,7 +323,7 @@ export const Board = () => {
               }
             }}
           >
-            <Add /> add column
+            <Add /> <FormattedMessage id="board.addColumn" defaultMessage="Add column" />
           </Button>
         </Grid>
       </DragDropContext>

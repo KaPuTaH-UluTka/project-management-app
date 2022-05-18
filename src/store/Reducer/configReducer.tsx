@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import apiReducer from './apiReducer/apiReducer';
 import openModalReducer from './confirmationReducer/confirmationReducer';
+import langReducer from './langReducer/langReducer';
 
 const rootReducer = combineReducers({
   apiReducer,
   openModalReducer,
+  langReducer,
 });
 export const store = () =>
   configureStore({
