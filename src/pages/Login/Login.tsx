@@ -84,7 +84,6 @@ export const Login = () => {
   }
 
   function hideShowPass() {
-    console.log(formik);
     setShowHidePass(!showHidePass);
   }
 
