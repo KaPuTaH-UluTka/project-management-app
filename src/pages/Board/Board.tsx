@@ -33,7 +33,7 @@ export const Board = () => {
       <BasicModal title="Confirmation">
         <ConfirmationModal />
       </BasicModal>
-      <ListItem style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: 8 }}>
         <h1>{board.title}</h1>
         <Button
           className="board-button"
@@ -44,7 +44,7 @@ export const Board = () => {
         >
           Return
         </Button>
-      </ListItem>
+      </div>
       <DragDropContext
         onDragEnd={async (result) => {
           const { source, draggableId } = result;
@@ -55,7 +55,6 @@ export const Board = () => {
               const beforeDroppableId = result.source.droppableId;
               if (destination) {
                 const droppableId = destination.droppableId;
-                // const draggableId = result.draggableId;
                 const currentIndexColumn = board.columns.findIndex(
                   (column) => column.id === beforeDroppableId
                 );
@@ -109,7 +108,6 @@ export const Board = () => {
                   }
                   return task;
                 });
-                console.log(oldColumnTasks, currentColumnTasks);
                 dispatch(
                   endDragnTask({
                     oldColumnIndex,
@@ -187,15 +185,14 @@ export const Board = () => {
               }
               break;
             case 'column':
-              const currentColumn = board.columns[result.source.index];
               const beforeIndex = source.index;
-              const currentIndex = destination?.index || 0;
+              const currentColumn = { ...currentState[beforeIndex] };
+              const currentIndex = destination ? destination.index : beforeIndex;
               currentState.splice(beforeIndex, 1);
               currentState.splice(currentIndex, 0, currentColumn);
               if (currentIndex > beforeIndex) {
                 const currentColumns = currentState.map((item, index) => {
                   const column = { ...item };
-
                   if (index >= beforeIndex && index < currentIndex) {
                     column.order -= 1;
                   } else if (index === currentIndex) {
@@ -204,17 +201,33 @@ export const Board = () => {
                   return column;
                 });
                 dispatch(endDragnColumn({ currentColumns }));
-                for (let i = 0; i < currentColumns.length; i++) {
-                  const data = await changePositionColumn({
+                await dispatch(
+                  updateColumn({
                     boardId: boardId,
-                    columnId: currentColumns[i].id,
-                    title: currentColumns[i].title,
-                    order: currentColumns[i].order,
+                    columnId: currentColumn.id,
+                    title: currentColumn.title,
+                    order:
+                      currentIndex !== currentState.length - 1
+                        ? currentState[currentState.length - 1].order + 1
+                        : currentState[currentState.length - 2].order + 1,
                     event: 'addEndPosition',
-                  });
+                  })
+                );
+                for (let i = 0; i < currentColumns.length; i++) {
+                  if (i >= beforeIndex && i <= currentIndex) {
+                    await dispatch(
+                      updateColumn({
+                        boardId: boardId,
+                        columnId: currentColumns[i].id,
+                        title: currentColumns[i].title,
+                        order: currentColumns[i].order,
+                        event: 'addEndPosition',
+                      })
+                    );
+                  }
                 }
               } else if (currentIndex < beforeIndex) {
-                const revArray = currentState.reverse();
+                const revArray = [...currentState].reverse();
                 const currentColumnsRev = revArray.map((item, index) => {
                   const column = { ...item };
                   if (
@@ -223,74 +236,37 @@ export const Board = () => {
                   ) {
                     column.order += 1;
                   } else if (index === revArray.length - 1 - currentIndex) {
-                    column.order =
-                      index !== revArray.length - 1 ? currentState[index - 1].order : 1;
+                    column.order = index !== revArray.length - 1 ? revArray[index - 1].order : 1;
                   }
                   return column;
                 });
                 const columnsApi = [...currentColumnsRev];
                 const currentColumns = currentColumnsRev.reverse();
                 dispatch(endDragnColumn({ currentColumns }));
-                for (let i = 0; i < columnsApi.length; i++) {
-                  const data = await changePositionColumn({
-                    boardId: boardId,
-                    columnId: columnsApi[i].id,
-                    title: columnsApi[i].title,
-                    order: columnsApi[i].order,
-                    event: 'addEndPosition',
-                  });
-                }
-              } else if (currentIndex === beforeIndex) {
-                dispatch(
+                await dispatch(
                   updateColumn({
                     boardId: boardId,
                     columnId: currentColumn.id,
                     title: currentColumn.title,
-                    order: currentColumn.order,
+                    order:
+                      beforeIndex === currentState.length - 1
+                        ? currentColumn.order + 1
+                        : currentState[currentState.length - 1].order + 1,
                     event: 'addEndPosition',
                   })
                 );
+                for (let i = 0; i < columnsApi.length; i++) {
+                  await dispatch(
+                    updateColumn({
+                      boardId: boardId,
+                      columnId: columnsApi[i].id,
+                      title: columnsApi[i].title,
+                      order: columnsApi[i].order,
+                      event: 'addEndPosition',
+                    })
+                  );
+                }
               }
-              dispatch(endDragnTask({ currentState }));
-              break;
-          }
-        }}
-        onDragStart={(result) => {
-          switch (result.type) {
-            case 'task':
-              console.log('task', result);
-              // const droppableId = result.source.droppableId;
-              // const draggableId = result.draggableId;
-              // const currentColumn = board.columns.filter((column) => column.id === droppableId)[0];
-              // const currentTask = currentColumn.tasks.filter((task) => task.id === draggableId)[0];
-              // console.log(currentTask);
-              // const order = currentColumn.tasks[currentColumn.tasks.length - 1].order + 1;
-              // dispatch(
-              //   updateTask({
-              //     boardId: boardId,
-              //     oldColumnId: droppableId,
-              //     newColumnId: droppableId,
-              //     userId: currentTask.userId,
-              //     title: currentTask.title,
-              //     order,
-              //     description: currentTask.description,
-              //     taskId: currentTask.id,
-              //     done: false,
-              //     // event: 'addEndPosition',
-              //   })
-              // );
-              break;
-            case 'column':
-              dispatch(
-                updateColumn({
-                  boardId: boardId,
-                  columnId: result.draggableId,
-                  title: board.columns.filter((column) => column.id === result.draggableId)[0]
-                    .title,
-                  order: board.columns[board.columns.length - 1].order + 1,
-                  event: 'addEndPosition',
-                })
-              );
               break;
           }
         }}

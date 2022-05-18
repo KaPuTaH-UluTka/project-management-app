@@ -21,7 +21,7 @@ export const Column = (props: { column: ColumnType }) => {
   const [titleColumnState, setTitleColumnState] = useState(false);
   const [titleColumn, setTitleColumn] = useState(props.column.title);
   return (
-    <Box
+    <List
       style={{
         backgroundColor: 'white',
         margin: '10px 5px',
@@ -106,7 +106,7 @@ export const Column = (props: { column: ColumnType }) => {
             {props.column?.tasks?.map((task, index) => (
               <Draggable key={task.id} draggableId={task.id} index={index}>
                 {(provided) => (
-                  <ListItem
+                  <List
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
@@ -141,7 +141,7 @@ export const Column = (props: { column: ColumnType }) => {
                         Delete
                       </Button>
                     </ListItem>
-                  </ListItem>
+                  </List>
                 )}
               </Draggable>
             ))}
@@ -179,6 +179,6 @@ export const Column = (props: { column: ColumnType }) => {
           <Add /> <ListItemText style={{ fontSize: 20 }}>Add Task</ListItemText>
         </Button>
       </ListItem>
-    </Box>
+    </List>
   );
 };

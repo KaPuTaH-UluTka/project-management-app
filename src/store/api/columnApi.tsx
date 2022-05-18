@@ -61,7 +61,6 @@ export const updateColumn = createAsyncThunk(
     const token = localStorage.getItem('token');
     const { boardId, columnId, title, order, event } = action;
     try {
-      console.log(order);
       const data = await fetch(`${url}boards/${boardId}/columns/${columnId}`, {
         method: 'PUT',
         headers: {

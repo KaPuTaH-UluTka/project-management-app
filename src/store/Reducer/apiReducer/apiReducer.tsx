@@ -33,13 +33,13 @@ const apiSlice = createSlice({
     },
 
     endDragnColumn: (state, action) => {
-      state.board.columns = action.payload.currentColumns;
+      state.board.columns = [...action.payload.currentColumns];
     },
 
     endDragnTask: (state, action) => {
       const { newColumnIndex, oldColumnIndex, oldColumnTasks, currentColumnTasks } = action.payload;
-      state.board.columns[oldColumnIndex].tasks = oldColumnTasks;
-      state.board.columns[newColumnIndex].tasks = currentColumnTasks;
+      state.board.columns[oldColumnIndex].tasks = [...oldColumnTasks];
+      state.board.columns[newColumnIndex].tasks = [...currentColumnTasks];
     },
   },
   extraReducers: {
@@ -101,8 +101,9 @@ const apiSlice = createSlice({
       // state.token = '';
     },
     [addColumn.fulfilled.type]: (state, action) => {
-      state.board.columns.push(action.payload.data);
-      console.log(state.board.columns);
+      const column = action.payload.data;
+      column.tasks = [];
+      state.board.columns.push(column);
     },
     [deleteColumn.fulfilled.type]: (state, action) => {
       const columnId = action.payload.columnId;
@@ -136,15 +137,12 @@ const apiSlice = createSlice({
       const { title, order } = action.payload.data;
       switch (action.payload.event) {
         case 'changeName':
-          console.log('changeName');
           const indexColumn = state.board.columns.findIndex((item) => item.id === columnId);
           state.board.columns[indexColumn].title = title;
           break;
         case 'addEndPosition':
-          console.log('addEndPosition');
           break;
         case 'changePosition':
-          console.log('changePosition');
           break;
       }
     },
