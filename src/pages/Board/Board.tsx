@@ -8,14 +8,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { openBoard } from '../../store/api/boardApi';
 import { useEffect } from 'react';
 import { Column } from '../../components/Column/Column';
-import { Box, ListItem } from '@mui/material';
-import { addColumn, changePositionColumn, updateColumn } from '../../store/api/columnApi';
+import { addColumn, updateColumn } from '../../store/api/columnApi';
 import { DragDropContext, Draggable, DraggableLocation, Droppable } from 'react-beautiful-dnd';
 import BasicModal from '../../hoc/BasicModal';
 import ConfirmationModal from '../../components/confirmationModal/ConfirmationModal';
 import { endDragnColumn, endDragnTask } from '../../store/Reducer/apiReducer/apiReducer';
 import { updateTask } from '../../store/api/taskApi';
 import { TaskType } from '../../types/types';
+import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 
 export const Board = () => {
   const navigate = useNavigate();
@@ -30,9 +30,9 @@ export const Board = () => {
   useEffect(() => console.log(board.columns), [board]);
   return (
     <Container fixed className="board">
-      <BasicModal title="Confirmation">
+      {/* <BasicModal>
         <ConfirmationModal />
-      </BasicModal>
+      </BasicModal> */}
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: 8 }}>
         <h1>{board.title}</h1>
         <Button
@@ -311,13 +311,14 @@ export const Board = () => {
                 order = Number(board.columns[board.columns.length - 1].order) + 1;
               }
               if (boardId) {
-                dispatch(
-                  addColumn({
-                    boardId,
-                    title: 'new task',
-                    order,
-                  })
-                );
+                dispatch(openModal({ modal: 'createColumnModal', order }));
+                // dispatch(
+                //   addColumn({
+                //     boardId,
+                //     title: 'new task',
+                //     order,
+                //   })
+                // );
               }
             }}
           >

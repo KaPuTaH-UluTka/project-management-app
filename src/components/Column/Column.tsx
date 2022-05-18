@@ -86,7 +86,9 @@ export const Column = (props: { column: ColumnType }) => {
             variant="contained"
             size="small"
             onClick={() => {
-              dispatch(openModal({ boardId: boardId, columnId: props.column.id }));
+              dispatch(
+                openModal({ boardId: boardId, columnId: props.column.id, modal: 'confirmModal' })
+              );
             }}
           >
             Delete
@@ -134,6 +136,7 @@ export const Column = (props: { column: ColumnType }) => {
                               boardId: boardId,
                               columnId: props.column.id,
                               taskId: task.id,
+                              modal: 'confirmModal',
                             })
                           );
                         }}
@@ -164,12 +167,10 @@ export const Column = (props: { column: ColumnType }) => {
             }
             if (boardId) {
               dispatch(
-                addTask({
+                openModal({
                   columnId,
                   userId,
-                  boardId,
-                  title: 'new task',
-                  description: 'blabla',
+                  modal: 'createTaskModal',
                   order,
                 })
               );

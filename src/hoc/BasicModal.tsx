@@ -4,6 +4,8 @@ import { Modal, Button, Icon } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { closeModal } from '../store/Reducer/confirmationReducer/confirmationReducer';
+import ConfirmationModal from '../components/confirmationModal/ConfirmationModal';
+import CreateBoardModal from '../components/createBoardModal/CreateBoardModal';
 
 const style = {
   position: 'absolute',
@@ -18,33 +20,55 @@ const style = {
   p: 2.5,
 };
 
-interface Props {
-  children: JSX.Element;
-  title: string;
-}
-
-const BasicModal = (props: Props) => {
+const BasicModal = () => {
   const dispatch = useAppDispatch();
-  const { createBoardModal, confirmModal } = useAppSelector((state) => state.openModalReducer);
+  const { createBoardModal, confirmModal, createColumnModal, createTaskModal } = useAppSelector(
+    (state) => state.openModalReducer
+  );
+  // const modal = createBoardModal || createColumnModal || createTaskModal || confirmModal;
   let modal = false;
-
-  if (props.title == 'Confirmation') {
+  let title = '';
+  if (confirmModal) {
+    title = 'Confirmation';
     modal = confirmModal;
   }
-  if (props.title == 'Create Board') {
+  if (createBoardModal) {
+    title = 'Create Board';
     modal = createBoardModal;
+  }
+  if (createColumnModal) {
+    title = 'Create new Column';
+    modal = createColumnModal;
+  }
+  if (createTaskModal) {
+    title = 'Create new Task';
+    modal = createTaskModal;
   }
 
   return (
     <Modal
       open={modal}
-      onClose={() => dispatch(closeModal(createBoardModal ? 'createBoardModal' : 'confirmModal'))}
+      onClose={() =>
+        dispatch(
+          closeModal(
+            createBoardModal || createColumnModal || createTaskModal || confirmModal
+              ? 'closeCreateModal'
+              : 'confirmModal'
+          )
+        )
+      }
       sx={{ width: '100vw', height: '100vh' }}
     >
       <Box sx={style}>
         <Button
           onClick={() => {
-            dispatch(closeModal(createBoardModal ? 'createBoardModal' : 'confirmModal'));
+            dispatch(
+              closeModal(
+                createBoardModal || createColumnModal || createTaskModal || confirmModal
+                  ? 'closeCreateModal'
+                  : 'confirmModal'
+              )
+            );
           }}
           style={{ position: 'absolute', right: 5, top: 5 }}
         >
@@ -53,9 +77,9 @@ const BasicModal = (props: Props) => {
           </Icon>
         </Button>
         <Typography id="modal-modal-title" variant="h5" component="h2" style={{ fontWeight: 600 }}>
-          {props.title}
+          {title}
         </Typography>
-        {props.children}
+        {confirmModal ? <ConfirmationModal /> : <CreateBoardModal />}
       </Box>
     </Modal>
   );
