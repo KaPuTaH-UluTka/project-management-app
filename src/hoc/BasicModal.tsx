@@ -25,7 +25,6 @@ const BasicModal = () => {
   const { createBoardModal, confirmModal, createColumnModal, createTaskModal } = useAppSelector(
     (state) => state.openModalReducer
   );
-  // const modal = createBoardModal || createColumnModal || createTaskModal || confirmModal;
   let modal = false;
   let title = '';
   if (confirmModal) {
@@ -51,7 +50,7 @@ const BasicModal = () => {
       onClose={() =>
         dispatch(
           closeModal(
-            createBoardModal || createColumnModal || createTaskModal || confirmModal
+            createBoardModal || createColumnModal || createTaskModal
               ? 'closeCreateModal'
               : 'confirmModal'
           )
@@ -64,7 +63,7 @@ const BasicModal = () => {
           onClick={() => {
             dispatch(
               closeModal(
-                createBoardModal || createColumnModal || createTaskModal || confirmModal
+                createBoardModal || createColumnModal || createTaskModal
                   ? 'closeCreateModal'
                   : 'confirmModal'
               )
