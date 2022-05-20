@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Main } from '../../pages/Main/Main';
 import { Board } from '../../pages/Board/Board';
@@ -11,6 +12,7 @@ import { FullPage } from '../FullPage';
 import { useEffect } from 'react';
 import { addToken } from '../../store/Reducer/apiReducer/apiReducer';
 import { useAppDispatch } from '../../hooks/hooks';
+import Loading from '../loading/Loading';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -18,55 +20,57 @@ const App = () => {
     dispatch(addToken());
   });
   return (
-    <Routes>
-      <Route
-        path={pathes.main}
-        element={
-          <Private>
+    <Suspense fallback={<Loading />}>
+      <Routes>
+        <Route
+          path={pathes.main}
+          element={
+            <Private>
+              <FullPage>
+                <Main />
+              </FullPage>
+            </Private>
+          }
+        />
+        <Route
+          path={pathes.board + '/:boardId'}
+          element={
+            <Private>
+              <FullPage>
+                <Board />
+              </FullPage>
+            </Private>
+          }
+        />
+        <Route
+          path={pathes.edit}
+          element={
+            <Private>
+              <FullPage>
+                <Edit />
+              </FullPage>
+            </Private>
+          }
+        />
+        <Route
+          path={pathes.welcome}
+          element={
             <FullPage>
-              <Main />
+              <Welcome />
             </FullPage>
-          </Private>
-        }
-      />
-      <Route
-        path={pathes.board + '/:boardId'}
-        element={
-          <Private>
+          }
+        />
+        <Route
+          path={pathes.login + '/:signState'}
+          element={
             <FullPage>
-              <Board />
+              <Login />
             </FullPage>
-          </Private>
-        }
-      />
-      <Route
-        path={pathes.edit}
-        element={
-          <Private>
-            <FullPage>
-              <Edit />
-            </FullPage>
-          </Private>
-        }
-      />
-      <Route
-        path={pathes.welcome}
-        element={
-          <FullPage>
-            <Welcome />
-          </FullPage>
-        }
-      />
-      <Route
-        path={pathes.login + '/:signState'}
-        element={
-          <FullPage>
-            <Login />
-          </FullPage>
-        }
-      />
-      <Route path={pathes.error} element={<Error />} />
-    </Routes>
+          }
+        />
+        <Route path={pathes.error} element={<Error />} />
+      </Routes>
+    </Suspense>
   );
 };
 

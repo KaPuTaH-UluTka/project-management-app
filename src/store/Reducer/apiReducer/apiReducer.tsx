@@ -9,13 +9,14 @@ import { getUser, signIn, updateUser } from '../../api/signApi';
 
 const apiState = {
   token: '',
-  boards: [] as Array<{ title: string; id: string }>,
+  boards: [] as Array<{ title: string; description: string; id: string }>,
   deleteBoardId: '',
   deleteColumnId: '',
   deleteTaskId: '',
-  board: { id: '', title: '', columns: [] } as BoardType,
+  board: { id: '', title: '', description: '', columns: [] } as BoardType,
   oldOrder: '',
   column: {} as ColumnType,
+  process: 'loading',
 };
 
 const apiSlice = createSlice({
@@ -63,10 +64,12 @@ const apiSlice = createSlice({
     },
     [checkBoards.fulfilled.type]: (state, action) => {
       state.boards = [...action.payload.data];
+      state.process = 'confirmed';
     },
     [checkBoards.rejected.type]: (state) => {
       localStorage.setItem('token', '');
       state.token = '';
+      state.process = 'error';
     },
     [addBoard.fulfilled.type]: (state, action) => {
       state.boards.push({ ...action.payload.data });
@@ -74,18 +77,22 @@ const apiSlice = createSlice({
     [addBoard.rejected.type]: (state) => {
       localStorage.setItem('token', '');
       state.token = '';
+      state.process = 'error';
     },
     [deleteBoard.fulfilled.type]: (state, action) => {
       const boards = state.boards.filter((item) => action.payload.boardId !== item.id) as Array<{
         title: string;
+        description: string;
         id: string;
       }>;
       state.deleteBoardId = '';
+      state.process = 'confirmed';
       state.boards = boards;
     },
     [deleteBoard.rejected.type]: (state) => {
       localStorage.setItem('token', '');
       state.token = '';
+      state.process = 'error';
     },
     [openBoard.fulfilled.type]: (state, action) => {
       const board = { ...action.payload.data };
@@ -95,10 +102,12 @@ const apiSlice = createSlice({
         return column;
       });
       state.board = board;
+      state.process = 'confirmed';
     },
     [openBoard.rejected.type]: (state) => {
       // localStorage.setItem('token', '');
       // state.token = '';
+      // state.process = 'error';
     },
     [addColumn.fulfilled.type]: (state, action) => {
       const column = action.payload.data;
