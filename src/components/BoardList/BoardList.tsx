@@ -17,6 +17,7 @@ import { FormattedMessage } from 'react-intl';
 export default function BoardList(props: {
   boards: {
     title: string;
+    description: string;
     id: string;
   }[];
 }) {
@@ -36,6 +37,7 @@ export default function BoardList(props: {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText primary={board.title} />
+              <ListItemText primary={board.description} />
               <Button
                 className="list__item-button"
                 variant="contained"
