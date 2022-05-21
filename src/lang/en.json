@@ -39,5 +39,9 @@
   "welcome.title": "Welcome to our RS-Trello",
   "welcome.info": "RS-Trello is a visual tool that allows your team to manage projects, workflows, and tasks of all types. Add files, task lists - and customize it all so that it is convenient for the team to work.",
   "welcome.created": "The project was created by:",
-  "welcome.review": "Short review"
+  "welcome.review": "Short review",
+  "error.signIn.403": "No such user exists",
+  "error.signUp.409": "User with this email already exists",
+  "error.getUser.404": "User was not founded",
+  "error.updateUser.404": "User was not founded"
 }

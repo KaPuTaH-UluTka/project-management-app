@@ -16,11 +16,19 @@ export const signIn = createAsyncThunk(
         },
         body: JSON.stringify(action),
       }).then(async (response) => {
-        return await response.text().then((res) => JSON.parse(res).token);
+        if (!response.ok) {
+          throw new Error(response.status.toString());
+        } else {
+          return await response.text().then((res) => JSON.parse(res).token);
+        }
       });
       return { data };
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '403') return rejectWithValue('error.signIn.403');
+      else return rejectWithValue(message);
     }
   }
 );
@@ -36,9 +44,17 @@ export const signUp = createAsyncThunk(
           'content-type': 'application/json',
         },
         body: JSON.stringify(action),
+      }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error(response.status.toString());
+        }
       });
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '409') return rejectWithValue('error.signUp.409');
+      else return rejectWithValue(message);
     }
   }
 );
@@ -57,13 +73,18 @@ export const updateUser = createAsyncThunk(
         body: JSON.stringify(updatedUser.user),
       }).then(async (response) => {
         if (!response.ok) {
-          throw new Error();
+          throw new Error(response.status.toString());
+        } else {
+          return await response.text().then((res) => JSON.parse(res));
         }
-        return await response.text().then((res) => JSON.parse(res));
       });
       return { data };
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '404') return rejectWithValue('error.updateUser.404');
+      else return rejectWithValue(message);
     }
   }
 );
@@ -79,12 +100,17 @@ export const getUser = createAsyncThunk('getUser', async (id: string, { rejectWi
       },
     }).then(async (response) => {
       if (!response.ok) {
-        throw new Error();
+        throw new Error(response.status.toString());
+      } else {
+        return await response.text().then((res) => JSON.parse(res));
       }
-      return await response.text().then((res) => JSON.parse(res));
     });
     return { data };
-  } catch {
-    return rejectWithValue({});
+  } catch (err) {
+    let message;
+    if (err instanceof Error) message = err.message;
+    else message = String(err);
+    if (message === '404') return rejectWithValue('error.getUser.404');
+    else return rejectWithValue(message);
   }
 });

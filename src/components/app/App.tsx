@@ -11,14 +11,16 @@ import { pathes } from '../../pathes/pathes';
 import { FullPage } from '../FullPage';
 import { useEffect } from 'react';
 import { addToken } from '../../store/Reducer/apiReducer/apiReducer';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import Loading from '../loading/Loading';
+import ApiError from '../apiError/ApiError';
 
 const App = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(addToken());
   });
+  const errors = useAppSelector((state) => state.apiReducer.apiErrors);
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
@@ -70,6 +72,7 @@ const App = () => {
         />
         <Route path={pathes.error} element={<Error />} />
       </Routes>
+      <ApiError errors={errors} />
     </Suspense>
   );
 };
