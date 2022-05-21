@@ -45,11 +45,11 @@ export const signUp = createAsyncThunk(
         },
         body: JSON.stringify(action),
       }).then(async (response) => {
-        console.log(action);
         if (!response.ok) {
           throw new Error(response.status.toString());
         } else {
-          signIn({ login: action.login, password: action.password });
+          console.log(action);
+          await signIn({ login: action.login, password: action.password });
         }
       });
     } catch (err) {
@@ -113,6 +113,28 @@ export const getUser = createAsyncThunk('getUser', async (id: string, { rejectWi
     if (err instanceof Error) message = err.message;
     else message = String(err);
     if (message === '404') return rejectWithValue('error.getUser.404');
+    else return rejectWithValue(message);
+  }
+});
+
+export const delUser = createAsyncThunk('delUser', async (id: string, { rejectWithValue }) => {
+  try {
+    await fetch(`${url}users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ` + token,
+      },
+    }).then(async (response) => {
+      if (!response.ok) {
+        throw new Error(response.status.toString());
+      }
+    });
+  } catch (err) {
+    let message;
+    if (err instanceof Error) message = err.message;
+    else message = String(err);
+    if (message === '404') return rejectWithValue('error.delUser.404');
     else return rejectWithValue(message);
   }
 });

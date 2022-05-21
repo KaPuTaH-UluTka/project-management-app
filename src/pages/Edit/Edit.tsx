@@ -5,7 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import noAvatar from '../../assets/no-avatar.png';
-import { getUser, updateUser } from '../../store/api/signApi';
+import { delUser, getUser, updateUser } from '../../store/api/signApi';
 import { useAppDispatch } from '../../hooks/hooks';
 import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
@@ -19,14 +19,14 @@ export const Edit = () => {
   const userName = localStorage.getItem('userName') || '';
   const userEmail = localStorage.getItem('login') || '';
   const id = localStorage.getItem('userID');
-  useEffect(() => {
-    if (typeof id === 'string') {
-      dispatch(getUser(id));
-    }
-  }, []);
   const [nameState, setNameState] = useState(false);
   const [emailState, setEmailState] = useState(false);
   const intl = useIntl();
+  // useEffect(() => {
+  //   if (typeof id === 'string') {
+  //     dispatch(getUser(id));
+  //   }
+  // });
 
   function changeName() {
     setNameState(!nameState);
@@ -89,6 +89,13 @@ export const Edit = () => {
       !editProfileForm.errors.password
     );
   }
+
+  function deleteAccount() {
+    if (typeof id === 'string') {
+      dispatch(delUser(id));
+    }
+  }
+
   return (
     <ThemeProvider theme={violetTheme}>
       <Container component="main" maxWidth="xs">
@@ -172,6 +179,18 @@ export const Edit = () => {
               </Button>
             </Container>
           </Box>
+          <Container>
+            <Button
+              sx={{ mt: 1, width: '100%' }}
+              variant="contained"
+              size="small"
+              type="submit"
+              color={'error'}
+              onClick={deleteAccount}
+            >
+              <FormattedMessage id="editProfile.delUser" defaultMessage="Delete account" />
+            </Button>
+          </Container>
         </Box>
       </Container>
     </ThemeProvider>
