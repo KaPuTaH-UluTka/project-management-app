@@ -38,11 +38,11 @@ export default () => ({
     borderRadius: 22 / 2,
     height: 20,
     alignItems: 'center',
+    lineHeight: '20px',
+    letterSpacing: 'normal',
     '&:before, &:after': {
       content: '""',
       position: 'absolute',
-      top: '50%',
-      transform: 'translateY(-50%)',
       width: 16,
       height: 16,
     },

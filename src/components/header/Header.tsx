@@ -155,14 +155,14 @@ const Header = () => {
           ) : null}
 
           {token ? (
-            <Box sx={{ flexGrow: 0 }}>
+            <Box sx={{ position: 'absolute', right: 80 }}>
               <button className="header__user-entry output" onClick={() => dispatch(logout())}>
                 <LoginIcon />
                 <FormattedMessage id="logout" defaultMessage="Logout" />
               </button>
             </Box>
           ) : (
-            <Box sx={{ display: 'flex', position: 'absolute', right: 0 }}>
+            <Box sx={{ display: 'flex', position: 'absolute', right: 80 }}>
               <Link to={pathes.login + '/signIn'}>
                 <button className="header__user-entry">
                   <LoginIcon />
@@ -177,7 +177,9 @@ const Header = () => {
               </Link>
             </Box>
           )}
-          <LangSwitch />
+          <Box sx={{ position: 'absolute', right: 0 }}>
+            <LangSwitch />
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
