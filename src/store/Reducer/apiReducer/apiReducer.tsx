@@ -5,7 +5,7 @@ import { BoardType } from '../../../types/types';
 import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
 import { ColumnType, TaskType } from '../../../types/types';
 import { addTask, deleteTask, updateTask } from '../../api/taskApi';
-import { getUser, signIn, updateUser } from '../../api/signApi';
+import { getUser, signIn, signUp, updateUser } from '../../api/signApi';
 
 const apiState = {
   token: '',
@@ -17,6 +17,7 @@ const apiState = {
   oldOrder: '',
   column: {} as ColumnType,
   process: 'loading',
+  apiErrors: [] as Array<string>,
 };
 
 const apiSlice = createSlice({
@@ -42,6 +43,10 @@ const apiSlice = createSlice({
       state.board.columns[oldColumnIndex].tasks = [...oldColumnTasks];
       state.board.columns[newColumnIndex].tasks = [...currentColumnTasks];
     },
+
+    shiftApiErrors: (state) => {
+      state.apiErrors.shift();
+    },
   },
   extraReducers: {
     [signIn.fulfilled.type]: (state, action) => {
@@ -53,14 +58,26 @@ const apiSlice = createSlice({
       localStorage.setItem('login', login);
       state.token = token;
     },
+    [signIn.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
+    },
+    [signUp.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
+    },
     [getUser.fulfilled.type]: (state, action) => {
       const user = action.payload.data;
       localStorage.setItem('userName', user.name);
+    },
+    [getUser.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
     },
     [updateUser.fulfilled.type]: (state, action) => {
       const updatedUser = action.payload.data;
       localStorage.setItem('userName', updatedUser.name);
       localStorage.setItem('login', updatedUser.login);
+    },
+    [updateUser.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
     },
     [checkBoards.fulfilled.type]: (state, action) => {
       state.boards = [...action.payload.data];
@@ -160,4 +177,4 @@ const apiSlice = createSlice({
 });
 
 export default apiSlice.reducer;
-export const { addToken, logout, endDragnColumn, endDragnTask } = apiSlice.actions;
+export const { addToken, logout, endDragnColumn, endDragnTask, shiftApiErrors } = apiSlice.actions;
