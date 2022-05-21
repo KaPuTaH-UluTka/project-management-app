@@ -2,8 +2,6 @@ import { ISignUpUser, ILoginUser } from '../../types/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { url } from './url';
 
-const token = localStorage.getItem('token');
-
 export const signIn = createAsyncThunk(
   'signIn',
   async (action: ILoginUser, { rejectWithValue }) => {
@@ -47,9 +45,6 @@ export const signUp = createAsyncThunk(
       }).then(async (response) => {
         if (!response.ok) {
           throw new Error(response.status.toString());
-        } else {
-          console.log(action);
-          await signIn({ login: action.login, password: action.password });
         }
       });
     } catch (err) {
@@ -65,6 +60,7 @@ export const signUp = createAsyncThunk(
 export const updateUser = createAsyncThunk(
   'updateUser',
   async (updatedUser: { id: string; user: ISignUpUser }, { rejectWithValue }) => {
+    const token = localStorage.getItem('token');
     try {
       const data = await fetch(`${url}users/${updatedUser.id}`, {
         method: 'PUT',
@@ -93,6 +89,7 @@ export const updateUser = createAsyncThunk(
 );
 
 export const getUser = createAsyncThunk('getUser', async (id: string, { rejectWithValue }) => {
+  const token = localStorage.getItem('token');
   try {
     const data = await fetch(`${url}users/${id}`, {
       method: 'GET',
@@ -118,6 +115,7 @@ export const getUser = createAsyncThunk('getUser', async (id: string, { rejectWi
 });
 
 export const delUser = createAsyncThunk('delUser', async (id: string, { rejectWithValue }) => {
+  const token = localStorage.getItem('token');
   try {
     await fetch(`${url}users/${id}`, {
       method: 'DELETE',
