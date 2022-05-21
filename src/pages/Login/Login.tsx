@@ -52,10 +52,18 @@ export const Login = () => {
     validationSchema: validationSchema,
     onSubmit: async () => {
       if (signState === 'signUp') {
-        dispatch(signUp(signUpUser as ISignUpUser));
+        dispatch(signUp(signUpUser as ISignUpUser)).then((res) => {
+          if (!res.payload) {
+            dispatch(signIn(loginUser as ILoginUser));
+          }
+        });
       } else {
-        await dispatch(signIn(loginUser as ILoginUser));
-        dispatch(getUser(localStorage.getItem('userID') as string));
+        dispatch(signIn(loginUser as ILoginUser)).then(async (res) => {
+          if (res.payload) {
+            const id = (await localStorage.getItem('userID')) as string;
+            dispatch(getUser(id));
+          }
+        });
       }
     },
   });
