@@ -31,6 +31,7 @@
   "editProfile.email": "Почта:",
   "editProfile.password": "Пароль",
   "editProfile.saveChanges": "Сохранить изменения",
+  "editProfile.delUser": "Удалить аккаунт",
   "confirmModal.action": "Подтвердите  действие на страницу",
   "confirmModal.agree": "Принимаю",
   "confirmModal.return": "Отмена",
@@ -43,5 +44,6 @@
   "error.signIn.403": "Такого пользователя не существует",
   "error.signUp.409": "Пользователь с такой почтой уже существует",
   "error.getUser.404": "Пользователь не найден",
-  "error.updateUser.404": "Пользователь не найден"
+  "error.updateUser.404": "Пользователь не найден",
+  "error.delUser.404": "Пользователь не найден"
 }

@@ -21,7 +21,7 @@ import { pathes } from '../../pathes/pathes';
 import { Navigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { ILoginUser, ISignUpUser } from '../../types/types';
-import { signUp, signIn } from '../../store/api/signApi';
+import { signUp, signIn, getUser } from '../../store/api/signApi';
 import { useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -50,10 +50,13 @@ export const Login = () => {
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: () => {
+    onSubmit: async () => {
       if (signState === 'signUp') {
         dispatch(signUp(signUpUser as ISignUpUser));
-      } else dispatch(signIn(loginUser as ILoginUser));
+      } else {
+        await dispatch(signIn(loginUser as ILoginUser));
+        dispatch(getUser(localStorage.getItem('userID') as string));
+      }
     },
   });
 

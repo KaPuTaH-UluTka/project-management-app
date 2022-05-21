@@ -5,7 +5,7 @@ import { BoardType } from '../../../types/types';
 import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
 import { ColumnType, TaskType } from '../../../types/types';
 import { addTask, deleteTask, updateTask } from '../../api/taskApi';
-import { getUser, signIn, signUp, updateUser } from '../../api/signApi';
+import { delUser, getUser, signIn, signUp, updateUser } from '../../api/signApi';
 
 const apiState = {
   token: '',
@@ -70,6 +70,10 @@ const apiSlice = createSlice({
     },
     [getUser.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);
+    },
+    [delUser.fulfilled.type]: (state) => {
+      localStorage.setItem('token', '');
+      state.token = '';
     },
     [updateUser.fulfilled.type]: (state, action) => {
       const updatedUser = action.payload.data;

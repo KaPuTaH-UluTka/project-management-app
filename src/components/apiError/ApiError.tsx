@@ -12,7 +12,11 @@ const ApiError = (props: { errors: string[] }) => {
   const intl = useIntl();
 
   function getTranslate(key: string) {
-    return intl.formatMessage({ id: key });
+    if (key.length === 3) {
+      return key;
+    } else {
+      return intl.formatMessage({ id: key });
+    }
   }
   useEffect(() => {
     if (props.errors.length > 0) {
