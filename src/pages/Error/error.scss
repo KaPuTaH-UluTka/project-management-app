@@ -4,13 +4,16 @@
     flex-direction: column;
     justify-content: center;
     height: 100vh;
+
     button {
       margin-top: 20px;
     }
   }
+
   &__img {
     width: auto !important;
   }
+
   &__block {
     text-align: center;
   }
