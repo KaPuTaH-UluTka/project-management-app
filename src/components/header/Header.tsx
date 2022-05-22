@@ -18,7 +18,6 @@ import { toggleBar } from '../../store/Reducer/confirmationReducer/confirmationR
 import { useEffect, useState } from 'react';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import BasicModal from '../../hoc/BasicModal';
-import CreateBoardModal from '../createBoardModal/CreateBoardModal';
 import LangSwitch from '../langSwitch/LangSwitch';
 import { FormattedMessage } from 'react-intl';
 

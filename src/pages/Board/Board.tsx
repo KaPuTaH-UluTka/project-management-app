@@ -8,10 +8,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { openBoard } from '../../store/api/boardApi';
 import { useEffect } from 'react';
 import { Column } from '../../components/Column/Column';
-import { addColumn, updateColumn } from '../../store/api/columnApi';
+import { updateColumn } from '../../store/api/columnApi';
 import { DragDropContext, Draggable, DraggableLocation, Droppable } from 'react-beautiful-dnd';
-import BasicModal from '../../hoc/BasicModal';
-import ConfirmationModal from '../../components/confirmationModal/ConfirmationModal';
 import { endDragnColumn, endDragnTask } from '../../store/Reducer/apiReducer/apiReducer';
 import { updateTask } from '../../store/api/taskApi';
 import { TaskType } from '../../types/types';
@@ -28,12 +26,8 @@ export const Board = () => {
       dispatch(openBoard({ boardId }));
     }
   }, []);
-  useEffect(() => console.log(board.columns), [board]);
   return (
     <Container fixed className="board">
-      {/* <BasicModal>
-        <ConfirmationModal />
-      </BasicModal> */}
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: 8 }}>
         <h1>{board.title}</h1>
         <Button
@@ -313,13 +307,6 @@ export const Board = () => {
               }
               if (boardId) {
                 dispatch(openModal({ modal: 'createColumnModal', order }));
-                // dispatch(
-                //   addColumn({
-                //     boardId,
-                //     title: 'new task',
-                //     order,
-                //   })
-                // );
               }
             }}
           >

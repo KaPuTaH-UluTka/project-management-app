@@ -16,6 +16,9 @@ export const signIn = createAsyncThunk(
         },
         body: JSON.stringify(action),
       }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error();
+        }
         return await response.text().then((res) => JSON.parse(res).token);
       });
       return { data };
@@ -69,7 +72,6 @@ export const updateUser = createAsyncThunk(
 );
 
 export const getUser = createAsyncThunk('getUser', async (id: string, { rejectWithValue }) => {
-  console.log(token);
   try {
     const data = await fetch(`${url}users/${id}`, {
       method: 'GET',
