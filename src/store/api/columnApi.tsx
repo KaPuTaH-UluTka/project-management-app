@@ -92,37 +92,3 @@ export const updateColumn = createAsyncThunk(
     }
   }
 );
-
-export const changePositionColumn = createAsyncThunk(
-  'changePositionColumn',
-  async (
-    action: { boardId?: string; columnId?: string; title?: string; order?: number; event?: string },
-    { rejectWithValue }
-  ) => {
-    try {
-      const token = localStorage.getItem('token');
-      const { boardId, columnId, title, order, event } = action;
-      const data = await fetch(`${url}boards/${boardId}/columns/${columnId}`, {
-        method: 'PUT',
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ` + token,
-        },
-        body: JSON.stringify({ title, order }),
-      }).then(async (response) => {
-        if (!response.ok) {
-          throw new Error(response.status.toString());
-        }
-        return await response.text().then((res) => JSON.parse(res));
-      });
-      return { data, event };
-    } catch (err) {
-      let message;
-      if (err instanceof Error) message = err.message;
-      else message = String(err);
-      if (message === '401') return rejectWithValue('error.unauthorized');
-      else return rejectWithValue(message);
-    }
-  }
-);
