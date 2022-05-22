@@ -2,10 +2,10 @@ import { violetTheme } from '../../style/rootStyles';
 import { Avatar, Box, Container, TextField, ThemeProvider, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import noAvatar from '../../assets/no-avatar.png';
-import { delUser, getUser, updateUser } from '../../store/api/signApi';
+import { delUser, updateUser } from '../../store/api/signApi';
 import { useAppDispatch } from '../../hooks/hooks';
 import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
@@ -22,11 +22,6 @@ export const Edit = () => {
   const [nameState, setNameState] = useState(false);
   const [emailState, setEmailState] = useState(false);
   const intl = useIntl();
-  // useEffect(() => {
-  //   if (typeof id === 'string') {
-  //     dispatch(getUser(id));
-  //   }
-  // });
 
   function changeName() {
     setNameState(!nameState);

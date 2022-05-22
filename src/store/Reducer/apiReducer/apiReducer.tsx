@@ -87,7 +87,8 @@ const apiSlice = createSlice({
       state.boards = [...action.payload.data];
       state.process = 'confirmed';
     },
-    [checkBoards.rejected.type]: (state) => {
+    [checkBoards.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
       localStorage.setItem('token', '');
       state.token = '';
       state.process = 'error';
@@ -95,7 +96,8 @@ const apiSlice = createSlice({
     [addBoard.fulfilled.type]: (state, action) => {
       state.boards.push({ ...action.payload.data });
     },
-    [addBoard.rejected.type]: (state) => {
+    [addBoard.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
       localStorage.setItem('token', '');
       state.token = '';
       state.process = 'error';
@@ -110,7 +112,8 @@ const apiSlice = createSlice({
       state.process = 'confirmed';
       state.boards = boards;
     },
-    [deleteBoard.rejected.type]: (state) => {
+    [deleteBoard.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
       localStorage.setItem('token', '');
       state.token = '';
       state.process = 'error';
@@ -125,7 +128,8 @@ const apiSlice = createSlice({
       state.board = board;
       state.process = 'confirmed';
     },
-    [openBoard.rejected.type]: (state) => {
+    [openBoard.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
       // localStorage.setItem('token', '');
       // state.token = '';
       // state.process = 'error';
@@ -135,11 +139,17 @@ const apiSlice = createSlice({
       column.tasks = [];
       state.board.columns.push(column);
     },
+    [addColumn.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
+    },
     [deleteColumn.fulfilled.type]: (state, action) => {
       const columnId = action.payload.columnId;
       const columns = state.board.columns.filter((column) => columnId !== column.id);
       state.deleteColumnId = '';
       state.board.columns = columns;
+    },
+    [deleteColumn.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
     },
     [addTask.fulfilled.type]: (state, action) => {
       const columnId = action.payload.data.columnId;
@@ -149,6 +159,9 @@ const apiSlice = createSlice({
       } else {
         state.board.columns[indexColumnChanges].tasks = [action.payload.data];
       }
+    },
+    [addTask.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
     },
     [deleteTask.fulfilled.type]: (state, action) => {
       const { columnId, taskId } = action.payload;
@@ -161,6 +174,9 @@ const apiSlice = createSlice({
       if (indexTask !== -1) {
         state.board.columns[indexColumn].tasks?.splice(indexTask, 1);
       }
+    },
+    [deleteTask.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
     },
     [updateColumn.fulfilled.type]: (state, action) => {
       const columnId = action.payload.data.id;
@@ -175,6 +191,9 @@ const apiSlice = createSlice({
         case 'changePosition':
           break;
       }
+    },
+    [updateColumn.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
     },
     [updateTask.fulfilled.type]: (state, action) => {},
   },
