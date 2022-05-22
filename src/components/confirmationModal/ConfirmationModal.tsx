@@ -6,12 +6,17 @@ import { deleteBoard } from '../../store/api/boardApi';
 import { deleteColumn } from '../../store/api/columnApi';
 import { deleteTask } from '../../store/api/taskApi';
 import { FormattedMessage } from 'react-intl';
+import { delUser } from '../../store/api/signApi';
 
 export default function ConfirmationModal() {
   const dispatch = useAppDispatch();
-  const { deleteBoardId, deleteColumnId, deleteTaskId } = useAppSelector(
+  const { deleteBoardId, deleteColumnId, deleteTaskId, userId } = useAppSelector(
     (state) => state.openModalReducer
   );
+
+  function chooseDeleteModal() {
+    userId ? dispatch(closeModal('deleteUserModal')) : dispatch(closeModal('confirmModal'));
+  }
 
   return (
     <>
@@ -26,7 +31,7 @@ export default function ConfirmationModal() {
         color="error"
         sx={{ marginRight: 1 }}
         onClick={() => {
-          dispatch(closeModal('confirmModal'));
+          chooseDeleteModal();
           if (deleteBoardId && deleteColumnId && deleteTaskId) {
             dispatch(
               deleteTask({
@@ -39,16 +44,14 @@ export default function ConfirmationModal() {
             dispatch(deleteColumn({ boardId: deleteBoardId, columnId: deleteColumnId }));
           } else if (deleteBoardId) {
             dispatch(deleteBoard({ boardId: deleteBoardId }));
+          } else if (userId) {
+            dispatch(delUser(userId));
           }
         }}
       >
         <FormattedMessage id="confirmModal.agree" defaultMessage="Agree" />
       </Button>
-      <Button
-        variant="contained"
-        color="success"
-        onClick={() => dispatch(closeModal('confirmModal'))}
-      >
+      <Button variant="contained" color="success" onClick={chooseDeleteModal}>
         <FormattedMessage id="confirmModal.return" defaultMessage="Return" />
       </Button>
     </>

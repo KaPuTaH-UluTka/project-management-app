@@ -13,6 +13,7 @@ import { editProfileContainer, editSection, editSubmitContainer } from './editSt
 import * as yup from 'yup';
 import IconButton from '@mui/material/IconButton';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 
 export const Edit = () => {
   const dispatch = useAppDispatch();
@@ -87,7 +88,7 @@ export const Edit = () => {
 
   function deleteAccount() {
     if (typeof id === 'string') {
-      dispatch(delUser(id));
+      dispatch(openModal({ userId: id, modal: 'deleteUserModal' }));
     }
   }
 

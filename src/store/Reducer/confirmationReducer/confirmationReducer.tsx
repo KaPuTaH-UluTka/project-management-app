@@ -6,6 +6,7 @@ const openModalState = {
   createColumnModal: false,
   createTaskModal: false,
   updateTaskModal: false,
+  deleteUserModal: false,
   deleteBoardId: '',
   deleteColumnId: '',
   deleteTaskId: '',
@@ -50,6 +51,10 @@ const openModalSlice = createSlice({
         case 'updateTaskModal':
           state.updateTaskModal = true;
           break;
+        case 'deleteUserModal':
+          state.deleteUserModal = true;
+          state.userId = action.payload.userId || '';
+          break;
       }
       state.deleteBoardId = action.payload.boardId || '';
       state.deleteColumnId = action.payload.columnId || '';
@@ -67,6 +72,10 @@ const openModalSlice = createSlice({
           break;
         case 'updateTaskModal':
           state.updateTaskModal = false;
+          break;
+        case 'deleteUserModal':
+          state.userId = '';
+          state.deleteUserModal = false;
           break;
       }
     },

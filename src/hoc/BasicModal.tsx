@@ -22,9 +22,8 @@ const style = {
 
 const BasicModal = () => {
   const dispatch = useAppDispatch();
-  const { createBoardModal, confirmModal, createColumnModal, createTaskModal } = useAppSelector(
-    (state) => state.openModalReducer
-  );
+  const { createBoardModal, confirmModal, createColumnModal, createTaskModal, deleteUserModal } =
+    useAppSelector((state) => state.openModalReducer);
   let modal = false;
   let title = '';
   if (confirmModal) {
@@ -43,34 +42,27 @@ const BasicModal = () => {
     title = 'Create new Task';
     modal = createTaskModal;
   }
+  if (deleteUserModal) {
+    title = 'Confirm account deletion';
+    modal = deleteUserModal;
+  }
+
+  function chooseDeleteModal() {
+    let modalStatus;
+    if (createBoardModal || createColumnModal || createTaskModal) {
+      modalStatus = 'closeCreateModal';
+    } else if (deleteUserModal) {
+      modalStatus = 'deleteUserModal';
+    } else {
+      modalStatus = 'confirmModal';
+    }
+    dispatch(closeModal(modalStatus));
+  }
 
   return (
-    <Modal
-      open={modal}
-      onClose={() =>
-        dispatch(
-          closeModal(
-            createBoardModal || createColumnModal || createTaskModal
-              ? 'closeCreateModal'
-              : 'confirmModal'
-          )
-        )
-      }
-      sx={{ width: '100vw', height: '100vh' }}
-    >
+    <Modal open={modal} onClose={chooseDeleteModal} sx={{ width: '100vw', height: '100vh' }}>
       <Box sx={style}>
-        <Button
-          onClick={() => {
-            dispatch(
-              closeModal(
-                createBoardModal || createColumnModal || createTaskModal
-                  ? 'closeCreateModal'
-                  : 'confirmModal'
-              )
-            );
-          }}
-          style={{ position: 'absolute', right: 5, top: 5 }}
-        >
+        <Button onClick={chooseDeleteModal} style={{ position: 'absolute', right: 5, top: 5 }}>
           <Icon>
             <CloseIcon fontSize="medium" color="inherit" style={{ color: '#000' }} />
           </Icon>
@@ -78,7 +70,7 @@ const BasicModal = () => {
         <Typography id="modal-modal-title" variant="h5" component="h2" style={{ fontWeight: 600 }}>
           {title}
         </Typography>
-        {confirmModal ? <ConfirmationModal /> : <CreateBoardModal />}
+        {confirmModal || deleteUserModal ? <ConfirmationModal /> : <CreateBoardModal />}
       </Box>
     </Modal>
   );
