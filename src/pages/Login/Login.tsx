@@ -54,16 +54,11 @@ export const Login = () => {
       if (signState === 'signUp') {
         dispatch(signUp(signUpUser as ISignUpUser)).then((res) => {
           if (!res.payload) {
-            dispatch(signIn(loginUser as ILoginUser));
+            login();
           }
         });
       } else {
-        dispatch(signIn(loginUser as ILoginUser)).then(async (res) => {
-          if (res.payload) {
-            const id = (await localStorage.getItem('userID')) as string;
-            dispatch(getUser(id));
-          }
-        });
+        login();
       }
     },
   });
@@ -100,6 +95,15 @@ export const Login = () => {
 
   function getTranslate(key: string) {
     return intl.formatMessage({ id: key });
+  }
+
+  function login() {
+    dispatch(signIn(loginUser as ILoginUser)).then(async (res) => {
+      if (res.payload) {
+        const id = (await localStorage.getItem('userID')) as string;
+        dispatch(getUser(id));
+      }
+    });
   }
 
   return token ? (
