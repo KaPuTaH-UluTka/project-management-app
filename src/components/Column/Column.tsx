@@ -125,6 +125,16 @@ export const Column = (props: { column: ColumnType }) => {
                         cursor: 'pointer',
                         borderBottom: '1px solid black',
                       }}
+                      onClick={() =>
+                        dispatch(
+                          openModal({
+                            modal: 'updateTaskModal',
+                            taskId: task.id,
+                            done: task.done,
+                            columnId: props.column.id,
+                          })
+                        )
+                      }
                     >
                       {task.title}
                       <Button
