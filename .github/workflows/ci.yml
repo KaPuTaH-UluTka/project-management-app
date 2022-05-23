@@ -43,7 +43,7 @@ jobs:
 
       - name: StyleLint Checking
         if: ${{ always() && (steps.get_file_changes.outputs.files_added || steps.get_file_changes.outputs.files_modified) }}
-        run: npm run stylelint --config ./.stylelintrc ./.stylelintignore --allow-empty-input ${{ steps.get_file_changes.outputs.files_added }} ${{ steps.get_file_changes.outputs.files_modified }} --fix
+        run: npm run stylelint --config ./.stylelintrc  --ignore-path ./.stylelintignore --allow-empty-input ${{ steps.get_file_changes.outputs.files_added }} ${{ steps.get_file_changes.outputs.files_modified }} --fix
 
   deploy:
     runs-on: ubuntu-latest
