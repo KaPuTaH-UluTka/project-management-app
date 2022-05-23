@@ -5,7 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import noAvatar from '../../assets/no-avatar.png';
-import { delUser, getUser, updateUser } from '../../store/api/signApi';
+import { getUser, updateUser } from '../../store/api/signApi';
 import { useAppDispatch } from '../../hooks/hooks';
 import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
