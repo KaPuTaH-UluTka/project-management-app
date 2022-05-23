@@ -42,7 +42,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint src/",
     "precommit": "lint-staged",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "stylelint": "stylelint **/*.scss"
   },
   "eslintConfig": {
     "extends": [
@@ -81,6 +82,6 @@
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": "eslint --fix",
     "src/**/*.{js,jsx,ts,tsx,css,scss,md}": "prettier --write --ignore-unknown",
-    "src/**/*.{css,scss}": "stylelint"
+    "src/**/*.{css,scss}": "stylelint --fix"
   }
 }
