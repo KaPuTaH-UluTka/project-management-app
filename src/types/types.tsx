@@ -9,6 +9,18 @@ export interface ILoginUser {
   password: string;
 }
 
+export interface ITask {
+  boardId: string;
+  columnId: string;
+  description: string;
+  done: boolean;
+  files: [];
+  id: string;
+  order: number;
+  title: string;
+  userId: string;
+}
+
 export type BoardType = {
   id: string;
   title: string;
