@@ -50,6 +50,9 @@ jobs:
     needs: [linting]
     steps:
       - uses: actions/checkout@v2
+
+      - name: Create build
+      - run: npm install
       - run: npm run build
 
       - name: Deploy to Netlify
