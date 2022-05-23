@@ -51,9 +51,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install Dependencies
+        run: npm ci
+
       - name: Create build
-      - run: npm install
-      - run: npm run build
+        run: npm run build
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
