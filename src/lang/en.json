@@ -45,5 +45,6 @@
   "error.signUp.409": "User with this email already exists",
   "error.getUser.404": "User was not founded",
   "error.updateUser.404": "User was not founded",
-  "error.delUser.404": "User was not founded"
+  "error.delUser.404": "User was not founded",
+  "error.unauthorized": "Session expired, please login again"
 }

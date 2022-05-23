@@ -28,14 +28,18 @@ export const addTask = createAsyncThunk(
         body: JSON.stringify({ title, order, description, userId, done: false }),
       }).then(async (response) => {
         if (!response.ok) {
-          throw new Error();
+          throw new Error(response.status.toString());
+        } else {
+          return await response.text().then((res) => JSON.parse(res));
         }
-        return await response.text().then((res) => JSON.parse(res));
       });
-      // console.log(data);
       return { data };
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '401') return rejectWithValue('error.unauthorized');
+      else return rejectWithValue(message);
     }
   }
 );
@@ -54,11 +58,16 @@ export const deleteTask = createAsyncThunk(
         },
       });
       if (!data.ok) {
-        throw new Error();
+        throw new Error(data.status.toString());
+      } else {
+        return { columnId, taskId };
       }
-      return { columnId, taskId };
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '401') return rejectWithValue('error.unauthorized');
+      else return rejectWithValue(message);
     }
   }
 );
@@ -112,13 +121,18 @@ export const updateTask = createAsyncThunk(
         }),
       }).then(async (response) => {
         if (!response.ok) {
-          throw new Error();
+          throw new Error(response.status.toString());
+        } else {
+          return await response.text().then((res) => JSON.parse(res));
         }
-        return await response.text().then((res) => JSON.parse(res));
       });
       return { data, event };
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '401') return rejectWithValue('error.unauthorized');
+      else return rejectWithValue(message);
     }
   }
 );

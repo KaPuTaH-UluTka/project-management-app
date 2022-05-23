@@ -83,6 +83,7 @@ export const updateUser = createAsyncThunk(
       if (err instanceof Error) message = err.message;
       else message = String(err);
       if (message === '404') return rejectWithValue('error.updateUser.404');
+      else if (message === '401') return rejectWithValue('error.unauthorized');
       else return rejectWithValue(message);
     }
   }
@@ -110,6 +111,7 @@ export const getUser = createAsyncThunk('getUser', async (id: string, { rejectWi
     if (err instanceof Error) message = err.message;
     else message = String(err);
     if (message === '404') return rejectWithValue('error.getUser.404');
+    else if (message === '401') return rejectWithValue('error.unauthorized');
     else return rejectWithValue(message);
   }
 });
@@ -133,6 +135,7 @@ export const delUser = createAsyncThunk('delUser', async (id: string, { rejectWi
     if (err instanceof Error) message = err.message;
     else message = String(err);
     if (message === '404') return rejectWithValue('error.delUser.404');
+    else if (message === '401') return rejectWithValue('error.unauthorized');
     else return rejectWithValue(message);
   }
 });

@@ -1,21 +1,30 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { url } from './url';
 
-export const checkBoards = createAsyncThunk('chekBoards', async () => {
+export const checkBoards = createAsyncThunk('chekBoards', async (action, { rejectWithValue }) => {
   const token = localStorage.getItem('token');
-  const data: Array<{ title: string; id: string }> = await fetch(url + 'boards', {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ` + token,
-    },
-  }).then(async (response) => {
-    if (!response.ok) {
-      throw new Error();
-    }
-    return await response.text().then((res) => JSON.parse(res));
-  });
-  return { data };
+  try {
+    const data: Array<{ title: string; id: string }> = await fetch(url + 'boards', {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ` + token,
+      },
+    }).then(async (response) => {
+      if (!response.ok) {
+        throw new Error(response.status.toString());
+      } else {
+        return await response.text().then((res) => JSON.parse(res));
+      }
+    });
+    return { data };
+  } catch (err) {
+    let message;
+    if (err instanceof Error) message = err.message;
+    else message = String(err);
+    if (message === '401') return rejectWithValue('error.unauthorized');
+    else return rejectWithValue(message);
+  }
 });
 
 export const addBoard = createAsyncThunk(
@@ -33,13 +42,18 @@ export const addBoard = createAsyncThunk(
         body: JSON.stringify(action),
       }).then(async (response) => {
         if (!response.ok) {
-          throw new Error();
+          throw new Error(response.status.toString());
+        } else {
+          return await response.text().then((res) => JSON.parse(res));
         }
-        return await response.text().then((res) => JSON.parse(res));
       });
       return { data };
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '401') return rejectWithValue('error.unauthorized');
+      else return rejectWithValue(message);
     }
   }
 );
@@ -58,11 +72,16 @@ export const deleteBoard = createAsyncThunk(
         },
       });
       if (!data.ok) {
-        throw new Error();
+        throw new Error(data.status.toString());
+      } else {
+        return { boardId };
       }
-      return { boardId };
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '401') return rejectWithValue('error.unauthorized');
+      else return rejectWithValue(message);
     }
   }
 );
@@ -81,13 +100,18 @@ export const openBoard = createAsyncThunk(
         },
       }).then(async (response) => {
         if (!response.ok) {
-          throw new Error();
+          throw new Error(response.status.toString());
+        } else {
+          return await response.text().then((res) => JSON.parse(res));
         }
-        return await response.text().then((res) => JSON.parse(res));
       });
       return { data };
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '401') return rejectWithValue('error.unauthorized');
+      else return rejectWithValue(message);
     }
   }
 );
