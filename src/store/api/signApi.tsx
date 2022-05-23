@@ -84,6 +84,7 @@ export const updateUser = createAsyncThunk(
       else message = String(err);
       if (message === '404') return rejectWithValue('error.updateUser.404');
       else if (message === '401') return rejectWithValue('error.unauthorized');
+      else if (message === '500') return rejectWithValue('error.updateUser.500');
       else return rejectWithValue(message);
     }
   }

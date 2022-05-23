@@ -5,7 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import noAvatar from '../../assets/no-avatar.png';
-import { delUser, updateUser } from '../../store/api/signApi';
+import { delUser, getUser, updateUser } from '../../store/api/signApi';
 import { useAppDispatch } from '../../hooks/hooks';
 import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
@@ -53,7 +53,6 @@ export const Edit = () => {
     },
     validationSchema: validationSchema,
     onSubmit: () => {
-      editProfileForm.values.password = '';
       editProfileForm.values.prevName = editProfileForm.values.name;
       editProfileForm.values.prevEmail = editProfileForm.values.email;
       setNameState(false);
@@ -67,7 +66,13 @@ export const Edit = () => {
             password: editProfileForm.values.password,
           },
         };
-        dispatch(updateUser(updatedUser));
+        dispatch(updateUser(updatedUser)).then(async (res) => {
+          if (res.payload) {
+            dispatch(getUser(id));
+          }
+        });
+        editProfileForm.setFieldValue('password', '');
+        editProfileForm.touched.password = false;
       }
     },
   });
