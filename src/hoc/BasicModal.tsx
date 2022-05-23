@@ -22,11 +22,11 @@ const style = {
 
 const BasicModal = () => {
   const dispatch = useAppDispatch();
-  const { createBoardModal, confirmModal, createColumnModal, createTaskModal } = useAppSelector(
-    (state) => state.openModalReducer
-  );
+  const { createBoardModal, confirmModal, createColumnModal, createTaskModal, updateTaskModal } =
+    useAppSelector((state) => state.openModalReducer);
   let modal = false;
   let title = '';
+
   if (confirmModal) {
     title = 'Confirmation';
     modal = confirmModal;
@@ -43,6 +43,10 @@ const BasicModal = () => {
     title = 'Create new Task';
     modal = createTaskModal;
   }
+  if (updateTaskModal) {
+    title = 'Update Task Information';
+    modal = updateTaskModal;
+  }
 
   return (
     <Modal
@@ -50,7 +54,7 @@ const BasicModal = () => {
       onClose={() =>
         dispatch(
           closeModal(
-            createBoardModal || createColumnModal || createTaskModal
+            createBoardModal || createColumnModal || createTaskModal || updateTaskModal
               ? 'closeCreateModal'
               : 'confirmModal'
           )
@@ -63,7 +67,7 @@ const BasicModal = () => {
           onClick={() => {
             dispatch(
               closeModal(
-                createBoardModal || createColumnModal || createTaskModal
+                createBoardModal || createColumnModal || createTaskModal || updateTaskModal
                   ? 'closeCreateModal'
                   : 'confirmModal'
               )

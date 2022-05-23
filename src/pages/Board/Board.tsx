@@ -21,12 +21,13 @@ export const Board = () => {
   const { boardId } = useParams();
   const dispatch = useAppDispatch();
   const { board } = useAppSelector((state) => state.apiReducer);
+
   useEffect(() => {
     if (boardId) {
       dispatch(openBoard({ boardId }));
     }
   }, []);
-  useEffect(() => console.log(board.columns), [board]);
+
   return (
     <Container fixed className="board">
       {/* <BasicModal>
