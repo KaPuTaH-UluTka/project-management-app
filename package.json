@@ -43,7 +43,7 @@
     "lint": "eslint src/",
     "precommit": "lint-staged",
     "prepare": "husky install",
-    "stylelint": "stylelint **/*.scss",
+    "stylelint": "stylelint **/*.scss --fix",
     "prettier": "prettier --write src/"
   },
   "eslintConfig": {

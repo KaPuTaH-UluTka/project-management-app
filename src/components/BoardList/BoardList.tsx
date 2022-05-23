@@ -8,8 +8,6 @@ import Star from '@mui/icons-material/StarBorder';
 import Button from '@mui/material/Button';
 import { pathes } from '../../pathes/pathes';
 import { useAppDispatch } from '../../hooks/hooks';
-import ConfirmationModal from '../confirmationModal/ConfirmationModal';
-import BasicModal from '../../hoc/BasicModal';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import './boardList.scss';
 import { FormattedMessage } from 'react-intl';

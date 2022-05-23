@@ -7,18 +7,15 @@ import { ColumnType } from '../../types/types';
 import { useState } from 'react';
 import Add from '@mui/icons-material/Add';
 import { useParams } from 'react-router-dom';
-import { addTask } from '../../store/api/taskApi';
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch } from '../../hooks/hooks';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { updateColumn } from '../../store/api/columnApi';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import { Box } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 
 export const Column = (props: { column: ColumnType }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
-  const { board } = useAppSelector((state) => state.apiReducer);
   const [titleColumnState, setTitleColumnState] = useState(false);
   const [titleColumn, setTitleColumn] = useState(props.column.title);
   return (

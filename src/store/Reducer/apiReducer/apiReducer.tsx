@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
 import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardApi';
 import { BoardType } from '../../../types/types';
@@ -104,7 +104,7 @@ const apiSlice = createSlice({
       state.board = board;
       state.process = 'confirmed';
     },
-    [openBoard.rejected.type]: (state) => {
+    [openBoard.rejected.type]: () => {
       // localStorage.setItem('token', '');
       // state.token = '';
       // state.process = 'error';
@@ -143,7 +143,7 @@ const apiSlice = createSlice({
     },
     [updateColumn.fulfilled.type]: (state, action) => {
       const columnId = action.payload.data.id;
-      const { title, order } = action.payload.data;
+      const { title } = action.payload.data;
       switch (action.payload.event) {
         case 'changeName':
           const indexColumn = state.board.columns.findIndex((item) => item.id === columnId);
@@ -155,7 +155,7 @@ const apiSlice = createSlice({
           break;
       }
     },
-    [updateTask.fulfilled.type]: (state, action) => {},
+    [updateTask.fulfilled.type]: () => {},
   },
 });
 
