@@ -173,7 +173,6 @@ export const updateTaskViaModal = createAsyncThunk(
   ) => {
     const token = localStorage.getItem('token');
     const { boardId, columnId, title, description, order, userId, taskId, done } = action;
-    console.log(action);
     try {
       const data = await fetch(`${url}boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
         method: 'PUT',
