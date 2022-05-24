@@ -12,6 +12,7 @@ import { openModal } from '../../store/Reducer/confirmationReducer/confirmationR
 import { updateColumn } from '../../store/api/columnApi';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { FormattedMessage } from 'react-intl';
+import { getTask } from '../../store/api/taskApi';
 
 export const Column = (props: { column: ColumnType }) => {
   const dispatch = useAppDispatch();
@@ -122,7 +123,14 @@ export const Column = (props: { column: ColumnType }) => {
                         cursor: 'pointer',
                         borderBottom: '1px solid black',
                       }}
-                      onClick={() =>
+                      onClick={async () => {
+                        await dispatch(
+                          getTask({
+                            boardId: boardId as string,
+                            columnId: props.column.id,
+                            taskId: task.id,
+                          })
+                        );
                         dispatch(
                           openModal({
                             modal: 'updateTaskModal',
@@ -130,15 +138,16 @@ export const Column = (props: { column: ColumnType }) => {
                             done: task.done,
                             columnId: props.column.id,
                           })
-                        )
-                      }
+                        );
+                      }}
                     >
                       {task.title}
                       <Button
                         color="error"
                         variant="contained"
                         size="small"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           dispatch(
                             openModal({
                               boardId: boardId,

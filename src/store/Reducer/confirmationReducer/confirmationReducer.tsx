@@ -52,15 +52,15 @@ const openModalSlice = createSlice({
           state.createTaskModal = true;
           break;
         case 'updateTaskModal':
-          state.updateTaskModal = true;
           state.taskId = action.payload.taskId || '';
           state.columnId = action.payload.columnId || '';
           state.userId = action.payload.userId || '';
           state.done = action.payload.done || false;
+          state.updateTaskModal = true;
           break;
         case 'deleteUserModal':
-          state.deleteUserModal = true;
           state.userId = action.payload.userId || '';
+          state.deleteUserModal = true;
           break;
       }
       state.deleteBoardId = action.payload.boardId || '';
@@ -73,7 +73,6 @@ const openModalSlice = createSlice({
           state.createBoardModal = false;
           state.createColumnModal = false;
           state.createTaskModal = false;
-          state.updateTaskModal = false;
           break;
         case 'confirmModal':
           state.confirmModal = false;

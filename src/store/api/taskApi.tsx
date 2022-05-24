@@ -94,13 +94,17 @@ export const getTask = createAsyncThunk(
         },
       }).then(async (response) => {
         if (!response.ok) {
-          throw new Error();
+          throw new Error(response.status.toString());
         }
         return await response.json();
       });
       return { data };
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '401') return rejectWithValue('error.unauthorized');
+      else return rejectWithValue(message);
     }
   }
 );
@@ -187,7 +191,6 @@ export const updateTaskViaModal = createAsyncThunk(
   ) => {
     const token = localStorage.getItem('token');
     const { boardId, columnId, title, description, order, userId, taskId, done } = action;
-    console.log(action);
     try {
       const data = await fetch(`${url}boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
         method: 'PUT',
@@ -207,60 +210,46 @@ export const updateTaskViaModal = createAsyncThunk(
         }),
       }).then(async (response) => {
         if (!response.ok) {
-          throw new Error();
+          throw new Error(response.status.toString());
         }
         return await response.text().then((res) => JSON.parse(res));
       });
       return { data };
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '401') return rejectWithValue('error.unauthorized');
+      else return rejectWithValue(message);
     }
   }
 );
 
-export const updateTaskViaModal = createAsyncThunk(
-  'updateTask',
-  async (
-    action: {
-      boardId: string;
-      columnId: string;
-      title: string;
-      order: number;
-      description: string;
-      userId: string;
-      taskId: string;
-      done: boolean;
-    },
-    { rejectWithValue }
-  ) => {
+export const uploadFile = createAsyncThunk(
+  'uploadFile',
+  async (action: FormData, { rejectWithValue }) => {
     const token = localStorage.getItem('token');
-    const { boardId, columnId, title, description, order, userId, taskId, done } = action;
     try {
-      const data = await fetch(`${url}boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
-        method: 'PUT',
+      const data = await fetch(`${url}file`, {
+        method: 'POST',
         headers: {
-          accept: 'application/json',
-          'Content-Type': 'application/json',
+          accept: '*/*',
           Authorization: `Bearer ` + token,
         },
-        body: JSON.stringify({
-          title,
-          order,
-          description,
-          userId,
-          boardId,
-          columnId,
-          done,
-        }),
+        body: action,
       }).then(async (response) => {
         if (!response.ok) {
-          throw new Error();
+          throw new Error(response.status.toString());
         }
-        return await response.text().then((res) => JSON.parse(res));
+        return await response.json();
       });
       return { data };
-    } catch {
-      return rejectWithValue({});
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '401') return rejectWithValue('error.unauthorized');
+      else return rejectWithValue(message);
     }
   }
 );

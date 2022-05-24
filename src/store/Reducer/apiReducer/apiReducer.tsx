@@ -4,7 +4,7 @@ import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardAp
 import { BoardType } from '../../../types/types';
 import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
 import { ColumnType, TaskType } from '../../../types/types';
-import { addTask, deleteTask, updateTask } from '../../api/taskApi';
+import { addTask, deleteTask, getTask, updateTask, updateTaskViaModal } from '../../api/taskApi';
 import { delUser, getUser, signIn, signUp, updateUser } from '../../api/signApi';
 
 const apiState = {
@@ -18,6 +18,8 @@ const apiState = {
   column: {} as ColumnType,
   process: 'loading',
   apiErrors: [] as Array<string>,
+  taskTitle: '',
+  taskDesc: '',
 };
 
 const apiSlice = createSlice({
@@ -196,6 +198,13 @@ const apiSlice = createSlice({
       state.apiErrors.push(`${action.payload}`);
     },
     [updateTask.fulfilled.type]: () => {},
+    [updateTaskViaModal.fulfilled.type]: () => {},
+    [getTask.fulfilled.type]: (state, action) => {
+      console.log(action.payload.data);
+      const taskInfo = action.payload.data;
+      state.taskTitle = taskInfo.title;
+      state.taskDesc = taskInfo.description;
+    },
   },
 });
 

@@ -7,12 +7,10 @@ import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { TextField } from '@mui/material';
 import { Box } from '@mui/system';
-import { openBoard } from '../../store/api/boardApi';
-
 import './createBoardModal.scss';
 import { addColumn } from '../../store/api/columnApi';
 import { useParams } from 'react-router-dom';
-import { addTask, updateTaskViaModal } from '../../store/api/taskApi';
+import { addTask } from '../../store/api/taskApi';
 import { FormattedMessage } from 'react-intl';
 
 const CreateBoardModal = () => {
@@ -23,12 +21,25 @@ const CreateBoardModal = () => {
     createColumnModal,
     createTaskModal,
     updateTaskModal,
+    deleteUserModal,
     order,
     userId,
-    taskId,
     columnId,
-    done,
   } = useAppSelector((state) => state.openModalReducer);
+
+  function chooseCloseModal() {
+    let modalStatus;
+    if (createBoardModal || createColumnModal || createTaskModal) {
+      modalStatus = 'closeCreateModal';
+    } else if (deleteUserModal) {
+      modalStatus = 'deleteUserModal';
+    } else if (updateTaskModal) {
+      modalStatus = 'updateTaskModal';
+    } else {
+      modalStatus = 'confirmModal';
+    }
+    dispatch(closeModal(modalStatus));
+  }
 
   const validationSchema =
     createBoardModal || createTaskModal
@@ -64,32 +75,9 @@ const CreateBoardModal = () => {
             boardId: boardId as string,
           })
         );
-      } else if (updateTaskModal) {
-        const userId = localStorage.getItem('userID') || '';
-
-        dispatch(
-          updateTaskViaModal({
-            title: `${formik.values.title}`,
-            description: `${formik.values.description}`,
-            order,
-            columnId,
-            userId,
-            taskId,
-            boardId: boardId as string,
-            done,
-          })
-        );
-
-        setTimeout(() => dispatch(openBoard({ boardId: boardId as string })), 250);
       }
 
-      dispatch(
-        closeModal(
-          createBoardModal || createColumnModal || createTaskModal || updateTaskModal
-            ? 'closeCreateModal'
-            : 'confirmModal'
-        )
-      );
+      chooseCloseModal();
     },
   });
 

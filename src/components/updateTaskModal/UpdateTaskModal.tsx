@@ -1,32 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Button from '@mui/material/Button';
 import { closeModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { useFormik } from 'formik';
-import { Box, Container, Input, TextField } from '@mui/material';
-import { getTask, updateTaskViaModal } from '../../store/api/taskApi';
+import { Box, Container, Input, TextField, ThemeProvider, Typography } from '@mui/material';
+import { updateTaskViaModal, uploadFile } from '../../store/api/taskApi';
 import * as yup from 'yup';
 import { useParams } from 'react-router-dom';
+import IconButton from '@mui/material/IconButton';
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
+import {
+  btnContainerStyle,
+  descContainerStyle,
+  descInputStyle,
+  modalBoxStyle,
+  titleContainerStyle,
+  titleInputStyle,
+  titleStyle,
+} from './updateTaskModalStyles';
+import { violetTheme } from '../../style/rootStyles';
 
 const UpdateTaskModal = () => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
   const { order, taskId, columnId, done } = useAppSelector((state) => state.openModalReducer);
-  const [editMode, setEditMode] = useState(false);
-  const [taskTitle, setTaskTitle] = useState('');
-  const [taskDesc, setTaskDesc] = useState('');
+  const { taskTitle, taskDesc } = useAppSelector((state) => state.apiReducer);
+  const [titleState, setTitleState] = useState(false);
+  const [descState, setDescState] = useState(false);
   const updateTaskSchema = yup.object({
-    title: yup.string().required('Title is required'),
-    description: yup.string().required('Title is required'),
-  });
-  useEffect(() => {
-    dispatch(getTask({ boardId: boardId as string, columnId, taskId }));
+    title: yup.string().required(),
+    description: yup.string().required(),
   });
   const updateTaskForm = useFormik({
     initialValues: {
-      title: '',
-      description: '',
+      title: taskTitle,
+      prevTitle: taskTitle,
+      description: taskDesc,
+      prevDescription: taskDesc,
       file: Blob,
     },
     validationSchema: updateTaskSchema,
@@ -48,59 +60,117 @@ const UpdateTaskModal = () => {
     },
   });
 
-  function handleUpload(e: React.FormEvent) {
+  function changeTitle() {
+    setTitleState(!titleState);
+  }
+
+  function changeDesc() {
+    setDescState(!descState);
+  }
+
+  function cancelChangeTitle() {
+    updateTaskForm.values.title = updateTaskForm.values.prevTitle;
+    changeTitle();
+  }
+
+  function cancelChangeDesc() {
+    updateTaskForm.values.description = updateTaskForm.values.prevDescription;
+    changeDesc();
+  }
+  async function handleUpload(e: React.FormEvent) {
     const target = e.target as HTMLInputElement;
-    const fileReader = new FileReader();
     if (target.files) {
-      fileReader.readAsDataURL(target.files[0]);
-      updateTaskForm.setFieldValue('file', target.files[0]);
+      const formData = new FormData();
+      formData.append('taskId', taskId);
+      formData.append('file', target.files[0]);
+      dispatch(uploadFile(formData));
     }
   }
 
   return (
     <>
-      <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={updateTaskForm.handleSubmit}>
-        <TextField
-          label={<FormattedMessage id="boardModal.title" defaultMessage="Title" />}
-          variant="outlined"
-          id="title"
-          name="title"
-          fullWidth
-          value={updateTaskForm.values.title}
-          onChange={(e) => {
-            updateTaskForm.handleChange(e);
-          }}
-          error={updateTaskForm.touched.title}
-        />
-        <TextField
-          style={{ marginTop: 20 }}
-          label="Description"
-          variant="outlined"
-          id="description"
-          name="description"
-          fullWidth
-          value={updateTaskForm.values.description}
-          onChange={(e) => {
-            updateTaskForm.handleChange(e);
-          }}
-          error={updateTaskForm.touched.title}
-        />
-        <Input id="avatar" type="file" onChange={(e) => handleUpload(e)} />
-        <Container>
-          <Button variant="contained" color="error" sx={{ marginRight: 1 }} type="submit">
-            <FormattedMessage id="confirmModal.agree" defaultMessage="Agree" />
-          </Button>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => {
-              dispatch(closeModal('updateTaskModal'));
-            }}
-          >
-            <FormattedMessage id="confirmModal.return" defaultMessage="Return" />
-          </Button>
-        </Container>
-      </Box>
+      <ThemeProvider theme={violetTheme}>
+        <Box component="form" noValidate sx={modalBoxStyle} onSubmit={updateTaskForm.handleSubmit}>
+          <Container sx={titleContainerStyle}>
+            {titleState ? (
+              <>
+                <Input
+                  id="title"
+                  sx={titleInputStyle}
+                  value={updateTaskForm.values.title}
+                  onChange={updateTaskForm.handleChange}
+                  error={updateTaskForm.touched.title && Boolean(updateTaskForm.errors.title)}
+                />
+                <IconButton onClick={changeTitle}>
+                  <CheckIcon />
+                </IconButton>
+                <IconButton onClick={cancelChangeTitle}>
+                  <ClearIcon />
+                </IconButton>
+              </>
+            ) : (
+              <Typography sx={titleStyle} onClick={changeTitle}>
+                {updateTaskForm.values.title}
+              </Typography>
+            )}
+          </Container>
+          <Container sx={descContainerStyle}>
+            <Typography sx={{ pr: 1, fontSize: 18 }}>
+              <FormattedMessage id="updateModal.description" defaultMessage="Description:" />
+            </Typography>
+            {descState ? (
+              <>
+                <TextField
+                  id="description"
+                  variant="standard"
+                  multiline
+                  rows={3}
+                  sx={descInputStyle}
+                  value={updateTaskForm.values.description}
+                  onChange={updateTaskForm.handleChange}
+                  error={
+                    updateTaskForm.touched.description && Boolean(updateTaskForm.errors.description)
+                  }
+                />
+                <IconButton onClick={changeDesc}>
+                  <CheckIcon />
+                </IconButton>
+                <IconButton onClick={cancelChangeDesc}>
+                  <ClearIcon />
+                </IconButton>
+              </>
+            ) : (
+              <Typography sx={{ wordWrap: 'break-word' }} onClick={changeDesc}>
+                {updateTaskForm.values.description}
+              </Typography>
+            )}
+          </Container>
+          <Container>
+            <Typography sx={{ pr: 1, fontSize: 18 }}>Attachment:</Typography>
+            <Input id="avatar" type="file" onChange={(e) => handleUpload(e)} />
+          </Container>
+          <Container sx={btnContainerStyle}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ marginRight: 1, width: 50 }}
+              type="submit"
+            >
+              <FormattedMessage id="updateModal.save" defaultMessage="Save" />
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              sx={{ width: 70 }}
+              onClick={() => {
+                dispatch(closeModal('updateTaskModal'));
+              }}
+            >
+              <FormattedMessage id="confirmModal.return" defaultMessage="Return" />
+            </Button>
+          </Container>
+        </Box>
+      </ThemeProvider>
     </>
   );
 };

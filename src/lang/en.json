@@ -35,6 +35,8 @@
   "confirmModal.action": "Confirm the action on the page",
   "confirmModal.agree": "Agree",
   "confirmModal.return": "Return",
+  "updateModal.save": "Save",
+  "updateModal.description": "Description:",
   "boardModal.title": "Title",
   "boardModal.create": "Create",
   "boardModal.update": "Update",

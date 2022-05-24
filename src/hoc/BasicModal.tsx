@@ -55,7 +55,7 @@ const BasicModal = () => {
     modal = deleteUserModal;
   }
   if (updateTaskModal) {
-    title = 'Task Information';
+    title = '';
     modal = updateTaskModal;
   }
 
@@ -85,7 +85,8 @@ const BasicModal = () => {
           {title}
         </Typography>
         {updateTaskModal && <UpdateTaskModal />}
-        {confirmModal || deleteUserModal ? <ConfirmationModal /> : <CreateBoardModal />}
+        {(confirmModal || deleteUserModal) && <ConfirmationModal />}
+        {(createBoardModal || createColumnModal || createTaskModal) && <CreateBoardModal />}
       </Box>
     </Modal>
   );
