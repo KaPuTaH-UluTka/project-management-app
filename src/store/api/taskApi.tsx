@@ -217,3 +217,50 @@ export const updateTaskViaModal = createAsyncThunk(
     }
   }
 );
+
+export const updateTaskViaModal = createAsyncThunk(
+  'updateTask',
+  async (
+    action: {
+      boardId: string;
+      columnId: string;
+      title: string;
+      order: number;
+      description: string;
+      userId: string;
+      taskId: string;
+      done: boolean;
+    },
+    { rejectWithValue }
+  ) => {
+    const token = localStorage.getItem('token');
+    const { boardId, columnId, title, description, order, userId, taskId, done } = action;
+    try {
+      const data = await fetch(`${url}boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ` + token,
+        },
+        body: JSON.stringify({
+          title,
+          order,
+          description,
+          userId,
+          boardId,
+          columnId,
+          done,
+        }),
+      }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error();
+        }
+        return await response.text().then((res) => JSON.parse(res));
+      });
+      return { data };
+    } catch {
+      return rejectWithValue({});
+    }
+  }
+);

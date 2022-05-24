@@ -7,17 +7,28 @@ import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { TextField } from '@mui/material';
 import { Box } from '@mui/system';
+import { openBoard } from '../../store/api/boardApi';
+
 import './createBoardModal.scss';
 import { addColumn } from '../../store/api/columnApi';
 import { useParams } from 'react-router-dom';
-import { addTask } from '../../store/api/taskApi';
+import { addTask, updateTaskViaModal } from '../../store/api/taskApi';
 import { FormattedMessage } from 'react-intl';
 
 const CreateBoardModal = () => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
-  const { createBoardModal, createColumnModal, createTaskModal, order, userId, columnId } =
-    useAppSelector((state) => state.openModalReducer);
+  const {
+    createBoardModal,
+    createColumnModal,
+    createTaskModal,
+    updateTaskModal,
+    order,
+    userId,
+    taskId,
+    columnId,
+    done,
+  } = useAppSelector((state) => state.openModalReducer);
 
   const validationSchema =
     createBoardModal || createTaskModal
@@ -53,10 +64,28 @@ const CreateBoardModal = () => {
             boardId: boardId as string,
           })
         );
+      } else if (updateTaskModal) {
+        const userId = localStorage.getItem('userID') || '';
+
+        dispatch(
+          updateTaskViaModal({
+            title: `${formik.values.title}`,
+            description: `${formik.values.description}`,
+            order,
+            columnId,
+            userId,
+            taskId,
+            boardId: boardId as string,
+            done,
+          })
+        );
+
+        setTimeout(() => dispatch(openBoard({ boardId: boardId as string })), 250);
       }
+
       dispatch(
         closeModal(
-          createBoardModal || createColumnModal || createTaskModal
+          createBoardModal || createColumnModal || createTaskModal || updateTaskModal
             ? 'closeCreateModal'
             : 'confirmModal'
         )
@@ -84,7 +113,7 @@ const CreateBoardModal = () => {
           }}
           error={formik.touched.title}
         />
-        {createBoardModal || createTaskModal ? (
+        {createBoardModal || createTaskModal || updateTaskModal ? (
           <TextField
             style={{ marginTop: 20 }}
             label="Description"
@@ -108,7 +137,10 @@ const CreateBoardModal = () => {
             endIcon={<AddIcon />}
             disabled={activeSubmit()}
           >
-            <FormattedMessage id="boardModal.create" defaultMessage="Create" />
+            <FormattedMessage
+              id={updateTaskModal ? 'boardModal.update' : 'boardModal.create'}
+              defaultMessage={updateTaskModal ? 'Update' : 'Create'}
+            />
           </Button>
         </div>
       </Box>
