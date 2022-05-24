@@ -21,6 +21,7 @@ import { FormattedMessage } from 'react-intl';
 import { Container } from '@mui/material';
 import { takeAllTasks } from '../../store/api/taskApi';
 import { useEffect } from 'react';
+import { url } from '../../store/api/url';
 
 export default function BoardList(props: {
   boards: {
