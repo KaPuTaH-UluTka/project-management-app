@@ -22,10 +22,17 @@ const style = {
 
 const BasicModal = () => {
   const dispatch = useAppDispatch();
-  const { createBoardModal, confirmModal, createColumnModal, createTaskModal, deleteUserModal } =
-    useAppSelector((state) => state.openModalReducer);
+  const {
+    createBoardModal,
+    confirmModal,
+    createColumnModal,
+    createTaskModal,
+    deleteUserModal,
+    updateTaskModal,
+  } = useAppSelector((state) => state.openModalReducer);
   let modal = false;
   let title = '';
+
   if (confirmModal) {
     title = 'Confirmation';
     modal = confirmModal;
@@ -46,6 +53,10 @@ const BasicModal = () => {
     title = 'Confirm account deletion';
     modal = deleteUserModal;
   }
+  if (updateTaskModal) {
+    title = 'Update Task Information';
+    modal = updateTaskModal;
+  }
 
   function chooseDeleteModal() {
     let modalStatus;
@@ -53,6 +64,8 @@ const BasicModal = () => {
       modalStatus = 'closeCreateModal';
     } else if (deleteUserModal) {
       modalStatus = 'deleteUserModal';
+    } else if (updateTaskModal) {
+      modalStatus = 'updateTaskModal';
     } else {
       modalStatus = 'confirmModal';
     }
