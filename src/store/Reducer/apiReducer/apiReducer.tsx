@@ -200,7 +200,6 @@ const apiSlice = createSlice({
     [updateTask.fulfilled.type]: () => {},
     [updateTaskViaModal.fulfilled.type]: () => {},
     [getTask.fulfilled.type]: (state, action) => {
-      console.log(action.payload.data);
       const taskInfo = action.payload.data;
       state.taskTitle = taskInfo.title;
       state.taskDesc = taskInfo.description;
