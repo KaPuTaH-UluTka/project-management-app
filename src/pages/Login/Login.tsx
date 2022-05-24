@@ -99,7 +99,7 @@ export const Login = () => {
 
   function login() {
     dispatch(signIn(loginUser as ILoginUser)).then(async (res) => {
-      if (res.payload) {
+      if (typeof res.payload === 'object') {
         const id = (await localStorage.getItem('userID')) as string;
         dispatch(getUser(id));
       }
