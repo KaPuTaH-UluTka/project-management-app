@@ -122,3 +122,28 @@ export const updateTask = createAsyncThunk(
     }
   }
 );
+
+export const takeAllTasks = createAsyncThunk(
+  'takeAllTasks',
+  async (action: { select: string; searchValue: string }, { rejectWithValue }) => {
+    const token = localStorage.getItem('token');
+    const { select, searchValue } = action;
+    try {
+      const data = await fetch(`${url}search/tasks`, {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ` + token,
+        },
+      }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error();
+        }
+        return await response.text().then((res) => JSON.parse(res));
+      });
+      return { data, select, searchValue };
+    } catch {
+      return rejectWithValue({});
+    }
+  }
+);

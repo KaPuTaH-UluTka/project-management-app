@@ -1,11 +1,13 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
 import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardApi';
 import { BoardType } from '../../../types/types';
 import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
 import { ColumnType, TaskType } from '../../../types/types';
-import { addTask, deleteTask, updateTask } from '../../api/taskApi';
+import { addTask, deleteTask, updateTask, takeAllTasks } from '../../api/taskApi';
 import { getUser, signIn, updateUser } from '../../api/signApi';
+
+type SaerchTask = { title: string; description: string; user: { name: string } };
 
 const apiState = {
   token: '',
@@ -17,6 +19,7 @@ const apiState = {
   oldOrder: '',
   column: {} as ColumnType,
   process: 'loading',
+  tasks: [] as Array<TaskType>,
 };
 
 const apiSlice = createSlice({
@@ -62,6 +65,9 @@ const apiSlice = createSlice({
       localStorage.setItem('userName', updatedUser.name);
       localStorage.setItem('login', updatedUser.login);
     },
+    [checkBoards.pending.type]: (state) => {
+      state.process = 'loading';
+    },
     [checkBoards.fulfilled.type]: (state, action) => {
       state.boards = [...action.payload.data];
       state.process = 'confirmed';
@@ -94,6 +100,9 @@ const apiSlice = createSlice({
       state.token = '';
       state.process = 'error';
     },
+    [openBoard.pending.type]: (state) => {
+      state.process = 'loading';
+    },
     [openBoard.fulfilled.type]: (state, action) => {
       const board = { ...action.payload.data };
       board.columns = board.columns.sort((a: ColumnType, b: ColumnType) => a.order - b.order);
@@ -105,9 +114,9 @@ const apiSlice = createSlice({
       state.process = 'confirmed';
     },
     [openBoard.rejected.type]: (state) => {
-      // localStorage.setItem('token', '');
-      // state.token = '';
-      // state.process = 'error';
+      localStorage.setItem('token', '');
+      state.token = '';
+      state.process = 'error';
     },
     [addColumn.fulfilled.type]: (state, action) => {
       const column = action.payload.data;
@@ -156,6 +165,30 @@ const apiSlice = createSlice({
       }
     },
     [updateTask.fulfilled.type]: (state, action) => {},
+    [takeAllTasks.pending.type]: (state) => {
+      state.process = 'loading';
+    },
+    [takeAllTasks.fulfilled.type]: (state, action) => {
+      const { data, searchValue, select } = action.payload;
+      let tasks;
+      switch (select) {
+        case 'user':
+          tasks = data.filter(
+            (task: SaerchTask) => task.user.name.toUpperCase() === searchValue.toUpperCase()
+          );
+          break;
+        case 'description':
+          tasks = data.filter((task: SaerchTask) => task.description.includes(searchValue));
+          break;
+        case 'title':
+          tasks = data.filter(
+            (task: SaerchTask) => task.title.toUpperCase() === searchValue.toUpperCase()
+          );
+          break;
+      }
+      state.tasks = [...tasks];
+      state.process = 'confirmed';
+    },
   },
 });
 
