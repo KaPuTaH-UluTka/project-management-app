@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { closeModal } from '../store/Reducer/confirmationReducer/confirmationReducer';
 import ConfirmationModal from '../components/confirmationModal/ConfirmationModal';
 import CreateBoardModal from '../components/createBoardModal/CreateBoardModal';
+import UpdateTaskModal from '../components/updateTaskModal/UpdateTaskModal';
 
 const style = {
   position: 'absolute',
@@ -54,7 +55,7 @@ const BasicModal = () => {
     modal = deleteUserModal;
   }
   if (updateTaskModal) {
-    title = 'Update Task Information';
+    title = 'Task Information';
     modal = updateTaskModal;
   }
 
@@ -83,6 +84,7 @@ const BasicModal = () => {
         <Typography id="modal-modal-title" variant="h5" component="h2" style={{ fontWeight: 600 }}>
           {title}
         </Typography>
+        {updateTaskModal && <UpdateTaskModal />}
         {confirmModal || deleteUserModal ? <ConfirmationModal /> : <CreateBoardModal />}
       </Box>
     </Modal>

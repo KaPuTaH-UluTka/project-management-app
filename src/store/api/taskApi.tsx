@@ -72,6 +72,39 @@ export const deleteTask = createAsyncThunk(
   }
 );
 
+export const getTask = createAsyncThunk(
+  'getTask',
+  async (
+    action: {
+      boardId: string;
+      columnId: string;
+      taskId: string;
+    },
+    { rejectWithValue }
+  ) => {
+    const token = localStorage.getItem('token');
+    const { boardId, columnId, taskId } = action;
+    try {
+      const data = await fetch(`${url}boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ` + token,
+        },
+      }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error();
+        }
+        return await response.json();
+      });
+      return { data };
+    } catch {
+      return rejectWithValue({});
+    }
+  }
+);
+
 export const updateTask = createAsyncThunk(
   'updateTask',
   async (
@@ -154,6 +187,7 @@ export const updateTaskViaModal = createAsyncThunk(
   ) => {
     const token = localStorage.getItem('token');
     const { boardId, columnId, title, description, order, userId, taskId, done } = action;
+    console.log(action);
     try {
       const data = await fetch(`${url}boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
         method: 'PUT',

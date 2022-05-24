@@ -37,7 +37,6 @@
   "confirmModal.return": "Return",
   "boardModal.title": "Title",
   "boardModal.create": "Create",
-  "boardModal.update": "Update",
   "welcome.title": "Welcome to our RS-Trello",
   "welcome.info": "RS-Trello is a visual tool that allows your team to manage projects, workflows, and tasks of all types. Add files, task lists - and customize it all so that it is convenient for the team to work.",
   "welcome.created": "The project was created by:",
