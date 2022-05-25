@@ -3,3 +3,4 @@
 .stylelintrc
 .prettierrc
 .eslintignore
+public/_redirects
