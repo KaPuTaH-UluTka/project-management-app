@@ -10,9 +10,8 @@ import { closeModal } from '../../store/Reducer/confirmationReducer/confirmation
 export const TasksModal = () => {
   const dispatch = useAppDispatch();
   const { tasks } = useAppSelector((state) => state.apiReducer);
-  useEffect(() => console.log(tasks), [tasks]);
   return (
-    <Box>
+    <Box style={{ overflow: 'scroll', maxHeight: '500px' }}>
       <List>
         {tasks.map((task, index) => {
           return (

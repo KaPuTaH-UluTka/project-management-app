@@ -19,7 +19,7 @@ const style = {
   borderRadius: '10px',
   boxShadow: 24,
   p: 2.5,
-  overflowY: 'scroll',
+  overflow: 'hidden',
 };
 
 const BasicModal = () => {
@@ -55,7 +55,7 @@ const BasicModal = () => {
       onClose={() =>
         dispatch(
           closeModal(
-            createBoardModal || createColumnModal || createTaskModal
+            createBoardModal || createColumnModal || createTaskModal || searchTasksModal
               ? 'closeCreateModal'
               : 'confirmModal'
           )

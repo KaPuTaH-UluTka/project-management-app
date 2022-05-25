@@ -31,7 +31,6 @@ const openModalSlice = createSlice({
         };
       }
     ) => {
-      console.log(action);
       switch (action.payload.modal) {
         case 'createBoardModal':
           state.createBoardModal = true;
