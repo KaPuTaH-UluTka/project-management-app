@@ -26,7 +26,7 @@ const UpdateTaskModal = () => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
   const { order, taskId, columnId, done } = useAppSelector((state) => state.openModalReducer);
-  const { taskTitle, taskDesc } = useAppSelector((state) => state.apiReducer);
+  const { taskTitle, taskDesc, taskFiles } = useAppSelector((state) => state.apiReducer);
   const [titleState, setTitleState] = useState(false);
   const [descState, setDescState] = useState(false);
   const updateTaskSchema = yup.object({
@@ -83,6 +83,8 @@ const UpdateTaskModal = () => {
       const formData = new FormData();
       formData.append('taskId', taskId);
       formData.append('file', target.files[0]);
+      console.log(target.files[0]);
+      console.log(taskFiles);
       dispatch(uploadFile(formData));
     }
   }
@@ -146,22 +148,26 @@ const UpdateTaskModal = () => {
             )}
           </Container>
           <Container>
-            <Typography sx={{ pr: 1, fontSize: 18 }}>Attachment:</Typography>
+            <Typography sx={{ pr: 1, fontSize: 18 }}>
+              <FormattedMessage id="updateModal.attachment" defaultMessage="Attachments:" />
+            </Typography>
+            {/*{taskFiles.map((e) => {*/}
+            {/*  const blob = new File([e.fileSize.toString()], e.fileName);*/}
+            {/*  return (*/}
+            {/*    <div key={e.fileName}>*/}
+            {/*      <img src={URL.createObjectURL(blob)} alt="" />*/}
+            {/*    </div>*/}
+            {/*  );*/}
+            {/*})}*/}
             <Input id="avatar" type="file" onChange={(e) => handleUpload(e)} />
           </Container>
           <Container sx={btnContainerStyle}>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ marginRight: 1, width: 50 }}
-              type="submit"
-            >
+            <Button variant="contained" color="primary" sx={{ marginRight: 1 }} type="submit">
               <FormattedMessage id="updateModal.save" defaultMessage="Save" />
             </Button>
             <Button
               variant="contained"
               color="success"
-              sx={{ width: 70 }}
               onClick={() => {
                 dispatch(closeModal('updateTaskModal'));
               }}

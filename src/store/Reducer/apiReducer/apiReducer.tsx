@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
 import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardApi';
-import { BoardType } from '../../../types/types';
+import { BoardType, ITaskFiles } from '../../../types/types';
 import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
 import { ColumnType, TaskType } from '../../../types/types';
 import { addTask, deleteTask, getTask, updateTask, updateTaskViaModal } from '../../api/taskApi';
@@ -20,6 +20,7 @@ const apiState = {
   apiErrors: [] as Array<string>,
   taskTitle: '',
   taskDesc: '',
+  taskFiles: [] as ITaskFiles[],
 };
 
 const apiSlice = createSlice({
@@ -203,6 +204,7 @@ const apiSlice = createSlice({
       const taskInfo = action.payload.data;
       state.taskTitle = taskInfo.title;
       state.taskDesc = taskInfo.description;
+      state.taskFiles = taskInfo.files;
     },
   },
 });

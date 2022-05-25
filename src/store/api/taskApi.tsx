@@ -16,7 +16,6 @@ export const addTask = createAsyncThunk(
   ) => {
     const token = localStorage.getItem('token');
     const { boardId, title, order, columnId, userId, description } = action;
-    console.log({ title, order, description, userId });
     try {
       const data = await fetch(`${url}boards/${boardId}/columns/${columnId}/tasks`, {
         method: 'POST',

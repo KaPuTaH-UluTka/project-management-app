@@ -36,6 +36,7 @@
   "confirmModal.return": "Отмена",
   "updateModal.save": "Сохранить",
   "updateModal.description": "Описание:",
+  "updateModal.attachment": "Вложения:",
   "boardModal.title": "Заголовок",
   "boardModal.create": "Создать",
   "boardModal.update": "Обновить",

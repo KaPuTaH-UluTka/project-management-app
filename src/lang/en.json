@@ -37,6 +37,7 @@
   "confirmModal.return": "Return",
   "updateModal.save": "Save",
   "updateModal.description": "Description:",
+  "updateModal.attachment": "Attachments:",
   "boardModal.title": "Title",
   "boardModal.create": "Create",
   "boardModal.update": "Update",
