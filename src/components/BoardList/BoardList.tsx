@@ -14,13 +14,12 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import { pathes } from '../../pathes/pathes';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { useAppDispatch } from '../../hooks/hooks';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import './boardList.scss';
 import { FormattedMessage } from 'react-intl';
 import { Container } from '@mui/material';
 import { takeAllTasks } from '../../store/api/taskApi';
-import { useEffect } from 'react';
 
 export default function BoardList(props: {
   boards: {
@@ -29,7 +28,6 @@ export default function BoardList(props: {
     id: string;
   }[];
 }) {
-  const { tasks } = useAppSelector((state) => state.apiReducer);
   const validationSchema = yup.object({
     search: yup.string().required('Write search info'),
     select: yup.string().required('Choise your search selector'),
@@ -38,7 +36,7 @@ export default function BoardList(props: {
   const formik = useFormik({
     initialValues: {
       search: '',
-      select: 'Choise search select',
+      select: 'Choise search option',
     },
     validationSchema: validationSchema,
     onSubmit: (e) => {
@@ -48,7 +46,7 @@ export default function BoardList(props: {
   });
 
   const activeSubmit = () => {
-    return formik.errors.search !== undefined || formik.values.select === 'Choise search select';
+    return formik.errors.search !== undefined || formik.values.select === 'Choise search option';
   };
   return (
     <Container>
@@ -64,7 +62,7 @@ export default function BoardList(props: {
           }}
         >
           <Box>
-            <InputLabel id="label-search">Search value</InputLabel>
+            <InputLabel id="label-search">Search task value</InputLabel>
             <TextField
               style={{ textAlign: 'center', display: 'block', width: 200 }}
               variant="outlined"
@@ -80,7 +78,7 @@ export default function BoardList(props: {
             />
           </Box>
           <Box>
-            <InputLabel id="label-select">Search option</InputLabel>
+            <InputLabel id="label-select">Search task option</InputLabel>
             <Select
               style={{
                 padding: '0 !important',
@@ -99,8 +97,8 @@ export default function BoardList(props: {
               }}
               error={formik.touched.select}
             >
-              <MenuItem value="Choise search select" disabled>
-                Choise search select
+              <MenuItem value="Choise search option" disabled>
+                Choise search option
               </MenuItem>
               <MenuItem value="user">User name</MenuItem>
               <MenuItem value="description">Description</MenuItem>
