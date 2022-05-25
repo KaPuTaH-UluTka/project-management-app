@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Button from '@mui/material/Button';
 import { closeModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { useFormik } from 'formik';
 import { Box, Container, Input, TextField, ThemeProvider, Typography } from '@mui/material';
-import { updateTaskViaModal, uploadFile } from '../../store/api/taskApi';
+import { downloadFile, updateTaskViaModal, uploadFile } from '../../store/api/taskApi';
 import * as yup from 'yup';
 import { useParams } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
@@ -21,14 +21,23 @@ import {
   titleStyle,
 } from './updateTaskModalStyles';
 import { violetTheme } from '../../style/rootStyles';
+import { ITaskFilesInfo } from '../../types/types';
 
 const UpdateTaskModal = () => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
   const { order, taskId, columnId, done } = useAppSelector((state) => state.openModalReducer);
-  const { taskTitle, taskDesc, taskFiles } = useAppSelector((state) => state.apiReducer);
+  const { taskTitle, taskDesc, taskFilesInfo, taskFiles } = useAppSelector(
+    (state) => state.apiReducer
+  );
   const [titleState, setTitleState] = useState(false);
   const [descState, setDescState] = useState(false);
+  useEffect(() => {
+    taskFilesInfo.forEach((e: ITaskFilesInfo) =>
+      dispatch(downloadFile({ taskId: taskId, filename: e.filename }))
+    );
+    console.log(taskFiles);
+  }, [taskFilesInfo]);
   const updateTaskSchema = yup.object({
     title: yup.string().required(),
     description: yup.string().required(),
@@ -83,8 +92,6 @@ const UpdateTaskModal = () => {
       const formData = new FormData();
       formData.append('taskId', taskId);
       formData.append('file', target.files[0]);
-      console.log(target.files[0]);
-      console.log(taskFiles);
       dispatch(uploadFile(formData));
     }
   }
@@ -151,11 +158,10 @@ const UpdateTaskModal = () => {
             <Typography sx={{ pr: 1, fontSize: 18 }}>
               <FormattedMessage id="updateModal.attachment" defaultMessage="Attachments:" />
             </Typography>
-            {/*{taskFiles.map((e) => {*/}
-            {/*  const blob = new File([e.fileSize.toString()], e.fileName);*/}
+            {/*{taskFiles.map((e, i) => {*/}
             {/*  return (*/}
-            {/*    <div key={e.fileName}>*/}
-            {/*      <img src={URL.createObjectURL(blob)} alt="" />*/}
+            {/*    <div key={i}>*/}
+            {/*      <img src={URL.createObjectURL(e)} alt="" />*/}
             {/*    </div>*/}
             {/*  );*/}
             {/*})}*/}
