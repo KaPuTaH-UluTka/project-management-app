@@ -2,3 +2,4 @@
 .prettierignore
 .stylelintrc
 .prettierrc
+.eslintignore
