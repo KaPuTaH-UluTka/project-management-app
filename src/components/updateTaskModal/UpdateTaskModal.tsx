@@ -57,7 +57,6 @@ const UpdateTaskModal = () => {
       prevTitle: taskTitle,
       description: taskDesc,
       prevDescription: taskDesc,
-      file: Blob,
     },
     validationSchema: updateTaskSchema,
     onSubmit: () => {

@@ -10,15 +10,16 @@ const UploadBtn = (props: { handleUpload: (e: FormEvent<HTMLInputElement>) => Pr
         id="upload-photo"
         name="upload-photo"
         type="file"
-        onChange={(e) => props.handleUpload(e)}
         accept="image/*"
+        onChange={(e) => props.handleUpload(e)}
       />
       <Fab
         color="secondary"
         size="small"
+        component="span"
         aria-label="add"
         variant="extended"
-        sx={{ lineHeight: 20 }}
+        sx={{ lineHeight: '20px' }}
       >
         <AddIcon />
         Upload picture

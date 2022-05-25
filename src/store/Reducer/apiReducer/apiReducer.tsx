@@ -209,6 +209,7 @@ const apiSlice = createSlice({
     [updateTask.fulfilled.type]: () => {},
     [updateTaskViaModal.fulfilled.type]: () => {},
     [getTask.fulfilled.type]: (state, action) => {
+      state.taskFiles = [];
       const taskInfo = action.payload.data;
       state.taskTitle = taskInfo.title;
       state.taskDesc = taskInfo.description;
