@@ -21,7 +21,6 @@ import { FormattedMessage } from 'react-intl';
 import { Container } from '@mui/material';
 import { takeAllTasks } from '../../store/api/taskApi';
 import { useEffect } from 'react';
-import { url } from '../../store/api/url';
 
 export default function BoardList(props: {
   boards: {
@@ -36,9 +35,6 @@ export default function BoardList(props: {
     select: yup.string().required('Choise your search selector'),
   });
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    console.log(tasks);
-  }, [tasks]);
   const formik = useFormik({
     initialValues: {
       search: '',
@@ -46,6 +42,7 @@ export default function BoardList(props: {
     },
     validationSchema: validationSchema,
     onSubmit: (e) => {
+      dispatch(openModal({ modal: 'SearchTasksModal' }));
       dispatch(takeAllTasks({ select: e.select, searchValue: e.search }));
     },
   });

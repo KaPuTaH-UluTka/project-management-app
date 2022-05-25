@@ -33,3 +33,10 @@ export type FileType = {
   filename: string;
   fileSize: number;
 };
+export type SearchTaskType = {
+  boardId: string;
+  title: string;
+  description: string;
+  user: { name: string };
+  id: string;
+};

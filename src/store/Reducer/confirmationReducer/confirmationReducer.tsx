@@ -6,6 +6,7 @@ const openModalState = {
   createColumnModal: false,
   createTaskModal: false,
   updateTaskModal: false,
+  searchTasksModal: false,
   deleteBoardId: '',
   deleteColumnId: '',
   deleteTaskId: '',
@@ -30,6 +31,7 @@ const openModalSlice = createSlice({
         };
       }
     ) => {
+      console.log(action);
       switch (action.payload.modal) {
         case 'createBoardModal':
           state.createBoardModal = true;
@@ -47,6 +49,9 @@ const openModalSlice = createSlice({
           state.order = action.payload.order || 1;
           state.createTaskModal = true;
           break;
+        case 'SearchTasksModal':
+          state.searchTasksModal = true;
+          break;
         case 'updateTaskModal':
           state.updateTaskModal = true;
           break;
@@ -61,6 +66,7 @@ const openModalSlice = createSlice({
           state.createBoardModal = false;
           state.createColumnModal = false;
           state.createTaskModal = false;
+          state.searchTasksModal = false;
           break;
         case 'confirmModal':
           state.confirmModal = false;

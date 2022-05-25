@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { closeModal } from '../store/Reducer/confirmationReducer/confirmationReducer';
 import ConfirmationModal from '../components/confirmationModal/ConfirmationModal';
 import CreateBoardModal from '../components/createBoardModal/CreateBoardModal';
+import { TasksModal } from '../components/SearchTasksModal/SearchTasksModal';
 
 const style = {
   position: 'absolute',
@@ -18,13 +19,13 @@ const style = {
   borderRadius: '10px',
   boxShadow: 24,
   p: 2.5,
+  overflowY: 'scroll',
 };
 
 const BasicModal = () => {
   const dispatch = useAppDispatch();
-  const { createBoardModal, confirmModal, createColumnModal, createTaskModal } = useAppSelector(
-    (state) => state.openModalReducer
-  );
+  const { createBoardModal, confirmModal, createColumnModal, createTaskModal, searchTasksModal } =
+    useAppSelector((state) => state.openModalReducer);
   let modal = false;
   let title = '';
   if (confirmModal) {
@@ -38,6 +39,10 @@ const BasicModal = () => {
   if (createColumnModal) {
     title = 'Create new Column';
     modal = createColumnModal;
+  }
+  if (searchTasksModal) {
+    title = 'Tasks';
+    modal = searchTasksModal;
   }
   if (createTaskModal) {
     title = 'Create new Task';
@@ -63,7 +68,7 @@ const BasicModal = () => {
           onClick={() => {
             dispatch(
               closeModal(
-                createBoardModal || createColumnModal || createTaskModal
+                createBoardModal || createColumnModal || createTaskModal || searchTasksModal
                   ? 'closeCreateModal'
                   : 'confirmModal'
               )
@@ -78,7 +83,13 @@ const BasicModal = () => {
         <Typography id="modal-modal-title" variant="h5" component="h2" style={{ fontWeight: 600 }}>
           {title}
         </Typography>
-        {confirmModal ? <ConfirmationModal /> : <CreateBoardModal />}
+        {confirmModal ? (
+          <ConfirmationModal />
+        ) : searchTasksModal ? (
+          <TasksModal />
+        ) : (
+          <CreateBoardModal />
+        )}
       </Box>
     </Modal>
   );

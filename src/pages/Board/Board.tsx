@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { openBoard } from '../../store/api/boardApi';
 import { useEffect } from 'react';
 import { Column } from '../../components/Column/Column';
@@ -19,11 +19,18 @@ import { FormattedMessage } from 'react-intl';
 export const Board = () => {
   const navigate = useNavigate();
   const { boardId } = useParams();
+  const { hash } = useLocation();
   const dispatch = useAppDispatch();
   const { board } = useAppSelector((state) => state.apiReducer);
   useEffect(() => {
     if (boardId) {
       dispatch(openBoard({ boardId }));
+    }
+    const element = document.querySelector('.current-column') as HTMLElement;
+    const pos1 = element ? element.offsetTop : 0;
+    const pos2 = element ? element.offsetLeft - element.clientWidth / 2 : 0;
+    for (let i = 0; i < pos2; i += 10) {
+      setTimeout(() => document.querySelector('.board__list')?.scrollTo(i, pos1), 100);
     }
   }, []);
   return (
@@ -126,7 +133,6 @@ export const Board = () => {
                     description: currentTask.description,
                     taskId: currentTask.id,
                     done: currentTask.done,
-                    // event: 'addEndPosition',
                   })
                 );
                 for (let i = 0; i < oldColumnTasks.length; i++) {
@@ -280,7 +286,14 @@ export const Board = () => {
                       {(provided) => (
                         <div {...provided.draggableProps} ref={provided.innerRef}>
                           <div {...provided.dragHandleProps}>
-                            <Column column={column} />
+                            <Column
+                              column={column}
+                              className={
+                                column.tasks.filter((task) => `#${task.id}` === hash).length === 1
+                                  ? 'current-column'
+                                  : ''
+                              }
+                            />
                           </div>
                         </div>
                       )}
