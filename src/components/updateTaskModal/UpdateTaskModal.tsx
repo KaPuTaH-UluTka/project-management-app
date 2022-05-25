@@ -4,7 +4,16 @@ import Button from '@mui/material/Button';
 import { closeModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { useFormik } from 'formik';
-import { Box, Container, Input, TextField, ThemeProvider, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  ImageList,
+  ImageListItem,
+  Input,
+  TextField,
+  ThemeProvider,
+  Typography,
+} from '@mui/material';
 import { downloadFile, updateTaskViaModal, uploadFile } from '../../store/api/taskApi';
 import * as yup from 'yup';
 import { useParams } from 'react-router-dom';
@@ -20,8 +29,9 @@ import {
   titleInputStyle,
   titleStyle,
 } from './updateTaskModalStyles';
-import { violetTheme } from '../../style/rootStyles';
+import { rootStyles, violetTheme } from '../../style/rootStyles';
 import { ITaskFilesInfo } from '../../types/types';
+import UploadBtn from './uploadBtn/UploadBtn';
 
 const UpdateTaskModal = () => {
   const dispatch = useAppDispatch();
@@ -36,8 +46,7 @@ const UpdateTaskModal = () => {
     taskFilesInfo.forEach((e: ITaskFilesInfo) =>
       dispatch(downloadFile({ taskId: taskId, filename: e.filename }))
     );
-    console.log(taskFiles);
-  }, [taskFilesInfo]);
+  }, []);
   const updateTaskSchema = yup.object({
     title: yup.string().required(),
     description: yup.string().required(),
@@ -158,14 +167,20 @@ const UpdateTaskModal = () => {
             <Typography sx={{ pr: 1, fontSize: 18 }}>
               <FormattedMessage id="updateModal.attachment" defaultMessage="Attachments:" />
             </Typography>
-            {/*{taskFiles.map((e, i) => {*/}
-            {/*  return (*/}
-            {/*    <div key={i}>*/}
-            {/*      <img src={URL.createObjectURL(e)} alt="" />*/}
-            {/*    </div>*/}
-            {/*  );*/}
-            {/*})}*/}
-            <Input id="avatar" type="file" onChange={(e) => handleUpload(e)} />
+            <ImageList
+              sx={{ height: 298, backgroundColor: rootStyles.gray, padding: 1 }}
+              cols={1}
+              gap={5}
+            >
+              {taskFiles.map((e, i) => {
+                return (
+                  <ImageListItem key={i} sx={{ cursor: 'pointer' }}>
+                    <img src={`${e}`} alt={'taskImage'} loading="lazy" />
+                  </ImageListItem>
+                );
+              })}
+            </ImageList>
+            <UploadBtn handleUpload={handleUpload} />
           </Container>
           <Container sx={btnContainerStyle}>
             <Button variant="contained" color="primary" sx={{ marginRight: 1 }} type="submit">

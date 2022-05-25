@@ -28,7 +28,7 @@ const apiState = {
   taskTitle: '',
   taskDesc: '',
   taskFilesInfo: [] as ITaskFilesInfo[],
-  taskFiles: [],
+  taskFiles: [] as Blob[],
 };
 
 const apiSlice = createSlice({
@@ -216,8 +216,9 @@ const apiSlice = createSlice({
     },
     [downloadFile.fulfilled.type]: (state, action) => {
       const response = action.payload.data;
-      console.log(response);
-      state.taskFiles.push(response);
+      if (state.taskFilesInfo.length !== state.taskFiles.length) {
+        state.taskFiles.push(response);
+      }
     },
   },
 });

@@ -270,7 +270,9 @@ export const downloadFile = createAsyncThunk(
         if (!response.ok) {
           throw new Error(response.status.toString());
         } else {
-          return response.body;
+          return response.blob().then((blob) => {
+            return URL.createObjectURL(blob);
+          });
         }
       });
       return { data };

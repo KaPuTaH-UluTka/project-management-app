@@ -25,7 +25,7 @@ export const descContainerStyle = {
 };
 
 export const modalBoxStyle = {
-  height: 400,
+  height: 600,
 };
 
 export const btnContainerStyle = {
