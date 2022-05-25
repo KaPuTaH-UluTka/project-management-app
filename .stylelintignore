@@ -1,4 +1,6 @@
+*.json
 .github
-.stylelintrc
 .stylelintignore
 .prettierignore
+.stylelintrc
+.prettierrc
