@@ -203,7 +203,9 @@ const apiSlice = createSlice({
       switch (action.payload.event) {
         case 'changeName':
           const indexColumn = state.board.columns.findIndex((item) => item.id === columnId);
-          state.board.columns[indexColumn].title = title;
+          const currentColumn = { ...state.board.columns[indexColumn] };
+          currentColumn.title = title;
+          state.board.columns[indexColumn] = { ...currentColumn };
           break;
         case 'addEndPosition':
           break;
