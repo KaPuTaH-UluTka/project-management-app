@@ -129,6 +129,9 @@ const apiSlice = createSlice({
       state.token = '';
       state.process = 'error';
     },
+    [openBoard.pending.type]: (state) => {
+      state.process = 'loading';
+    },
     [openBoard.fulfilled.type]: (state, action) => {
       const board = { ...action.payload.data };
       board.columns = board.columns.sort((a: ColumnType, b: ColumnType) => a.order - b.order);

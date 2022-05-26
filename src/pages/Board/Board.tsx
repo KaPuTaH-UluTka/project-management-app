@@ -15,12 +15,13 @@ import { updateTask } from '../../store/api/taskApi';
 import { TaskType } from '../../types/types';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { FormattedMessage } from 'react-intl';
+import setContent from '../../utils/setContent';
 
 export const Board = () => {
   const navigate = useNavigate();
   const { boardId } = useParams();
   const dispatch = useAppDispatch();
-  const { board } = useAppSelector((state) => state.apiReducer);
+  const { board, process } = useAppSelector((state) => state.apiReducer);
 
   useEffect(() => {
     if (boardId) {
@@ -271,60 +272,64 @@ export const Board = () => {
           }
         }}
       >
-        <Grid className="board__list">
-          <Droppable droppableId="all-columns" direction="horizontal" type="column">
-            {(provided) => (
-              <div
-                style={{ display: 'flex', flexWrap: 'nowrap' }}
-                {...provided.droppableProps}
-                ref={provided.innerRef}
+        {setContent(process, () => {
+          return (
+            <Grid className="board__list">
+              <Droppable droppableId="all-columns" direction="horizontal" type="column">
+                {(provided) => (
+                  <div
+                    style={{ display: 'flex', flexWrap: 'nowrap' }}
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  >
+                    {board.columns.map((column, index) => {
+                      return (
+                        <Draggable key={column.id} draggableId={column.id} index={index}>
+                          {(provided) => (
+                            <div {...provided.draggableProps} ref={provided.innerRef}>
+                              <div {...provided.dragHandleProps}>
+                                <Column column={column} />
+                              </div>
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+              <Button
+                size="large"
+                style={{
+                  height: 40,
+                  minWidth: '210px',
+                  position: 'relative',
+                  top: 10,
+                  left: 20,
+                }}
+                onClick={() => {
+                  let order = 1;
+                  if (board.columns?.length > 0) {
+                    order = Number(board.columns[board.columns.length - 1].order) + 1;
+                  }
+                  if (boardId) {
+                    dispatch(openModal({ modal: 'createColumnModal', order }));
+                    // dispatch(
+                    //   addColumn({
+                    //     boardId,
+                    //     title: 'new task',
+                    //     order,
+                    //   })
+                    // );
+                  }
+                }}
               >
-                {board.columns.map((column, index) => {
-                  return (
-                    <Draggable key={column.id} draggableId={column.id} index={index}>
-                      {(provided) => (
-                        <div {...provided.draggableProps} ref={provided.innerRef}>
-                          <div {...provided.dragHandleProps}>
-                            <Column column={column} />
-                          </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-          <Button
-            size="large"
-            style={{
-              height: 40,
-              minWidth: '210px',
-              position: 'relative',
-              top: 10,
-              left: 20,
-            }}
-            onClick={() => {
-              let order = 1;
-              if (board.columns?.length > 0) {
-                order = Number(board.columns[board.columns.length - 1].order) + 1;
-              }
-              if (boardId) {
-                dispatch(openModal({ modal: 'createColumnModal', order }));
-                // dispatch(
-                //   addColumn({
-                //     boardId,
-                //     title: 'new task',
-                //     order,
-                //   })
-                // );
-              }
-            }}
-          >
-            <Add /> <FormattedMessage id="board.addColumn" defaultMessage="Add column" />
-          </Button>
-        </Grid>
+                <Add /> <FormattedMessage id="board.addColumn" defaultMessage="Add column" />
+              </Button>
+            </Grid>
+          );
+        })}
       </DragDropContext>
     </Container>
   );

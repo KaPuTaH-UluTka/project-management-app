@@ -11,7 +11,6 @@ export const Main = () => {
   useEffect(() => {
     dispatch(checkBoards());
   }, []);
-  const mainBoards =
-    boards.length > 0 ? setContent(process, () => <BoardList boards={boards} />) : null;
+  const mainBoards = setContent(process, () => <BoardList boards={boards} />);
   return <Container fixed>{mainBoards}</Container>;
 };
