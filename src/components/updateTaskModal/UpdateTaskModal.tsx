@@ -173,7 +173,7 @@ const UpdateTaskModal = () => {
             >
               {taskFiles.map((e, i) => {
                 return (
-                  <ImageListItem key={i} sx={{ cursor: 'pointer' }}>
+                  <ImageListItem key={i}>
                     <img src={`${e}`} alt={'taskImage'} loading="lazy" />
                   </ImageListItem>
                 );
