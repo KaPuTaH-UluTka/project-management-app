@@ -7,7 +7,6 @@ import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { TextField } from '@mui/material';
 import { Box } from '@mui/system';
-
 import './createBoardModal.scss';
 import { addColumn } from '../../store/api/columnApi';
 import { useParams } from 'react-router-dom';
@@ -17,8 +16,30 @@ import { FormattedMessage } from 'react-intl';
 const CreateBoardModal = () => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
-  const { createBoardModal, createColumnModal, createTaskModal, order, userId, columnId } =
-    useAppSelector((state) => state.openModalReducer);
+  const {
+    createBoardModal,
+    createColumnModal,
+    createTaskModal,
+    updateTaskModal,
+    deleteUserModal,
+    order,
+    userId,
+    columnId,
+  } = useAppSelector((state) => state.openModalReducer);
+
+  function chooseCloseModal() {
+    let modalStatus;
+    if (createBoardModal || createColumnModal || createTaskModal) {
+      modalStatus = 'closeCreateModal';
+    } else if (deleteUserModal) {
+      modalStatus = 'deleteUserModal';
+    } else if (updateTaskModal) {
+      modalStatus = 'updateTaskModal';
+    } else {
+      modalStatus = 'confirmModal';
+    }
+    dispatch(closeModal(modalStatus));
+  }
 
   const validationSchema =
     createBoardModal || createTaskModal
@@ -55,13 +76,8 @@ const CreateBoardModal = () => {
           })
         );
       }
-      dispatch(
-        closeModal(
-          createBoardModal || createColumnModal || createTaskModal
-            ? 'closeCreateModal'
-            : 'confirmModal'
-        )
-      );
+
+      chooseCloseModal();
     },
   });
 
@@ -85,7 +101,7 @@ const CreateBoardModal = () => {
           }}
           error={formik.touched.title}
         />
-        {createBoardModal || createTaskModal ? (
+        {createBoardModal || createTaskModal || updateTaskModal ? (
           <TextField
             style={{ marginTop: 20 }}
             label="Description"
@@ -109,7 +125,10 @@ const CreateBoardModal = () => {
             endIcon={<AddIcon />}
             disabled={activeSubmit()}
           >
-            <FormattedMessage id="boardModal.create" defaultMessage="Create" />
+            <FormattedMessage
+              id={updateTaskModal ? 'boardModal.update' : 'boardModal.create'}
+              defaultMessage={updateTaskModal ? 'Update' : 'Create'}
+            />
           </Button>
         </div>
       </Box>

@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { closeModal } from '../store/Reducer/confirmationReducer/confirmationReducer';
 import ConfirmationModal from '../components/confirmationModal/ConfirmationModal';
 import CreateBoardModal from '../components/createBoardModal/CreateBoardModal';
+import UpdateTaskModal from '../components/updateTaskModal/UpdateTaskModal';
 
 const style = {
   position: 'absolute',
@@ -22,10 +23,17 @@ const style = {
 
 const BasicModal = () => {
   const dispatch = useAppDispatch();
-  const { createBoardModal, confirmModal, createColumnModal, createTaskModal, deleteUserModal } =
-    useAppSelector((state) => state.openModalReducer);
+  const {
+    createBoardModal,
+    confirmModal,
+    createColumnModal,
+    createTaskModal,
+    deleteUserModal,
+    updateTaskModal,
+  } = useAppSelector((state) => state.openModalReducer);
   let modal = false;
   let title = '';
+
   if (confirmModal) {
     title = 'Confirmation';
     modal = confirmModal;
@@ -46,6 +54,10 @@ const BasicModal = () => {
     title = 'Confirm account deletion';
     modal = deleteUserModal;
   }
+  if (updateTaskModal) {
+    title = '';
+    modal = updateTaskModal;
+  }
 
   function chooseDeleteModal() {
     let modalStatus;
@@ -53,6 +65,8 @@ const BasicModal = () => {
       modalStatus = 'closeCreateModal';
     } else if (deleteUserModal) {
       modalStatus = 'deleteUserModal';
+    } else if (updateTaskModal) {
+      modalStatus = 'updateTaskModal';
     } else {
       modalStatus = 'confirmModal';
     }
@@ -70,7 +84,9 @@ const BasicModal = () => {
         <Typography id="modal-modal-title" variant="h5" component="h2" style={{ fontWeight: 600 }}>
           {title}
         </Typography>
-        {confirmModal || deleteUserModal ? <ConfirmationModal /> : <CreateBoardModal />}
+        {updateTaskModal && <UpdateTaskModal />}
+        {(confirmModal || deleteUserModal) && <ConfirmationModal />}
+        {(createBoardModal || createColumnModal || createTaskModal) && <CreateBoardModal />}
       </Box>
     </Modal>
   );

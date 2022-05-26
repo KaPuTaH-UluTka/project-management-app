@@ -6,6 +6,7 @@ export const rootStyles = {
   yellowDark: '#FDC04E',
   yellowLight: '#FFCC57',
   red: '#BD1929',
+  gray: '#e6e6e6',
 };
 
 export const violetTheme = createTheme({
@@ -19,16 +20,8 @@ export const violetTheme = createTheme({
     error: {
       main: rootStyles.red,
     },
-  },
-});
-
-export const yellowTheme = createTheme({
-  palette: {
-    primary: {
-      main: rootStyles.violetDark,
-    },
-    secondary: {
-      main: rootStyles.violetLight,
+    success: {
+      main: rootStyles.yellowLight,
     },
   },
 });

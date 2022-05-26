@@ -9,6 +9,11 @@ export interface ILoginUser {
   password: string;
 }
 
+export interface ITaskFilesInfo {
+  filename: string;
+  filesize: number;
+}
+
 export type BoardType = {
   id: string;
   title: string;

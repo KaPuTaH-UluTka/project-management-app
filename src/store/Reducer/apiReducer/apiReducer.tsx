@@ -1,10 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
 import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardApi';
-import { BoardType } from '../../../types/types';
+import { BoardType, ITaskFilesInfo } from '../../../types/types';
 import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
 import { ColumnType, TaskType } from '../../../types/types';
-import { addTask, deleteTask, updateTask } from '../../api/taskApi';
+import {
+  addTask,
+  deleteTask,
+  downloadFile,
+  getTask,
+  updateTask,
+  updateTaskViaModal,
+} from '../../api/taskApi';
 import { delUser, getUser, signIn, signUp, updateUser } from '../../api/signApi';
 
 const apiState = {
@@ -18,6 +25,10 @@ const apiState = {
   column: {} as ColumnType,
   process: 'loading',
   apiErrors: [] as Array<string>,
+  taskTitle: '',
+  taskDesc: '',
+  taskFilesInfo: [] as ITaskFilesInfo[],
+  taskFiles: [] as Blob[],
 };
 
 const apiSlice = createSlice({
@@ -196,6 +207,20 @@ const apiSlice = createSlice({
       state.apiErrors.push(`${action.payload}`);
     },
     [updateTask.fulfilled.type]: () => {},
+    [updateTaskViaModal.fulfilled.type]: () => {},
+    [getTask.fulfilled.type]: (state, action) => {
+      state.taskFiles = [];
+      const taskInfo = action.payload.data;
+      state.taskTitle = taskInfo.title;
+      state.taskDesc = taskInfo.description;
+      state.taskFilesInfo = taskInfo.files;
+    },
+    [downloadFile.fulfilled.type]: (state, action) => {
+      const response = action.payload.data;
+      if (state.taskFilesInfo.length !== state.taskFiles.length) {
+        state.taskFiles.push(response);
+      }
+    },
   },
 });
 
