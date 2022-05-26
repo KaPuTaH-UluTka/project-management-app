@@ -7,8 +7,8 @@ import { useAppDispatch } from '../../hooks/hooks';
 import { FormattedMessage } from 'react-intl';
 import { useState, useEffect } from 'react';
 import { getTask } from '../../store/api/taskApi';
-import { useParams, useLocation } from 'react-router-dom';
 import { getUser } from '../../store/api/signApi';
+import { useParams, useLocation } from 'react-router-dom';
 
 export const Task = (props: { task: TaskType; column: ColumnType }) => {
   const dispatch = useAppDispatch();
