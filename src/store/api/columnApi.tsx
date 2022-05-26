@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { url } from './url';
 
@@ -82,7 +81,13 @@ export const updateColumn = createAsyncThunk(
   }
 );
 
-export const changePositionColumn = async (action: any) => {
+export const changePositionColumn = async (action: {
+  boardId: string;
+  columnId: string;
+  title: string;
+  order: number;
+  event: string;
+}) => {
   {
     try {
       const token = localStorage.getItem('token');
@@ -102,8 +107,6 @@ export const changePositionColumn = async (action: any) => {
         return await response.text().then((res) => JSON.parse(res));
       });
       return { data, event };
-    } catch {
-      console.log('x');
-    }
+    } catch {}
   }
 };

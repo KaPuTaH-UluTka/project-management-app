@@ -8,7 +8,7 @@ import { addTask, deleteTask, updateTask, takeAllTasks } from '../../api/taskApi
 import { getUser, signIn, updateUser } from '../../api/signApi';
 
 const apiState = {
-  token: '',
+  token: localStorage.getItem('token'),
   boards: [] as Array<{ title: string; description: string; id: string }>,
   deleteBoardId: '',
   deleteColumnId: '',

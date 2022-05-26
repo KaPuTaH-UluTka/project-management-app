@@ -20,6 +20,7 @@ import './boardList.scss';
 import { FormattedMessage } from 'react-intl';
 import { Container } from '@mui/material';
 import { takeAllTasks } from '../../store/api/taskApi';
+import { formBoxStyles, searchValueStyles, selectStyle } from './boardListSyles';
 
 export default function BoardList(props: {
   boards: {
@@ -51,20 +52,11 @@ export default function BoardList(props: {
   return (
     <Container>
       <form className="form" onSubmit={formik.handleSubmit}>
-        <Box
-          sx={{
-            maxWidth: 600,
-            padding: '10px 0',
-            marginTop: '15px',
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-          }}
-        >
+        <Box sx={formBoxStyles}>
           <Box>
             <InputLabel id="label-search">Search task value</InputLabel>
             <TextField
-              style={{ textAlign: 'center', display: 'block', width: 200 }}
+              style={searchValueStyles}
               variant="outlined"
               id="search"
               name="search"
@@ -80,12 +72,7 @@ export default function BoardList(props: {
           <Box>
             <InputLabel id="label-select">Search task option</InputLabel>
             <Select
-              style={{
-                padding: '0 !important',
-                display: 'block',
-                maxHeight: 100,
-                width: 200,
-              }}
+              style={selectStyle}
               id="select"
               name="select"
               variant="outlined"
