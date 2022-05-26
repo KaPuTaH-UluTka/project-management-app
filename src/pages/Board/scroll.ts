@@ -8,7 +8,7 @@ export function scroll() {
   const task = document.querySelector('.current-task') as HTMLElement;
   const task1 = task ? task.offsetTop : 0;
   const task2 = task ? task.offsetLeft : 0;
-  for (let i = 0; i < column1; i++) {
-    setTimeout(() => document.querySelector('.column-scroll')?.scrollTo(task2, task1), 100);
+  for (let i = 0; i < task1; i++) {
+    setTimeout(() => document.querySelector('.column-scroll')?.scrollTo(task2, i), 100);
   }
 }
