@@ -3,7 +3,7 @@ import jwt_decode from 'jwt-decode';
 import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardApi';
 import { BoardType, ITaskFilesInfo } from '../../../types/types';
 import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
-import { ColumnType, TaskType } from '../../../types/types';
+import { ColumnType, TaskType, SearchTaskType } from '../../../types/types';
 import {
   addTask,
   deleteTask,
@@ -11,11 +11,12 @@ import {
   getTask,
   updateTask,
   updateTaskViaModal,
+  takeAllTasks,
 } from '../../api/taskApi';
 import { delUser, getUser, signIn, signUp, updateUser } from '../../api/signApi';
 
 const apiState = {
-  token: '',
+  token: localStorage.getItem('token'),
   boards: [] as Array<{ title: string; description: string; id: string }>,
   deleteBoardId: '',
   deleteColumnId: '',
@@ -29,6 +30,7 @@ const apiState = {
   taskDesc: '',
   taskFilesInfo: [] as ITaskFilesInfo[],
   taskFiles: [] as Blob[],
+  tasks: [] as Array<SearchTaskType>,
 };
 
 const apiSlice = createSlice({
@@ -94,6 +96,9 @@ const apiSlice = createSlice({
     [updateUser.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);
     },
+    [checkBoards.pending.type]: (state) => {
+      state.process = 'loading';
+    },
     [checkBoards.fulfilled.type]: (state, action) => {
       state.boards = [...action.payload.data];
       state.process = 'confirmed';
@@ -128,6 +133,9 @@ const apiSlice = createSlice({
       localStorage.setItem('token', '');
       state.token = '';
       state.process = 'error';
+    },
+    [openBoard.pending.type]: (state) => {
+      state.process = 'loading';
     },
     [openBoard.fulfilled.type]: (state, action) => {
       const board = { ...action.payload.data };
@@ -195,7 +203,9 @@ const apiSlice = createSlice({
       switch (action.payload.event) {
         case 'changeName':
           const indexColumn = state.board.columns.findIndex((item) => item.id === columnId);
-          state.board.columns[indexColumn].title = title;
+          const currentColumn = { ...state.board.columns[indexColumn] };
+          currentColumn.title = title;
+          state.board.columns[indexColumn] = { ...currentColumn };
           break;
         case 'addEndPosition':
           break;
@@ -220,6 +230,30 @@ const apiSlice = createSlice({
       if (state.taskFilesInfo.length !== state.taskFiles.length) {
         state.taskFiles.push(response);
       }
+    },
+    [takeAllTasks.pending.type]: (state) => {
+      state.process = 'loading';
+    },
+    [takeAllTasks.fulfilled.type]: (state, action) => {
+      const { data, searchValue, select } = action.payload;
+      let tasks;
+      switch (select) {
+        case 'user':
+          tasks = data.filter(
+            (task: SearchTaskType) => task.user.name.toUpperCase() === searchValue.toUpperCase()
+          );
+          break;
+        case 'description':
+          tasks = data.filter((task: SearchTaskType) => task.description.includes(searchValue));
+          break;
+        case 'title':
+          tasks = data.filter(
+            (task: SearchTaskType) => task.title.toUpperCase() === searchValue.toUpperCase()
+          );
+          break;
+      }
+      state.tasks = [...tasks];
+      state.process = 'confirmed';
     },
   },
 });

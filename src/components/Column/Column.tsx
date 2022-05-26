@@ -7,37 +7,24 @@ import { ColumnType } from '../../types/types';
 import { useState } from 'react';
 import Add from '@mui/icons-material/Add';
 import { useParams } from 'react-router-dom';
+import { Task } from '../Task/Task';
 import { useAppDispatch } from '../../hooks/hooks';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { updateColumn } from '../../store/api/columnApi';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { FormattedMessage } from 'react-intl';
-import { getTask } from '../../store/api/taskApi';
+import { listColumnStyles, itemColumnStyles, titleColumnStyles } from './columnStyles';
 
-export const Column = (props: { column: ColumnType }) => {
+export const Column = (props: { column: ColumnType; className: string }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
   const [titleColumnState, setTitleColumnState] = useState(false);
   const [titleColumn, setTitleColumn] = useState(props.column.title);
+
   return (
-    <List
-      style={{
-        backgroundColor: 'white',
-        margin: '10px 5px',
-        minWidth: 270,
-        boxShadow: '2px 2px 5px 0px black',
-        background: 'ede8e8',
-      }}
-    >
+    <List className={props.className} style={listColumnStyles}>
       {titleColumnState ? (
-        <ListItem
-          style={{
-            minWidth: 200,
-            width: '100%',
-            justifyContent: 'space-between',
-            padding: '10px',
-          }}
-        >
+        <ListItem style={itemColumnStyles}>
           <Button
             color="warning"
             variant="contained"
@@ -77,9 +64,7 @@ export const Column = (props: { column: ColumnType }) => {
           />
         </ListItem>
       ) : (
-        <ListItem
-          style={{ minWidth: 200, fontSize: 14, width: '100%', justifyContent: 'space-between' }}
-        >
+        <ListItem style={titleColumnStyles}>
           <Button
             color="error"
             variant="contained"
@@ -104,72 +89,26 @@ export const Column = (props: { column: ColumnType }) => {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {props.column?.tasks?.map((task, index) => (
-              <Draggable key={task.id} draggableId={task.id} index={index}>
-                {(provided) => (
-                  <List
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    ref={provided.innerRef}
-                  >
-                    <ListItem
-                      style={{
-                        background: 'white',
-                        fontSize: 14,
-                        width: '95%',
-                        justifyContent: 'space-between',
-                        margin: '0px auto',
-                        fontWeight: 'bold',
-                        cursor: 'pointer',
-                        borderBottom: '1px solid black',
-                      }}
-                      onClick={async () => {
-                        await dispatch(
-                          getTask({
-                            boardId: boardId as string,
-                            columnId: props.column.id,
-                            taskId: task.id,
-                          })
-                        );
-                        dispatch(
-                          openModal({
-                            modal: 'updateTaskModal',
-                            taskId: task.id,
-                            done: task.done,
-                            columnId: props.column.id,
-                          })
-                        );
-                      }}
+            {props.column?.tasks?.map((task, index) => {
+              return (
+                <Draggable key={task.id} draggableId={task.id} index={index}>
+                  {(provided) => (
+                    <List
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      ref={provided.innerRef}
                     >
-                      {task.title}
-                      <Button
-                        color="error"
-                        variant="contained"
-                        size="small"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          dispatch(
-                            openModal({
-                              boardId: boardId,
-                              columnId: props.column.id,
-                              taskId: task.id,
-                              modal: 'confirmModal',
-                            })
-                          );
-                        }}
-                      >
-                        <FormattedMessage id="column.del" defaultMessage="Delete" />
-                      </Button>
-                    </ListItem>
-                  </List>
-                )}
-              </Draggable>
-            ))}
+                      <Task task={task} column={props.column} />
+                    </List>
+                  )}
+                </Draggable>
+              );
+            })}
             {provided.placeholder}
           </List>
         )}
       </Droppable>
-      <ListItem style={{ margin: '0px auto' }}>
+      <ListItem style={{ margin: '0 auto' }}>
         <Button
           style={{ width: '90%', margin: '0 auto' }}
           color="success"
