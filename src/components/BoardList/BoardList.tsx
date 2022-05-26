@@ -22,9 +22,6 @@ export default function BoardList(props: {
   const dispatch = useAppDispatch();
   return (
     <List className="list">
-      {/* <BasicModal>
-        <ConfirmationModal />
-      </BasicModal> */}
       {props.boards.map((board, index) => {
         return (
           <Link to={`${pathes.board}/${board.id}`} key={index}>

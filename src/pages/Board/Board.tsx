@@ -30,9 +30,6 @@ export const Board = () => {
 
   return (
     <Container fixed className="board">
-      {/* <BasicModal>
-        <ConfirmationModal />
-      </BasicModal> */}
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: 8 }}>
         <h1>{board.title}</h1>
         <Button
@@ -312,13 +309,6 @@ export const Board = () => {
               }
               if (boardId) {
                 dispatch(openModal({ modal: 'createColumnModal', order }));
-                // dispatch(
-                //   addColumn({
-                //     boardId,
-                //     title: 'new task',
-                //     order,
-                //   })
-                // );
               }
             }}
           >
