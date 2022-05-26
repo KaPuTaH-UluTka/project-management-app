@@ -11,8 +11,11 @@ import {
   getTask,
   updateTask,
   updateTaskViaModal,
+  takeAllTasks,
 } from '../../api/taskApi';
 import { delUser, getUser, signIn, signUp, updateUser } from '../../api/signApi';
+
+type SaerchTask = { title: string; description: string; user: { name: string } };
 
 const apiState = {
   token: '',
@@ -29,6 +32,7 @@ const apiState = {
   taskDesc: '',
   taskFilesInfo: [] as ITaskFilesInfo[],
   taskFiles: [] as Blob[],
+  tasks: [] as Array<TaskType>,
 };
 
 const apiSlice = createSlice({
@@ -94,6 +98,9 @@ const apiSlice = createSlice({
     [updateUser.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);
     },
+    [checkBoards.pending.type]: (state) => {
+      state.process = 'loading';
+    },
     [checkBoards.fulfilled.type]: (state, action) => {
       state.boards = [...action.payload.data];
       state.process = 'confirmed';
@@ -128,6 +135,9 @@ const apiSlice = createSlice({
       localStorage.setItem('token', '');
       state.token = '';
       state.process = 'error';
+    },
+    [openBoard.pending.type]: (state) => {
+      state.process = 'loading';
     },
     [openBoard.fulfilled.type]: (state, action) => {
       const board = { ...action.payload.data };
@@ -220,6 +230,30 @@ const apiSlice = createSlice({
       if (state.taskFilesInfo.length !== state.taskFiles.length) {
         state.taskFiles.push(response);
       }
+    },
+    [takeAllTasks.pending.type]: (state) => {
+      state.process = 'loading';
+    },
+    [takeAllTasks.fulfilled.type]: (state, action) => {
+      const { data, searchValue, select } = action.payload;
+      let tasks;
+      switch (select) {
+        case 'user':
+          tasks = data.filter(
+            (task: SaerchTask) => task.user.name.toUpperCase() === searchValue.toUpperCase()
+          );
+          break;
+        case 'description':
+          tasks = data.filter((task: SaerchTask) => task.description.includes(searchValue));
+          break;
+        case 'title':
+          tasks = data.filter(
+            (task: SaerchTask) => task.title.toUpperCase() === searchValue.toUpperCase()
+          );
+          break;
+      }
+      state.tasks = [...tasks];
+      state.process = 'confirmed';
     },
   },
 });
