@@ -15,6 +15,7 @@ import { updateTask } from '../../store/api/taskApi';
 import { TaskType } from '../../types/types';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import { FormattedMessage } from 'react-intl';
+import { scroll } from './scroll';
 
 export const Board = () => {
   const navigate = useNavigate();
@@ -27,12 +28,7 @@ export const Board = () => {
     if (boardId) {
       dispatch(openBoard({ boardId }));
     }
-    const element = document.querySelector('.current-column') as HTMLElement;
-    const pos1 = element ? element.offsetTop : 0;
-    const pos2 = element ? element.offsetLeft - element.clientWidth / 2 : 0;
-    for (let i = 0; i < pos2; i += 10) {
-      setTimeout(() => document.querySelector('.board__list')?.scrollTo(i, pos1), 100);
-    }
+    scroll();
   }, []);
 
   return (
