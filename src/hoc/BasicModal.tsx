@@ -7,6 +7,7 @@ import { closeModal } from '../store/Reducer/confirmationReducer/confirmationRed
 import ConfirmationModal from '../components/confirmationModal/ConfirmationModal';
 import CreateBoardModal from '../components/createBoardModal/CreateBoardModal';
 import UpdateTaskModal from '../components/updateTaskModal/UpdateTaskModal';
+import { TasksModal } from '../components/SearchTasksModal/SearchTasksModal';
 
 const style = {
   position: 'absolute',
@@ -19,6 +20,7 @@ const style = {
   borderRadius: '10px',
   boxShadow: 24,
   p: 2.5,
+  overflowY: 'scroll',
 };
 
 const BasicModal = () => {
@@ -30,6 +32,7 @@ const BasicModal = () => {
     createTaskModal,
     deleteUserModal,
     updateTaskModal,
+    searchTasksModal,
   } = useAppSelector((state) => state.openModalReducer);
   let modal = false;
   let title = '';
@@ -46,6 +49,10 @@ const BasicModal = () => {
     title = 'Create new Column';
     modal = createColumnModal;
   }
+  if (searchTasksModal) {
+    title = 'Tasks';
+    modal = searchTasksModal;
+  }
   if (createTaskModal) {
     title = 'Create new Task';
     modal = createTaskModal;
@@ -61,7 +68,7 @@ const BasicModal = () => {
 
   function chooseDeleteModal() {
     let modalStatus;
-    if (createBoardModal || createColumnModal || createTaskModal) {
+    if (createBoardModal || createColumnModal || createTaskModal || searchTasksModal) {
       modalStatus = 'closeCreateModal';
     } else if (deleteUserModal) {
       modalStatus = 'deleteUserModal';
@@ -87,6 +94,7 @@ const BasicModal = () => {
         {updateTaskModal && <UpdateTaskModal />}
         {(confirmModal || deleteUserModal) && <ConfirmationModal />}
         {(createBoardModal || createColumnModal || createTaskModal) && <CreateBoardModal />}
+        {searchTasksModal && <TasksModal />}
       </Box>
     </Modal>
   );

@@ -15,7 +15,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { FormattedMessage } from 'react-intl';
 import { getTask } from '../../store/api/taskApi';
 
-export const Column = (props: { column: ColumnType }) => {
+export const Column = (props: { column: ColumnType; className: string }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
   const [titleColumnState, setTitleColumnState] = useState(false);
@@ -23,6 +23,7 @@ export const Column = (props: { column: ColumnType }) => {
 
   return (
     <List
+      className={props.className}
       style={{
         backgroundColor: 'white',
         margin: '10px 5px',

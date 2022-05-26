@@ -3,7 +3,7 @@ import jwt_decode from 'jwt-decode';
 import { checkBoards, addBoard, deleteBoard, openBoard } from '../../api/boardApi';
 import { BoardType, ITaskFilesInfo } from '../../../types/types';
 import { addColumn, deleteColumn, updateColumn } from '../../api/columnApi';
-import { ColumnType, TaskType } from '../../../types/types';
+import { ColumnType, TaskType, SearchTaskType } from '../../../types/types';
 import {
   addTask,
   deleteTask,
@@ -14,8 +14,6 @@ import {
   takeAllTasks,
 } from '../../api/taskApi';
 import { delUser, getUser, signIn, signUp, updateUser } from '../../api/signApi';
-
-type SaerchTask = { title: string; description: string; user: { name: string } };
 
 const apiState = {
   token: '',
@@ -32,7 +30,7 @@ const apiState = {
   taskDesc: '',
   taskFilesInfo: [] as ITaskFilesInfo[],
   taskFiles: [] as Blob[],
-  tasks: [] as Array<TaskType>,
+  tasks: [] as Array<SearchTaskType>,
 };
 
 const apiSlice = createSlice({
@@ -240,15 +238,15 @@ const apiSlice = createSlice({
       switch (select) {
         case 'user':
           tasks = data.filter(
-            (task: SaerchTask) => task.user.name.toUpperCase() === searchValue.toUpperCase()
+            (task: SearchTaskType) => task.user.name.toUpperCase() === searchValue.toUpperCase()
           );
           break;
         case 'description':
-          tasks = data.filter((task: SaerchTask) => task.description.includes(searchValue));
+          tasks = data.filter((task: SearchTaskType) => task.description.includes(searchValue));
           break;
         case 'title':
           tasks = data.filter(
-            (task: SaerchTask) => task.title.toUpperCase() === searchValue.toUpperCase()
+            (task: SearchTaskType) => task.title.toUpperCase() === searchValue.toUpperCase()
           );
           break;
       }

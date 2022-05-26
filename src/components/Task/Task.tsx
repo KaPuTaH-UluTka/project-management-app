@@ -6,13 +6,14 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useAppDispatch } from '../../hooks/hooks';
 import { FormattedMessage } from 'react-intl';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { getTask } from '../../store/api/taskApi';
+import { useParams, useLocation } from 'react-router-dom';
 import { getUser } from '../../store/api/signApi';
 
 export const Task = (props: { task: TaskType; column: ColumnType }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
+  const { hash } = useLocation();
   const [nameUser, setNameUser] = useState('');
   const findName = async () => {
     const data = (await (
@@ -27,7 +28,7 @@ export const Task = (props: { task: TaskType; column: ColumnType }) => {
   return (
     <ListItem
       style={{
-        background: 'white',
+        background: hash === `#${props.task.id}` ? 'DarkOrange' : 'white',
         fontSize: 14,
         width: '95%',
         display: 'block',
@@ -56,9 +57,16 @@ export const Task = (props: { task: TaskType; column: ColumnType }) => {
       }}
     >
       <Box style={{ display: 'flex' }}>
-        <AccountCircleIcon style={{ margin: 'auto 10px auto 0px' }} />
+        <AccountCircleIcon
+          style={{
+            margin: 'auto 10px auto 0px',
+            color: hash === `#${props.task.id}` ? 'white' : 'black',
+          }}
+        />
         {nameUser ? (
-          <p style={{ margin: 'auto 0' }}>{nameUser}</p>
+          <p style={{ margin: 'auto 0', color: hash === `#${props.task.id}` ? 'white' : 'black' }}>
+            {nameUser}
+          </p>
         ) : (
           <CircularProgress style={{ height: 20, width: 20, margin: 'auto 10px' }} />
         )}
@@ -72,7 +80,9 @@ export const Task = (props: { task: TaskType; column: ColumnType }) => {
           height: 30,
         }}
       >
-        <p style={{ margin: 'auto 0' }}>{props.task.title}</p>
+        <p style={{ margin: 'auto 0', color: hash === `#${props.task.id}` ? 'white' : 'black' }}>
+          {props.task.title}
+        </p>
         <Button
           color="error"
           variant="contained"
