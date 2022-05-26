@@ -36,16 +36,16 @@ export const TasksModal = () => {
               {addBoxInfo('Task description:', task.description)}
               {addBoxInfo('User name:', task.user.name)}
               <Box style={{ width: '100%', textAlign: 'right' }}>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    dispatch(closeModal('closeCreateModal'));
-                  }}
-                >
-                  <Link to={`${pathes.board}/${task.boardId}/#${task.id}`}>
+                <Link to={`${pathes.board}/${task.boardId}/#${task.id}`}>
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      dispatch(closeModal('closeCreateModal'));
+                    }}
+                  >
                     <FormattedMessage id="tasksList.del" defaultMessage="Follow" />
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </Box>
             </ListItem>
           );
