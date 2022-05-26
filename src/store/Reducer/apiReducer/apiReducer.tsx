@@ -16,7 +16,7 @@ import {
 import { delUser, getUser, signIn, signUp, updateUser } from '../../api/signApi';
 
 const apiState = {
-  token: '',
+  token: localStorage.getItem('token'),
   boards: [] as Array<{ title: string; description: string; id: string }>,
   deleteBoardId: '',
   deleteColumnId: '',

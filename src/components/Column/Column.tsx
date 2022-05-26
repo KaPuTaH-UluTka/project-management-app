@@ -13,7 +13,7 @@ import { openModal } from '../../store/Reducer/confirmationReducer/confirmationR
 import { updateColumn } from '../../store/api/columnApi';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { FormattedMessage } from 'react-intl';
-import { getTask } from '../../store/api/taskApi';
+import { listColumnStyles, itemColumnStyles, titleColumnStyles } from './columnStyles';
 
 export const Column = (props: { column: ColumnType; className: string }) => {
   const dispatch = useAppDispatch();
@@ -22,25 +22,9 @@ export const Column = (props: { column: ColumnType; className: string }) => {
   const [titleColumn, setTitleColumn] = useState(props.column.title);
 
   return (
-    <List
-      className={props.className}
-      style={{
-        backgroundColor: 'white',
-        margin: '10px 5px',
-        minWidth: 270,
-        boxShadow: '2px 2px 5px 0px black',
-        background: 'ede8e8',
-      }}
-    >
+    <List className={props.className} style={listColumnStyles}>
       {titleColumnState ? (
-        <ListItem
-          style={{
-            minWidth: 200,
-            width: '100%',
-            justifyContent: 'space-between',
-            padding: '10px',
-          }}
-        >
+        <ListItem style={itemColumnStyles}>
           <Button
             color="warning"
             variant="contained"
@@ -80,9 +64,7 @@ export const Column = (props: { column: ColumnType; className: string }) => {
           />
         </ListItem>
       ) : (
-        <ListItem
-          style={{ minWidth: 200, fontSize: 14, width: '100%', justifyContent: 'space-between' }}
-        >
+        <ListItem style={titleColumnStyles}>
           <Button
             color="error"
             variant="contained"
@@ -126,7 +108,7 @@ export const Column = (props: { column: ColumnType; className: string }) => {
           </List>
         )}
       </Droppable>
-      <ListItem style={{ margin: '0px auto' }}>
+      <ListItem style={{ margin: '0 auto' }}>
         <Button
           style={{ width: '90%', margin: '0 auto' }}
           color="success"
