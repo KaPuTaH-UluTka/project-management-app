@@ -101,7 +101,7 @@ const Login = () => {
     dispatch(signIn(loginUser as ILoginUser)).then(async (res) => {
       if (typeof res.payload === 'object') {
         const id = (await localStorage.getItem('userID')) as string;
-        dispatch(getUser(id));
+        dispatch(getUser({ id: id, updateLs: true }));
       }
     });
   }

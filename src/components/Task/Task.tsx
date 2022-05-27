@@ -17,7 +17,7 @@ export const Task = (props: { task: TaskType; column: ColumnType }) => {
   const [nameUser, setNameUser] = useState('');
   const findName = async () => {
     const data = (await (
-      await dispatch(getUser(props.task.userId))
+      await dispatch(getUser({ id: props.task.userId, updateLs: false }))
     ).payload) as { data: { name: string } };
     setTimeout(() => setNameUser(data.data.name), 300);
   };
