@@ -30,7 +30,7 @@ const styleLink = {
   textDecoration: 'underline',
 };
 
-export const Login = () => {
+const Login = () => {
   const { signState } = useParams();
   const dispatch = useAppDispatch();
   const { token } = useAppSelector((state) => state.apiReducer);
@@ -253,3 +253,5 @@ export const Login = () => {
     <Navigate to={`/${pathes.error}`} />
   );
 };
+
+export default Login;

@@ -17,7 +17,7 @@ import { openModal } from '../../store/Reducer/confirmationReducer/confirmationR
 import { FormattedMessage } from 'react-intl';
 import setContent from '../../utils/setContent';
 
-export const Board = () => {
+const Board = () => {
   const navigate = useNavigate();
   const { boardId } = useParams();
   const dispatch = useAppDispatch();
@@ -334,3 +334,5 @@ export const Board = () => {
     </Container>
   );
 };
+
+export default Board;
