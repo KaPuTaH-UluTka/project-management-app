@@ -62,7 +62,6 @@ const UpdateTaskModal = () => {
     },
     validationSchema: updateTaskSchema,
     onSubmit: () => {
-      const userId = localStorage.getItem('userID') || '';
       dispatch(
         updateTaskViaModal({
           title: `${updateTaskForm.values.title}`,
