@@ -214,11 +214,20 @@ const apiSlice = createSlice({
     [updateColumn.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);
     },
-    [updateColumn.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
-    },
     [updateTask.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);
+    },
+    [updateTaskViaModal.fulfilled.type]: (state, action) => {
+      const task = action.payload.data;
+      const column = { ...action.payload.column };
+      const indexTask = column.tasks.findIndex((item: { id: string }) => item.id === task.id);
+      const currentTask = { ...column.tasks[indexTask] };
+      const tasks = [...action.payload.column.tasks];
+      const indexColumn = state.board.columns.findIndex((item) => item.id === column.id);
+      currentTask.title = task.title;
+      tasks.splice(indexTask, 1, currentTask);
+      column.tasks = [...tasks];
+      state.board.columns[indexColumn] = { ...column };
     },
     [updateTaskViaModal.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);

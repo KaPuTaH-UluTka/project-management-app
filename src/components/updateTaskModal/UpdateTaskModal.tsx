@@ -30,13 +30,13 @@ import {
   titleStyle,
 } from './updateTaskModalStyles';
 import { rootStyles, violetTheme } from '../../style/rootStyles';
-import { ITaskFilesInfo } from '../../types/types';
+import { ColumnType, ITaskFilesInfo } from '../../types/types';
 import UploadBtn from './uploadBtn/UploadBtn';
 
 const UpdateTaskModal = () => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
-  const { order, taskId, columnId, done, userId } = useAppSelector(
+  const { order, taskId, columnId, done, userId, column } = useAppSelector(
     (state) => state.openModalReducer
   );
   const { taskTitle, taskDesc, taskFilesInfo, taskFiles } = useAppSelector(
@@ -72,6 +72,7 @@ const UpdateTaskModal = () => {
           taskId,
           boardId: boardId as string,
           done,
+          column: column as ColumnType,
         })
       );
       dispatch(closeModal('updateTaskModal'));

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { ColumnType } from '../../../types/types';
 const openModalState = {
   createBoardModal: false,
   confirmModal: false,
@@ -11,6 +12,7 @@ const openModalState = {
   deleteBoardId: '',
   deleteColumnId: '',
   deleteTaskId: '',
+  column: {},
   order: 1,
   columnId: '',
   taskId: '',
@@ -32,6 +34,7 @@ const openModalSlice = createSlice({
           modal?: string;
           userId?: string;
           done?: boolean;
+          column?: ColumnType;
         };
       }
     ) => {
@@ -61,6 +64,7 @@ const openModalSlice = createSlice({
           state.userId = action.payload.userId || '';
           state.done = action.payload.done || false;
           state.order = action.payload.order || 1;
+          state.column = action.payload.column || {};
           state.updateTaskModal = true;
           break;
         case 'deleteUserModal':
