@@ -15,7 +15,7 @@ import IconButton from '@mui/material/IconButton';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 
-export const Edit = () => {
+const Edit = () => {
   const dispatch = useAppDispatch();
   const userName = localStorage.getItem('userName') || '';
   const userEmail = localStorage.getItem('login') || '';
@@ -197,3 +197,5 @@ export const Edit = () => {
     </ThemeProvider>
   );
 };
+
+export default Edit;

@@ -9,7 +9,7 @@ import welcome from '../../assets/welcome.png';
 import Typography from '@mui/material/Typography';
 import { FormattedMessage } from 'react-intl';
 
-export const Welcome = () => {
+const Welcome = () => {
   const { token } = useAppSelector((state) => state.apiReducer);
   return token ? (
     <Navigate to={pathes.main} />
@@ -60,3 +60,5 @@ export const Welcome = () => {
     </section>
   );
 };
+
+export default Welcome;

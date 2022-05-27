@@ -1,12 +1,6 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Main } from '../../pages/Main/Main';
-import { Board } from '../../pages/Board/Board';
-import { Error } from '../../pages/Error/Error';
-import { Edit } from '../../pages/Edit/Edit';
-import { Login } from '../../pages/Login/Login';
 import { Private } from '../../hoc/Private';
-import { Welcome } from '../../pages/Welcome/Welcome';
 import { pathes } from '../../pathes/pathes';
 import { FullPage } from '../FullPage';
 import { useEffect } from 'react';
@@ -14,6 +8,13 @@ import { addToken } from '../../store/Reducer/apiReducer/apiReducer';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import Loading from '../loading/Loading';
 import ApiError from '../apiError/ApiError';
+
+const Main = lazy(() => import('../../pages/Main/Main'));
+const Board = lazy(() => import('../../pages/Board/Board'));
+const Login = lazy(() => import('../../pages/Login/Login'));
+const Error = lazy(() => import('../../pages/Error/Error'));
+const Welcome = lazy(() => import('../../pages/Welcome/Welcome'));
+const Edit = lazy(() => import('../../pages/Edit/Edit'));
 
 const App = () => {
   const dispatch = useAppDispatch();

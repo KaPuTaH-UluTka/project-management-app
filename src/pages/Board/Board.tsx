@@ -18,7 +18,7 @@ import { FormattedMessage } from 'react-intl';
 import { scroll } from './scroll';
 import setContent from '../../utils/setContent';
 
-export const Board = () => {
+const Board = () => {
   const navigate = useNavigate();
   const { boardId } = useParams();
   const { hash } = useLocation();
@@ -334,3 +334,5 @@ export const Board = () => {
     </Container>
   );
 };
+
+export default Board;
