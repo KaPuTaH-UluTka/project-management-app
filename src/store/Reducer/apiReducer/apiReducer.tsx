@@ -79,7 +79,7 @@ const apiSlice = createSlice({
     },
     [getUser.fulfilled.type]: (state, action) => {
       const user = action.payload.data;
-      localStorage.setItem('userName', user.name);
+      if (action.payload.updateLs) localStorage.setItem('userName', user.name);
     },
     [getUser.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);
@@ -95,6 +95,7 @@ const apiSlice = createSlice({
     },
     [updateUser.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);
+      if (action.payload === 'error.unauthorized') state.token = '';
     },
     [checkBoards.pending.type]: (state) => {
       state.process = 'loading';
@@ -149,9 +150,6 @@ const apiSlice = createSlice({
     },
     [openBoard.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);
-      // localStorage.setItem('token', '');
-      // state.token = '';
-      // state.process = 'error';
     },
     [addColumn.fulfilled.type]: (state, action) => {
       const column = action.payload.data;
@@ -216,8 +214,15 @@ const apiSlice = createSlice({
     [updateColumn.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);
     },
-    [updateTask.fulfilled.type]: () => {},
-    [updateTaskViaModal.fulfilled.type]: () => {},
+    [updateColumn.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
+    },
+    [updateTask.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
+    },
+    [updateTaskViaModal.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
+    },
     [getTask.fulfilled.type]: (state, action) => {
       state.taskFiles = [];
       const taskInfo = action.payload.data;
@@ -225,11 +230,17 @@ const apiSlice = createSlice({
       state.taskDesc = taskInfo.description;
       state.taskFilesInfo = taskInfo.files;
     },
+    [getTask.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
+    },
     [downloadFile.fulfilled.type]: (state, action) => {
       const response = action.payload.data;
       if (state.taskFilesInfo.length !== state.taskFiles.length) {
         state.taskFiles.push(response);
       }
+    },
+    [downloadFile.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
     },
     [takeAllTasks.pending.type]: (state) => {
       state.process = 'loading';
@@ -254,6 +265,9 @@ const apiSlice = createSlice({
       }
       state.tasks = [...tasks];
       state.process = 'confirmed';
+    },
+    [takeAllTasks.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
     },
   },
 });

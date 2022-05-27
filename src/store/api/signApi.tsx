@@ -90,32 +90,35 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-export const getUser = createAsyncThunk('getUser', async (id: string, { rejectWithValue }) => {
-  const token = localStorage.getItem('token');
-  try {
-    const data = await fetch(`${url}users/${id}`, {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ` + token,
-      },
-    }).then(async (response) => {
-      if (!response.ok) {
-        throw new Error(response.status.toString());
-      } else {
-        return await response.text().then((res) => JSON.parse(res));
-      }
-    });
-    return { data };
-  } catch (err) {
-    let message;
-    if (err instanceof Error) message = err.message;
-    else message = String(err);
-    if (message === '404') return rejectWithValue('error.getUser.404');
-    else if (message === '401') return rejectWithValue('error.unauthorized');
-    else return rejectWithValue(message);
+export const getUser = createAsyncThunk(
+  'getUser',
+  async (action: { id: string; updateLs?: boolean }, { rejectWithValue }) => {
+    const token = localStorage.getItem('token');
+    try {
+      const data = await fetch(`${url}users/${action.id}`, {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ` + token,
+        },
+      }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error(response.status.toString());
+        } else {
+          return await response.text().then((res) => JSON.parse(res));
+        }
+      });
+      return { data: data, updateLs: action.updateLs };
+    } catch (err) {
+      let message;
+      if (err instanceof Error) message = err.message;
+      else message = String(err);
+      if (message === '404') return rejectWithValue('error.getUser.404');
+      else if (message === '401') return rejectWithValue('error.unauthorized');
+      else return rejectWithValue(message);
+    }
   }
-});
+);
 
 export const delUser = createAsyncThunk('delUser', async (id: string, { rejectWithValue }) => {
   const token = localStorage.getItem('token');

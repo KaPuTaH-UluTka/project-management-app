@@ -31,13 +31,13 @@ export default function BoardList(props: {
 }) {
   const validationSchema = yup.object({
     search: yup.string().required('Write search info'),
-    select: yup.string().required('Choise your search selector'),
+    select: yup.string().required('Choose your search selector'),
   });
   const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
       search: '',
-      select: 'Choise search option',
+      select: 'Choose search option',
     },
     validationSchema: validationSchema,
     onSubmit: (e) => {
@@ -47,7 +47,7 @@ export default function BoardList(props: {
   });
 
   const activeSubmit = () => {
-    return formik.errors.search !== undefined || formik.values.select === 'Choise search option';
+    return formik.errors.search !== undefined || formik.values.select === 'Choose search option';
   };
   return (
     <Container>
@@ -84,8 +84,8 @@ export default function BoardList(props: {
               }}
               error={formik.touched.select}
             >
-              <MenuItem value="Choise search option" disabled>
-                Choise search option
+              <MenuItem value="Choose search option" disabled>
+                Choose search option
               </MenuItem>
               <MenuItem value="user">User name</MenuItem>
               <MenuItem value="description">Description</MenuItem>

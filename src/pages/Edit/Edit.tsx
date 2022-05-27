@@ -68,7 +68,7 @@ export const Edit = () => {
         };
         dispatch(updateUser(updatedUser)).then(async (res) => {
           if (res.payload) {
-            dispatch(getUser(id));
+            dispatch(getUser({ id: id, updateLs: true }));
           }
         });
         editProfileForm.setFieldValue('password', '');
