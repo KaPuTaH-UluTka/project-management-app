@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { ColumnType } from '../../types/types';
 import { useState } from 'react';
 import Add from '@mui/icons-material/Add';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { Task } from '../Task/Task';
 import { useAppDispatch } from '../../hooks/hooks';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
@@ -18,6 +18,7 @@ import { listColumnStyles, itemColumnStyles, titleColumnStyles } from './columnS
 export const Column = (props: { column: ColumnType; className: string }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
+  const { hash } = useLocation();
   const [titleColumnState, setTitleColumnState] = useState(false);
   const [titleColumn, setTitleColumn] = useState(props.column.title);
 
@@ -85,6 +86,7 @@ export const Column = (props: { column: ColumnType; className: string }) => {
       <Droppable droppableId={props.column.id} type="task">
         {(provided) => (
           <List
+            className={props.className ? 'column-scroll' : ''}
             style={{ background: 'gainsboro', margin: 5, maxHeight: '50vh', overflowY: 'scroll' }}
             ref={provided.innerRef}
             {...provided.droppableProps}
@@ -94,6 +96,7 @@ export const Column = (props: { column: ColumnType; className: string }) => {
                 <Draggable key={task.id} draggableId={task.id} index={index}>
                   {(provided) => (
                     <List
+                      className={`#${task.id}` === hash ? 'current-task' : ''}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
