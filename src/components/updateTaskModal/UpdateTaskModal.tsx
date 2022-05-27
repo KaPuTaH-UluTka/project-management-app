@@ -36,7 +36,9 @@ import UploadBtn from './uploadBtn/UploadBtn';
 const UpdateTaskModal = () => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
-  const { order, taskId, columnId, done } = useAppSelector((state) => state.openModalReducer);
+  const { order, taskId, columnId, done, userId } = useAppSelector(
+    (state) => state.openModalReducer
+  );
   const { taskTitle, taskDesc, taskFilesInfo, taskFiles } = useAppSelector(
     (state) => state.apiReducer
   );

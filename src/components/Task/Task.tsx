@@ -52,6 +52,7 @@ export const Task = (props: { task: TaskType; column: ColumnType }) => {
             taskId: props.task.id,
             done: props.task.done,
             columnId: props.column.id,
+            order: props.task.order,
           })
         );
       }}
