@@ -6,7 +6,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import Star from '@mui/icons-material/StarBorder';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,10 +17,12 @@ import { pathes } from '../../pathes/pathes';
 import { useAppDispatch } from '../../hooks/hooks';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import './boardList.scss';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Container } from '@mui/material';
+import FormHelperText from '@mui/material/FormHelperText';
 import { takeAllTasks } from '../../store/api/taskApi';
 import { formBoxStyles, searchValueStyles, selectStyle } from './boardListSyles';
+import { rootStyles } from '../../style/rootStyles';
 
 export default function BoardList(props: {
   boards: {
@@ -30,14 +32,15 @@ export default function BoardList(props: {
   }[];
 }) {
   const validationSchema = yup.object({
-    search: yup.string().required('Write search info'),
-    select: yup.string().required('Choose your search selector'),
+    search: yup.string().required('taskSearch.valuePlaceholder'),
+    select: yup.string().required('taskSearch.optionPlaceholder'),
   });
+  const intl = useIntl();
   const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
       search: '',
-      select: 'Choose search option',
+      select: '',
     },
     validationSchema: validationSchema,
     onSubmit: (e) => {
@@ -47,30 +50,40 @@ export default function BoardList(props: {
   });
 
   const activeSubmit = () => {
-    return formik.errors.search !== undefined || formik.values.select === 'Choose search option';
+    return !(formik.errors.search === undefined && formik.values.select !== '');
   };
+  function getTranslate(key: string) {
+    return intl.formatMessage({ id: key });
+  }
   return (
     <Container>
       <form className="form" onSubmit={formik.handleSubmit}>
         <Box sx={formBoxStyles}>
           <Box>
-            <InputLabel id="label-search">Search task value</InputLabel>
+            <InputLabel id="label-search">
+              <FormattedMessage id="taskSearch.valueTitle" defaultMessage="Search task" />
+            </InputLabel>
             <TextField
               style={searchValueStyles}
               variant="outlined"
               id="search"
               name="search"
-              placeholder="Write search info"
+              placeholder={getTranslate('taskSearch.valuePlaceholder')}
               value={formik.values.search}
               onChange={(e) => {
                 formik.handleChange(e);
                 activeSubmit();
               }}
               error={formik.touched.search}
+              helperText={
+                formik.touched.search && formik.errors.search && getTranslate(formik.errors.search)
+              }
             />
           </Box>
           <Box>
-            <InputLabel id="label-select">Search task option</InputLabel>
+            <InputLabel id="label-select">
+              <FormattedMessage id="taskSearch.optionTitle" defaultMessage="Search task option" />
+            </InputLabel>
             <Select
               style={selectStyle}
               id="select"
@@ -84,13 +97,25 @@ export default function BoardList(props: {
               }}
               error={formik.touched.select}
             >
-              <MenuItem value="Choose search option" disabled>
-                Choose search option
+              <MenuItem value={getTranslate('taskSearch.optionPlaceholder')} disabled>
+                <FormattedMessage
+                  id="taskSearch.optionPlaceholder"
+                  defaultMessage="Choose search option"
+                />
               </MenuItem>
-              <MenuItem value="user">User name</MenuItem>
-              <MenuItem value="description">Description</MenuItem>
-              <MenuItem value="title">Title</MenuItem>
+              <MenuItem value="user">
+                <FormattedMessage id="taskSearch.optionUserName" defaultMessage="User name" />
+              </MenuItem>
+              <MenuItem value="description">
+                <FormattedMessage id="taskSearch.optionTaskDesc" defaultMessage="Description" />
+              </MenuItem>
+              <MenuItem value="title">
+                <FormattedMessage id="taskSearch.optionTaskTitle" defaultMessage="Title" />
+              </MenuItem>
             </Select>
+            <FormHelperText sx={{ color: rootStyles.red, ml: 1 }}>
+              {formik.touched.select && formik.errors.select && getTranslate(formik.errors.select)}
+            </FormHelperText>
           </Box>
 
           <Button
@@ -104,7 +129,7 @@ export default function BoardList(props: {
             type="submit"
             disabled={activeSubmit()}
           >
-            <FormattedMessage id="search" defaultMessage="Search" />
+            <FormattedMessage id="taskSearch.submit" defaultMessage="Search" />
           </Button>
         </Box>
       </form>
@@ -114,8 +139,8 @@ export default function BoardList(props: {
             <Link to={`${pathes.board}/${board.id}`} key={index}>
               <ListItem className="list__item">
                 <ListItemAvatar>
-                  <Avatar sx={{}} className="list__item-avatar">
-                    <Star />
+                  <Avatar className="list__item-avatar">
+                    <AssignmentTurnedInIcon />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText primary={board.title} />

@@ -13,4 +13,5 @@ export const selectStyle = {
   display: 'block',
   maxHeight: 100,
   width: 200,
+  pr: 1,
 };

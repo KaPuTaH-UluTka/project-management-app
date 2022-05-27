@@ -8,6 +8,7 @@ import ConfirmationModal from '../components/confirmationModal/ConfirmationModal
 import CreateBoardModal from '../components/createBoardModal/CreateBoardModal';
 import UpdateTaskModal from '../components/updateTaskModal/UpdateTaskModal';
 import { TasksModal } from '../components/SearchTasksModal/SearchTasksModal';
+import { useIntl } from 'react-intl';
 
 const style = {
   position: 'absolute',
@@ -36,29 +37,34 @@ const BasicModal = () => {
   } = useAppSelector((state) => state.openModalReducer);
   let modal = false;
   let title = '';
+  const intl = useIntl();
+
+  function getTranslate(key: string) {
+    return intl.formatMessage({ id: key });
+  }
 
   if (confirmModal) {
-    title = 'Confirmation';
+    title = getTranslate('basicModal.confirm');
     modal = confirmModal;
   }
   if (createBoardModal) {
-    title = 'Create Board';
+    title = getTranslate('basicModal.createBoard');
     modal = createBoardModal;
   }
   if (createColumnModal) {
-    title = 'Create new Column';
+    title = getTranslate('basicModal.createColumn');
     modal = createColumnModal;
   }
   if (searchTasksModal) {
-    title = 'Tasks';
+    title = getTranslate('basicModal.searchTask');
     modal = searchTasksModal;
   }
   if (createTaskModal) {
-    title = 'Create new Task';
+    title = getTranslate('basicModal.createTask');
     modal = createTaskModal;
   }
   if (deleteUserModal) {
-    title = 'Confirm account deletion';
+    title = getTranslate('basicModal.accDeletion');
     modal = deleteUserModal;
   }
   if (updateTaskModal) {

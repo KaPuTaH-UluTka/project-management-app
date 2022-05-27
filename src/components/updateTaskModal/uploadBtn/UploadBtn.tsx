@@ -1,6 +1,7 @@
 import React, { FormEvent } from 'react';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { FormattedMessage } from 'react-intl';
 
 const UploadBtn = (props: { handleUpload: (e: FormEvent<HTMLInputElement>) => Promise<void> }) => {
   return (
@@ -22,7 +23,7 @@ const UploadBtn = (props: { handleUpload: (e: FormEvent<HTMLInputElement>) => Pr
         sx={{ lineHeight: '20px' }}
       >
         <AddIcon />
-        Upload picture
+        <FormattedMessage id="updateModal.uploadBtn" defaultMessage="Upload picture" />
       </Fab>
     </label>
   );
