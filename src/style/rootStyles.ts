@@ -7,6 +7,7 @@ export const rootStyles = {
   yellowLight: '#FFCC57',
   red: '#BD1929',
   gray: '#e6e6e6',
+  darkGray: '#363d48',
 };
 
 export const violetTheme = createTheme({

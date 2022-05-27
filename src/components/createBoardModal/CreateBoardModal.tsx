@@ -104,7 +104,7 @@ const CreateBoardModal = () => {
         {createBoardModal || createTaskModal || updateTaskModal ? (
           <TextField
             style={{ marginTop: 20 }}
-            label="Description"
+            label={<FormattedMessage id="boardModal.description" defaultMessage="Description" />}
             variant="outlined"
             id="description"
             name="description"

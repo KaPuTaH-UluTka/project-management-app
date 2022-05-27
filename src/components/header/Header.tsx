@@ -22,6 +22,7 @@ import LangSwitch from '../langSwitch/LangSwitch';
 import { FormattedMessage } from 'react-intl';
 
 import './header.scss';
+import { rootStyles } from '../../style/rootStyles';
 
 const Header = () => {
   const { confirmModal, createBoardModal, headerBar } = useAppSelector(
@@ -30,16 +31,16 @@ const Header = () => {
   const { token } = useAppSelector((state) => state.apiReducer);
   const dispatch = useAppDispatch();
   const [posTop, setPosTop] = useState(0);
-  const [bgStyle, setBgColor] = useState('#6751f6');
+  const [bgStyle, setBgColor] = useState(rootStyles.violetLight);
   useEffect(() => {
     if (posTop > 1) {
-      setBgColor('black');
+      setBgColor(rootStyles.darkGray);
     } else {
-      setBgColor('#6751f6');
+      setBgColor(rootStyles.violetDark);
     }
   }, [posTop]);
   window.addEventListener('scroll', () => {
-    setPosTop(window.pageYOffset);
+    setPosTop(window.scrollY);
   });
 
   return (
