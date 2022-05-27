@@ -48,8 +48,6 @@ const Welcome = () => {
         </Typography>
         <iframe
           className="welcome__iframe"
-          width="560"
-          height="315"
           src=""
           title="YouTube video player"
           frameBorder="0"
