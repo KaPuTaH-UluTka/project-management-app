@@ -125,10 +125,7 @@ const CreateBoardModal = () => {
             endIcon={<AddIcon />}
             disabled={activeSubmit()}
           >
-            <FormattedMessage
-              id={updateTaskModal ? 'boardModal.update' : 'boardModal.create'}
-              defaultMessage={updateTaskModal ? 'Update' : 'Create'}
-            />
+            <FormattedMessage id={'boardModal.create'} defaultMessage={'Create'} />
           </Button>
         </div>
       </Box>

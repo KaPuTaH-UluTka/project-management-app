@@ -18,6 +18,25 @@ export default function ConfirmationModal() {
     userId ? dispatch(closeModal('deleteUserModal')) : dispatch(closeModal('confirmModal'));
   }
 
+  function submit() {
+    chooseDeleteModal();
+    if (deleteBoardId && deleteColumnId && deleteTaskId) {
+      dispatch(
+        deleteTask({
+          boardId: deleteBoardId,
+          columnId: deleteColumnId,
+          taskId: deleteTaskId,
+        })
+      );
+    } else if (deleteBoardId && deleteColumnId) {
+      dispatch(deleteColumn({ boardId: deleteBoardId, columnId: deleteColumnId }));
+    } else if (deleteBoardId) {
+      dispatch(deleteBoard({ boardId: deleteBoardId }));
+    } else if (userId) {
+      dispatch(delUser(userId));
+    }
+  }
+
   return (
     <>
       <Typography id="modal-modal-description" sx={{ mt: 2, marginBottom: 2 }}>
@@ -26,29 +45,7 @@ export default function ConfirmationModal() {
           defaultMessage="Confirm the action on the page"
         />
       </Typography>
-      <Button
-        variant="contained"
-        color="error"
-        sx={{ marginRight: 1 }}
-        onClick={() => {
-          chooseDeleteModal();
-          if (deleteBoardId && deleteColumnId && deleteTaskId) {
-            dispatch(
-              deleteTask({
-                boardId: deleteBoardId,
-                columnId: deleteColumnId,
-                taskId: deleteTaskId,
-              })
-            );
-          } else if (deleteBoardId && deleteColumnId) {
-            dispatch(deleteColumn({ boardId: deleteBoardId, columnId: deleteColumnId }));
-          } else if (deleteBoardId) {
-            dispatch(deleteBoard({ boardId: deleteBoardId }));
-          } else if (userId) {
-            dispatch(delUser(userId));
-          }
-        }}
-      >
+      <Button variant="contained" color="error" sx={{ marginRight: 1 }} onClick={submit}>
         <FormattedMessage id="confirmModal.agree" defaultMessage="Agree" />
       </Button>
       <Button variant="contained" color="success" onClick={chooseDeleteModal}>
