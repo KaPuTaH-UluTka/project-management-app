@@ -5,13 +5,14 @@ import { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import setContent from '../../utils/setContent';
 
-export const Main = () => {
+const Main = () => {
   const dispatch = useAppDispatch();
   const { boards, process } = useAppSelector((state) => state.apiReducer);
   useEffect(() => {
     dispatch(checkBoards());
   }, []);
-  const mainBoards =
-    boards.length > 0 ? setContent(process, () => <BoardList boards={boards} />) : null;
+  const mainBoards = setContent(process, () => <BoardList boards={boards} />);
   return <Container fixed>{mainBoards}</Container>;
 };
+
+export default Main;

@@ -5,7 +5,7 @@ import ErrorMessage from '../../components/errorMessage/ErrorMessage';
 
 import './error.scss';
 
-export const Error = () => {
+const Error = () => {
   return (
     <div className="error__wrapper">
       <div className="error__block">
@@ -19,3 +19,5 @@ export const Error = () => {
     </div>
   );
 };
+
+export default Error;
