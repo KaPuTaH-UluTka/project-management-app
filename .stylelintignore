@@ -1,4 +1,6 @@
 *.json
+*.ts
+*.tsx
 .github
 .stylelintignore
 .prettierignore
