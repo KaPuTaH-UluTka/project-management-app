@@ -60,11 +60,8 @@ const openModalSlice = createSlice({
           state.columnId = action.payload.columnId || '';
           state.userId = action.payload.userId || '';
           state.done = action.payload.done || false;
+          state.order = action.payload.order || 1;
           state.updateTaskModal = true;
-          state.taskId = action.payload.taskId || '';
-          state.columnId = action.payload.columnId || '';
-          state.userId = action.payload.userId || '';
-          state.done = action.payload.done || false;
           break;
         case 'deleteUserModal':
           state.userId = action.payload.userId || '';
