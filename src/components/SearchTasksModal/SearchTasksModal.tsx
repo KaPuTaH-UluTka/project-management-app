@@ -29,27 +29,31 @@ export const TasksModal = () => {
   return (
     <Box style={{ overflow: 'scroll', maxHeight: '500px' }}>
       <List>
-        {tasks.map((task, index) => {
-          return (
-            <ListItem key={index} style={listItemStyle}>
-              {addBoxInfo('Task title:', task.title)}
-              {addBoxInfo('Task description:', task.description)}
-              {addBoxInfo('User name:', task.user ? task.user.name : 'deleted user')}
-              <Box style={{ width: '100%', textAlign: 'right' }}>
-                <Link to={`${pathes.board}/${task.boardId}/#${task.id}`}>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      dispatch(closeModal('closeCreateModal'));
-                    }}
-                  >
-                    <FormattedMessage id="tasksList.del" defaultMessage="Follow" />
-                  </Button>
-                </Link>
-              </Box>
-            </ListItem>
-          );
-        })}
+        {tasks.length > 0 ? (
+          tasks.map((task, index) => {
+            return (
+              <ListItem key={index} style={listItemStyle}>
+                {addBoxInfo('Task title:', task.title)}
+                {addBoxInfo('Task description:', task.description)}
+                {addBoxInfo('User name:', task.user ? task.user.name : 'deleted user')}
+                <Box style={{ width: '100%', textAlign: 'right' }}>
+                  <Link to={`${pathes.board}/${task.boardId}/#${task.id}`}>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        dispatch(closeModal('closeCreateModal'));
+                      }}
+                    >
+                      <FormattedMessage id="tasksList.del" defaultMessage="Follow" />
+                    </Button>
+                  </Link>
+                </Box>
+              </ListItem>
+            );
+          })
+        ) : (
+          <p>Tasks not found</p>
+        )}
       </List>
     </Box>
   );
