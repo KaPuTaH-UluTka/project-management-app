@@ -79,6 +79,14 @@ const UpdateTaskModal = () => {
     changeDesc();
   }
 
+  function activeTitleFieldSubmit() {
+    return updateTaskForm.values.title === '';
+  }
+
+  function activeDescFieldSubmit() {
+    return updateTaskForm.values.description === '';
+  }
+
   return (
     <>
       <ThemeProvider theme={violetTheme}>
@@ -93,7 +101,7 @@ const UpdateTaskModal = () => {
                   onChange={updateTaskForm.handleChange}
                   error={updateTaskForm.touched.title && Boolean(updateTaskForm.errors.title)}
                 />
-                <IconButton onClick={changeTitle}>
+                <IconButton onClick={changeTitle} disabled={activeTitleFieldSubmit()}>
                   <CheckIcon />
                 </IconButton>
                 <IconButton onClick={cancelChangeTitle}>
@@ -124,7 +132,7 @@ const UpdateTaskModal = () => {
                     updateTaskForm.touched.description && Boolean(updateTaskForm.errors.description)
                   }
                 />
-                <IconButton onClick={changeDesc}>
+                <IconButton onClick={changeDesc} disabled={activeDescFieldSubmit()}>
                   <CheckIcon />
                 </IconButton>
                 <IconButton onClick={cancelChangeDesc}>
