@@ -169,6 +169,7 @@ export const updateTask = createAsyncThunk(
       if (err instanceof Error) message = err.message;
       else message = String(err);
       if (message === '401') return rejectWithValue('error.unauthorized');
+      if (message === '404') return rejectWithValue(false);
       else return rejectWithValue(message);
     }
   }
