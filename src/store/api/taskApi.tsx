@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { url } from './url';
-import { ColumnType } from '../../types/types';
 
 export const addTask = createAsyncThunk(
   'addTask',
