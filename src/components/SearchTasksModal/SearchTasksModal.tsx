@@ -44,7 +44,7 @@ export const TasksModal = () => {
                         dispatch(closeModal('closeCreateModal'));
                       }}
                     >
-                      <FormattedMessage id="tasksList.del" defaultMessage="Follow" />
+                      <FormattedMessage id="basicModal.follow" defaultMessage="Follow" />
                     </Button>
                   </Link>
                 </Box>
@@ -52,7 +52,10 @@ export const TasksModal = () => {
             );
           })
         ) : (
-          <p>Tasks not found</p>
+          <FormattedMessage
+            id="basicModal.notFound"
+            defaultMessage="Confirm the action on the page"
+          />
         )}
       </List>
     </Box>
