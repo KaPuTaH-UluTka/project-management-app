@@ -34,7 +34,7 @@ export const TasksModal = () => {
             <ListItem key={index} style={listItemStyle}>
               {addBoxInfo('Task title:', task.title)}
               {addBoxInfo('Task description:', task.description)}
-              {addBoxInfo('User name:', task.user.name)}
+              {addBoxInfo('User name:', task.user ? task.user.name : 'deleted user')}
               <Box style={{ width: '100%', textAlign: 'right' }}>
                 <Link to={`${pathes.board}/${task.boardId}/#${task.id}`}>
                   <Button

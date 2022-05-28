@@ -231,8 +231,7 @@ const apiSlice = createSlice({
       currentColumn.tasks[indexTask] = {
         ...currentTask,
       };
-      currentStateColumns[indexColumn] = { ...currentColumn };
-      state.board.columns = [...currentStateColumns];
+      state.board.columns[indexColumn] = currentColumn;
     },
     [updateTaskViaModal.rejected.type]: (state, action) => {
       if (action.payload) {
