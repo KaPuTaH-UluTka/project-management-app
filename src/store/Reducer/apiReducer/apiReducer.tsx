@@ -266,9 +266,12 @@ const apiSlice = createSlice({
       let tasks;
       switch (select) {
         case 'user':
-          tasks = data.filter(
-            (task: SearchTaskType) => task.user.name.toUpperCase() === searchValue.toUpperCase()
-          );
+          tasks = data.filter((task: SearchTaskType) => {
+            const taskName = task.user ? task.user.name : '';
+            if (taskName.toUpperCase() === searchValue.toUpperCase()) {
+              return 1;
+            }
+          });
           break;
         case 'description':
           tasks = data.filter((task: SearchTaskType) => task.description.includes(searchValue));
