@@ -14,7 +14,7 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import { pathes } from '../../pathes/pathes';
-import { useAppDispatch } from '../../hooks/hooks';
+import useWindowDimensions, { useAppDispatch } from '../../hooks/hooks';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import './boardList.scss';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -37,6 +37,7 @@ export default function BoardList(props: {
   });
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const { width } = useWindowDimensions();
   const formik = useFormik({
     initialValues: {
       search: '',
@@ -48,6 +49,18 @@ export default function BoardList(props: {
       dispatch(takeAllTasks({ select: e.select, searchValue: e.search }));
     },
   });
+
+  const titleCutter = (title: string) => {
+    if (title.length > 6) {
+      return title.slice(0, 6) + '...';
+    } else return title;
+  };
+
+  const descCutter = (desc: string) => {
+    if (desc.length > 10) {
+      return desc.slice(0, 10) + '...';
+    } else return desc;
+  };
 
   const activeSubmit = () => {
     return !(formik.errors.search === undefined && formik.values.select !== '');
@@ -143,8 +156,8 @@ export default function BoardList(props: {
                     <AssignmentTurnedInIcon />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={board.title} />
-                <ListItemText primary={board.description} />
+                <ListItemText primary={titleCutter(board.title)} />
+                {width > 600 && <ListItemText primary={descCutter(board.description)} />}
                 <Button
                   className="list__item-button"
                   variant="contained"
