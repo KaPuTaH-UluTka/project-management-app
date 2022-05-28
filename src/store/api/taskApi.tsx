@@ -226,66 +226,6 @@ export const updateTaskViaModal = createAsyncThunk(
   }
 );
 
-export const uploadFile = createAsyncThunk(
-  'uploadFile',
-  async (action: FormData, { rejectWithValue }) => {
-    const token = localStorage.getItem('token');
-    try {
-      await fetch(`${url}file`, {
-        method: 'POST',
-        headers: {
-          accept: '*/*',
-          Authorization: `Bearer ` + token,
-        },
-        body: action,
-      }).then(async (response) => {
-        if (!response.ok) {
-          throw new Error(response.status.toString());
-        }
-      });
-    } catch (err) {
-      let message;
-      if (err instanceof Error) message = err.message;
-      else message = String(err);
-      if (message === '401') return rejectWithValue('error.unauthorized');
-      else return rejectWithValue(message);
-    }
-  }
-);
-
-export const downloadFile = createAsyncThunk(
-  'downloadFile',
-  async (action: { taskId: string; filename: string }, { rejectWithValue }) => {
-    const { taskId, filename } = action;
-    const token = localStorage.getItem('token');
-    try {
-      const data = await fetch(`${url}file/${taskId}/${filename}`, {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ` + token,
-        },
-      }).then(async (response) => {
-        if (!response.ok) {
-          throw new Error(response.status.toString());
-        } else {
-          return response.blob().then((blob) => {
-            return URL.createObjectURL(blob);
-          });
-        }
-      });
-      return { data };
-    } catch (err) {
-      let message;
-      if (err instanceof Error) message = err.message;
-      else message = String(err);
-      if (message === '401') return rejectWithValue('error.unauthorized');
-      else return rejectWithValue(message);
-    }
-  }
-);
-
 export const takeAllTasks = createAsyncThunk(
   'takeAllTasks',
   async (action: { select: string; searchValue: string }, { rejectWithValue }) => {

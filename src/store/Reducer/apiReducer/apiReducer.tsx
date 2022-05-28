@@ -7,7 +7,6 @@ import { ColumnType, TaskType, SearchTaskType } from '../../../types/types';
 import {
   addTask,
   deleteTask,
-  downloadFile,
   getTask,
   updateTask,
   updateTaskViaModal,
@@ -246,15 +245,6 @@ const apiSlice = createSlice({
       state.taskFilesInfo = taskInfo.files;
     },
     [getTask.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
-    },
-    [downloadFile.fulfilled.type]: (state, action) => {
-      const response = action.payload.data;
-      if (state.taskFilesInfo.length !== state.taskFiles.length) {
-        state.taskFiles.push(response);
-      }
-    },
-    [downloadFile.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);
     },
     [takeAllTasks.pending.type]: (state) => {
