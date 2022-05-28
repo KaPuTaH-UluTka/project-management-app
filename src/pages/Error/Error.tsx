@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import ErrorMessage from '../../components/errorMessage/ErrorMessage';
 
 import './error.scss';
+import { FormattedMessage } from 'react-intl';
 
 const Error = () => {
   return (
@@ -12,7 +13,7 @@ const Error = () => {
         <ErrorMessage />
         <NavLink to={pathes.main}>
           <Button variant="contained" color="warning">
-            Return
+            <FormattedMessage id="errorPage.return" defaultMessage="Return" />
           </Button>
         </NavLink>
       </div>

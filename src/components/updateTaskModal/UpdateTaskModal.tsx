@@ -87,6 +87,10 @@ const UpdateTaskModal = () => {
     return updateTaskForm.values.description === '';
   }
 
+  function activeSubmit() {
+    return !(updateTaskForm.values.description && updateTaskForm.values.title);
+  }
+
   return (
     <>
       <ThemeProvider theme={violetTheme}>
@@ -146,7 +150,13 @@ const UpdateTaskModal = () => {
             )}
           </Container>
           <Container sx={btnContainerStyle}>
-            <Button variant="contained" color="primary" sx={{ marginRight: 1 }} type="submit">
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ marginRight: 1 }}
+              type="submit"
+              disabled={activeSubmit()}
+            >
               <FormattedMessage id="updateModal.save" defaultMessage="Save" />
             </Button>
             <Button
