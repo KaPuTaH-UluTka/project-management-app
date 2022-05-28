@@ -4,7 +4,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useAppDispatch } from '../../hooks/hooks';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useState, useEffect } from 'react';
 import { getTask } from '../../store/api/taskApi';
 import { getUser } from '../../store/api/signApi';
@@ -15,15 +15,24 @@ export const Task = (props: { task: TaskType; column: ColumnType }) => {
   const { boardId } = useParams();
   const { hash } = useLocation();
   const [nameUser, setNameUser] = useState('');
+  const intl = useIntl();
   const findName = async () => {
     const data = (await (
       await dispatch(getUser({ id: props.task.userId, updateLs: false }))
-    ).payload) as { data: { name: string } };
-    setTimeout(() => setNameUser(data.data.name), 300);
+    ).payload) as { data: { name: string } } | boolean;
+    if (typeof data !== 'boolean') {
+      setTimeout(() => setNameUser(data.data.name), 300);
+    } else {
+      setNameUser('deleted user');
+    }
   };
   useEffect(() => {
     findName();
   }, []);
+
+  function getTranslate(key: string) {
+    return intl.formatMessage({ id: key });
+  }
 
   return (
     <ListItem
@@ -67,7 +76,7 @@ export const Task = (props: { task: TaskType; column: ColumnType }) => {
         />
         {nameUser ? (
           <p style={{ margin: 'auto 0', color: hash === `#${props.task.id}` ? 'white' : 'black' }}>
-            {nameUser}
+            {nameUser === 'deleted user' ? getTranslate('task.deletedUser') : nameUser}
           </p>
         ) : (
           <CircularProgress style={{ height: 20, width: 20, margin: 'auto 10px' }} />

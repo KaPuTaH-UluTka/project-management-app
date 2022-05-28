@@ -86,6 +86,7 @@ const apiSlice = createSlice({
     },
     [delUser.fulfilled.type]: (state) => {
       localStorage.setItem('token', '');
+      localStorage.setItem('userID', '');
       state.token = '';
     },
     [updateUser.fulfilled.type]: (state, action) => {

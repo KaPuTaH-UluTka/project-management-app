@@ -60,6 +60,7 @@
   "taskSearch.optionTaskDesc": "Описание",
   "taskSearch.optionTaskTitle": "Заголовок",
   "taskSearch.submit": "Поиск",
+  "task.deletedUser": "Удаленный пользователь",
   "error.signIn.403": "Такого пользователя не существует",
   "error.signUp.409": "Пользователь с такой почтой уже существует",
   "error.getUser.404": "Пользователь не найден",
