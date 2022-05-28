@@ -10,12 +10,12 @@ import { delUser } from '../../store/api/signApi';
 
 export default function ConfirmationModal() {
   const dispatch = useAppDispatch();
-  const { deleteBoardId, deleteColumnId, deleteTaskId, userId } = useAppSelector(
+  const { deleteBoardId, deleteColumnId, deleteTaskId, deleteUserId } = useAppSelector(
     (state) => state.openModalReducer
   );
 
   function chooseDeleteModal() {
-    userId ? dispatch(closeModal('deleteUserModal')) : dispatch(closeModal('confirmModal'));
+    deleteUserId ? dispatch(closeModal('deleteUserModal')) : dispatch(closeModal('confirmModal'));
   }
 
   function submit() {
@@ -32,8 +32,8 @@ export default function ConfirmationModal() {
       dispatch(deleteColumn({ boardId: deleteBoardId, columnId: deleteColumnId }));
     } else if (deleteBoardId) {
       dispatch(deleteBoard({ boardId: deleteBoardId }));
-    } else if (userId) {
-      dispatch(delUser(userId));
+    } else if (deleteUserId) {
+      dispatch(delUser(deleteUserId));
     }
   }
 
