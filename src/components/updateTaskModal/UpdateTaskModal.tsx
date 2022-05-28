@@ -62,13 +62,14 @@ const UpdateTaskModal = () => {
     },
     validationSchema: updateTaskSchema,
     onSubmit: () => {
+      const currentUserId = localStorage.getItem('userID');
       dispatch(
         updateTaskViaModal({
           title: `${updateTaskForm.values.title}`,
           description: `${updateTaskForm.values.description}`,
           order,
           columnId,
-          userId,
+          userId: userId || (currentUserId as string),
           taskId,
           boardId: boardId as string,
           done,
