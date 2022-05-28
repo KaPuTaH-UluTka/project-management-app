@@ -13,6 +13,7 @@ import { useParams, useLocation } from 'react-router-dom';
 export const Task = (props: { task: TaskType; column: ColumnType }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
+  const { board } = useAppSelector((state) => state.apiReducer);
   const { hash } = useLocation();
   const [nameUser, setNameUser] = useState('');
   const intl = useIntl();
@@ -28,7 +29,7 @@ export const Task = (props: { task: TaskType; column: ColumnType }) => {
   };
   useEffect(() => {
     findName();
-  }, []);
+  }, [board]);
 
   function getTranslate(key: string) {
     return intl.formatMessage({ id: key });
