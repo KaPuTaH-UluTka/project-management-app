@@ -94,6 +94,7 @@ export const getUser = createAsyncThunk(
   'getUser',
   async (action: { id: string; updateLs?: boolean }, { rejectWithValue }) => {
     const token = localStorage.getItem('token');
+    if (action.id === null) return false;
     try {
       const data = await fetch(`${url}users/${action.id}`, {
         method: 'GET',

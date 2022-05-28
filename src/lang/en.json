@@ -61,6 +61,7 @@
   "taskSearch.optionTaskDesc": "Description",
   "taskSearch.optionTaskTitle": "Title",
   "taskSearch.submit": "Search",
+  "task.deletedUser": "deleted user",
   "error.signIn.403": "No such user exists",
   "error.signUp.409": "User with this email already exists",
   "error.getUser.404": "User was not founded",
