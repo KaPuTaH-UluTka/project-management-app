@@ -14,6 +14,9 @@ import { updateColumn } from '../../store/api/columnApi';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { FormattedMessage } from 'react-intl';
 import { listColumnStyles, itemColumnStyles, titleColumnStyles } from './columnStyles';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { Box } from '@mui/material';
 
 export const Column = (props: { column: ColumnType; className: string }) => {
   const dispatch = useAppDispatch();
@@ -22,47 +25,70 @@ export const Column = (props: { column: ColumnType; className: string }) => {
   const [titleColumnState, setTitleColumnState] = useState(false);
   const [titleColumn, setTitleColumn] = useState(props.column.title);
 
+  const validationSchema = yup.object({
+    titleColumn: yup.string().min(3).required(),
+  });
+  const columnForm = useFormik({
+    initialValues: {
+      titleColumn: titleColumn,
+    },
+    validationSchema: validationSchema,
+    onSubmit: () => {
+      setTitleColumnState(false);
+      setTitleColumn(columnForm.values.titleColumn);
+      dispatch(
+        updateColumn({
+          boardId: boardId || '',
+          columnId: props.column.id,
+          title: columnForm.values.titleColumn,
+          order: props.column.order,
+          event: 'changeName',
+        })
+      );
+    },
+  });
+
+  function activateSubmit() {
+    if (!columnForm.errors.titleColumn) {
+      return false;
+    } else return true;
+  }
+
   return (
     <List className={props.className} style={listColumnStyles}>
       {titleColumnState ? (
         <ListItem style={itemColumnStyles}>
-          <Button
-            color="warning"
-            variant="contained"
-            size="small"
-            onClick={() => {
-              setTitleColumn(props.column.title);
-              setTitleColumnState(false);
-            }}
-          >
-            <FormattedMessage id="column.cancel" defaultMessage="Cancel" />
-          </Button>
-          <Button
-            color="warning"
-            variant="contained"
-            size="small"
-            onClick={() => {
-              setTitleColumnState(false);
-              dispatch(
-                updateColumn({
-                  boardId: boardId || '',
-                  columnId: props.column.id,
-                  title: titleColumn,
-                  order: props.column.order,
-                  event: 'changeName',
-                })
-              );
-            }}
-          >
-            <FormattedMessage id="column.submit" defaultMessage="Submit" />
-          </Button>
-          <Input
-            style={{ maxWidth: 100 }}
-            placeholder="Write title"
-            color="info"
-            value={titleColumn}
-            onChange={(e) => setTitleColumn(e.target.value)}
-          />
+          <Box component="form" onSubmit={columnForm.handleSubmit}>
+            <Button
+              color="warning"
+              variant="contained"
+              size="small"
+              onClick={() => {
+                setTitleColumn(props.column.title);
+                setTitleColumnState(false);
+              }}
+            >
+              <FormattedMessage id="column.cancel" defaultMessage="Cancel" />
+            </Button>
+            <Button
+              color="warning"
+              variant="contained"
+              size="small"
+              type="submit"
+              disabled={activateSubmit()}
+            >
+              <FormattedMessage id="column.submit" defaultMessage="Submit" />
+            </Button>
+            <Input
+              id="titleColumn"
+              style={{ maxWidth: 100 }}
+              placeholder="Write title"
+              color="info"
+              value={columnForm.values.titleColumn}
+              onChange={columnForm.handleChange}
+              error={columnForm.touched.titleColumn && Boolean(columnForm.errors.titleColumn)}
+            />
+          </Box>
         </ListItem>
       ) : (
         <ListItem style={titleColumnStyles}>

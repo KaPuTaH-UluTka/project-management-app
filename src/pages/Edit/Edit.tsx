@@ -97,6 +97,14 @@ const Edit = () => {
     }
   }
 
+  function activeNameFieldSubmit() {
+    return editProfileForm.values.name === '';
+  }
+
+  function activeEmailFieldSubmit() {
+    return editProfileForm.values.email === '';
+  }
+
   return (
     <ThemeProvider theme={violetTheme}>
       <Container component="main" maxWidth="xs">
@@ -124,7 +132,7 @@ const Edit = () => {
                     onChange={editProfileForm.handleChange}
                     error={editProfileForm.touched.name && Boolean(editProfileForm.errors.name)}
                   />
-                  <IconButton onClick={changeName}>
+                  <IconButton onClick={changeName} disabled={activeNameFieldSubmit()}>
                     <CheckIcon />
                   </IconButton>
                   <IconButton onClick={cancelChangeName}>
@@ -148,7 +156,7 @@ const Edit = () => {
                     onChange={editProfileForm.handleChange}
                     error={editProfileForm.touched.email && Boolean(editProfileForm.errors.email)}
                   />
-                  <IconButton onClick={changeEmail}>
+                  <IconButton onClick={changeEmail} disabled={activeEmailFieldSubmit()}>
                     <CheckIcon />
                   </IconButton>
                   <IconButton onClick={cancelChangeEmail}>
