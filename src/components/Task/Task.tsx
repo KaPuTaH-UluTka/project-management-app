@@ -3,7 +3,7 @@ import { ColumnType, TaskType } from '../../types/types';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useState, useEffect } from 'react';
 import { getTask } from '../../store/api/taskApi';

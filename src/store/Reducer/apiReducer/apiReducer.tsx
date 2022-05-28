@@ -216,7 +216,9 @@ const apiSlice = createSlice({
       state.apiErrors.push(`${action.payload}`);
     },
     [updateTask.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
+      if (action.payload) {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
     [updateTaskViaModal.fulfilled.type]: (state, action) => {
       const currentTask = { ...action.payload.data };
@@ -233,7 +235,9 @@ const apiSlice = createSlice({
       state.board.columns = [...currentStateColumns];
     },
     [updateTaskViaModal.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
+      if (action.payload) {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
     [getTask.fulfilled.type]: (state, action) => {
       state.taskFiles = [];
