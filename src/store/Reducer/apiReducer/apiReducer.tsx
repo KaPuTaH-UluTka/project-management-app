@@ -218,16 +218,18 @@ const apiSlice = createSlice({
       state.apiErrors.push(`${action.payload}`);
     },
     [updateTaskViaModal.fulfilled.type]: (state, action) => {
-      const task = action.payload.data;
-      const column = { ...action.payload.column };
-      const indexTask = column.tasks.findIndex((item: { id: string }) => item.id === task.id);
-      const currentTask = { ...column.tasks[indexTask] };
-      const tasks = [...action.payload.column.tasks];
-      const indexColumn = state.board.columns.findIndex((item) => item.id === column.id);
-      currentTask.title = task.title;
-      tasks.splice(indexTask, 1, currentTask);
-      column.tasks = [...tasks];
-      state.board.columns[indexColumn] = { ...column };
+      const currentTask = { ...action.payload.data };
+      const currentStateColumns = [...state.board.columns];
+      const indexColumn = currentStateColumns.findIndex(
+        (column) => column.id === currentTask.columnId
+      );
+      const currentColumn = { ...currentStateColumns[indexColumn] };
+      const indexTask = currentColumn.tasks.findIndex((task) => task.id === currentTask.id);
+      currentColumn.tasks[indexTask] = {
+        ...currentTask,
+      };
+      currentStateColumns[indexColumn] = { ...currentColumn };
+      state.board.columns = [...currentStateColumns];
     },
     [updateTaskViaModal.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);

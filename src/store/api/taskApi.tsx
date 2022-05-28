@@ -186,12 +186,11 @@ export const updateTaskViaModal = createAsyncThunk(
       userId: string;
       taskId: string;
       done: boolean;
-      column: ColumnType;
     },
     { rejectWithValue }
   ) => {
     const token = localStorage.getItem('token');
-    const { boardId, columnId, title, description, order, userId, taskId, done, column } = action;
+    const { boardId, columnId, title, description, order, userId, taskId, done } = action;
     try {
       const data = await fetch(`${url}boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
         method: 'PUT',
@@ -216,7 +215,7 @@ export const updateTaskViaModal = createAsyncThunk(
           return await response.text().then((res) => JSON.parse(res));
         }
       });
-      return { data, column };
+      return { data };
     } catch (err) {
       let message;
       if (err instanceof Error) message = err.message;
