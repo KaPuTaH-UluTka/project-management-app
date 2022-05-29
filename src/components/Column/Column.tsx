@@ -19,6 +19,8 @@ import * as yup from 'yup';
 import { Box, IconButton, ThemeProvider } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { violetTheme } from '../../style/rootStyles';
+import CheckIcon from '@mui/icons-material/Check';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export const Column = (props: { column: ColumnType; className: string }) => {
   const dispatch = useAppDispatch();
@@ -62,29 +64,21 @@ export const Column = (props: { column: ColumnType; className: string }) => {
         {titleColumnState ? (
           <ListItem sx={itemColumnStyles}>
             <Box component="form" onSubmit={columnForm.handleSubmit}>
-              <Button
+              <IconButton
                 color="warning"
-                variant="contained"
-                size="small"
                 onClick={() => {
                   setTitleColumn(props.column.title);
                   setTitleColumnState(false);
                 }}
               >
-                <FormattedMessage id="column.cancel" defaultMessage="Cancel" />
-              </Button>
-              <Button
-                color="warning"
-                variant="contained"
-                size="small"
-                type="submit"
-                disabled={activateSubmit()}
-              >
-                <FormattedMessage id="column.submit" defaultMessage="Submit" />
-              </Button>
+                <ClearIcon />
+              </IconButton>
+              <IconButton color="warning" type="submit" disabled={activateSubmit()}>
+                <CheckIcon />
+              </IconButton>
               <Input
                 id="titleColumn"
-                style={{ maxWidth: 100 }}
+                style={{ maxWidth: 160 }}
                 placeholder="Write title"
                 color="info"
                 value={columnForm.values.titleColumn}
@@ -103,7 +97,7 @@ export const Column = (props: { column: ColumnType; className: string }) => {
                 );
               }}
             >
-              <ClearIcon />
+              <DeleteForeverIcon />
             </IconButton>
             <ListItemText style={{ textAlign: 'right' }} onClick={() => setTitleColumnState(true)}>
               {titleColumn}
