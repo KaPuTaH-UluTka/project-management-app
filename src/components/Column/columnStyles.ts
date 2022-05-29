@@ -4,6 +4,7 @@ export const listColumnStyles = {
   minWidth: 270,
   boxShadow: '2px 2px 5px 0px black',
   background: 'ede8e8',
+  borderRadius: '5px',
 };
 
 export const itemColumnStyles = {

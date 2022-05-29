@@ -1,17 +1,16 @@
 export const formBoxStyles = {
-  maxWidth: 600,
+  width: '100%',
   padding: '10px 0',
   marginTop: '15px',
   display: 'flex',
   flexWrap: 'wrap',
-  justifyContent: 'space-between',
+  columnGap: '15px',
+  overflow: 'hidden',
 };
 
 export const searchValueStyles = { display: 'block', width: 200 };
 export const selectStyle = {
-  padding: '0 !important',
   display: 'block',
   maxHeight: 100,
   width: 200,
-  pr: 1,
 };

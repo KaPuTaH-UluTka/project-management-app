@@ -4,7 +4,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
 import { ColumnType } from '../../types/types';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Add from '@mui/icons-material/Add';
 import { useLocation, useParams } from 'react-router-dom';
 import { Task } from '../Task/Task';
@@ -16,7 +16,9 @@ import { FormattedMessage } from 'react-intl';
 import { listColumnStyles, itemColumnStyles, titleColumnStyles } from './columnStyles';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Box } from '@mui/material';
+import { Box, IconButton, ThemeProvider } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import { violetTheme } from '../../style/rootStyles';
 
 export const Column = (props: { column: ColumnType; className: string }) => {
   const dispatch = useAppDispatch();
@@ -55,119 +57,119 @@ export const Column = (props: { column: ColumnType; className: string }) => {
   }
 
   return (
-    <List className={props.className} style={listColumnStyles}>
-      {titleColumnState ? (
-        <ListItem style={itemColumnStyles}>
-          <Box component="form" onSubmit={columnForm.handleSubmit}>
-            <Button
-              color="warning"
-              variant="contained"
-              size="small"
+    <ThemeProvider theme={violetTheme}>
+      <List className={props.className} style={listColumnStyles}>
+        {titleColumnState ? (
+          <ListItem sx={itemColumnStyles}>
+            <Box component="form" onSubmit={columnForm.handleSubmit}>
+              <Button
+                color="warning"
+                variant="contained"
+                size="small"
+                onClick={() => {
+                  setTitleColumn(props.column.title);
+                  setTitleColumnState(false);
+                }}
+              >
+                <FormattedMessage id="column.cancel" defaultMessage="Cancel" />
+              </Button>
+              <Button
+                color="warning"
+                variant="contained"
+                size="small"
+                type="submit"
+                disabled={activateSubmit()}
+              >
+                <FormattedMessage id="column.submit" defaultMessage="Submit" />
+              </Button>
+              <Input
+                id="titleColumn"
+                style={{ maxWidth: 100 }}
+                placeholder="Write title"
+                color="info"
+                value={columnForm.values.titleColumn}
+                onChange={columnForm.handleChange}
+                error={columnForm.touched.titleColumn && Boolean(columnForm.errors.titleColumn)}
+              />
+            </Box>
+          </ListItem>
+        ) : (
+          <ListItem style={titleColumnStyles}>
+            <IconButton
+              color={'primary'}
               onClick={() => {
-                setTitleColumn(props.column.title);
-                setTitleColumnState(false);
+                dispatch(
+                  openModal({ boardId: boardId, columnId: props.column.id, modal: 'confirmModal' })
+                );
               }}
             >
-              <FormattedMessage id="column.cancel" defaultMessage="Cancel" />
-            </Button>
-            <Button
-              color="warning"
-              variant="contained"
-              size="small"
-              type="submit"
-              disabled={activateSubmit()}
+              <ClearIcon />
+            </IconButton>
+            <ListItemText style={{ textAlign: 'right' }} onClick={() => setTitleColumnState(true)}>
+              {titleColumn}
+            </ListItemText>
+          </ListItem>
+        )}
+        <Droppable droppableId={props.column.id} type="task">
+          {(provided) => (
+            <List
+              className={props.className ? 'column-scroll' : ''}
+              style={{ background: 'gainsboro', margin: 5, maxHeight: '50vh', overflowY: 'scroll' }}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
             >
-              <FormattedMessage id="column.submit" defaultMessage="Submit" />
-            </Button>
-            <Input
-              id="titleColumn"
-              style={{ maxWidth: 100 }}
-              placeholder="Write title"
-              color="info"
-              value={columnForm.values.titleColumn}
-              onChange={columnForm.handleChange}
-              error={columnForm.touched.titleColumn && Boolean(columnForm.errors.titleColumn)}
-            />
-          </Box>
-        </ListItem>
-      ) : (
-        <ListItem style={titleColumnStyles}>
+              {props.column?.tasks?.map((task, index) => {
+                return (
+                  <Draggable key={task.id} draggableId={task.id} index={index}>
+                    {(provided) => (
+                      <List
+                        className={`#${task.id}` === hash ? 'current-task' : ''}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        <Task task={task} column={props.column} />
+                      </List>
+                    )}
+                  </Draggable>
+                );
+              })}
+              {provided.placeholder}
+            </List>
+          )}
+        </Droppable>
+        <ListItem sx={{ margin: '0 auto' }}>
           <Button
-            color="error"
-            variant="contained"
-            size="small"
+            style={{ width: '90%', margin: '0 auto' }}
+            color="primary"
+            variant="outlined"
             onClick={() => {
-              dispatch(
-                openModal({ boardId: boardId, columnId: props.column.id, modal: 'confirmModal' })
-              );
+              let order = 1;
+              const userId = localStorage.getItem('userID') || '';
+              const columnId = props.column.id;
+              const tasks = props.column.tasks;
+              if (tasks?.length > 0) {
+                order = Number(tasks[tasks.length - 1].order) + 1;
+              }
+              if (boardId) {
+                dispatch(
+                  openModal({
+                    columnId,
+                    userId,
+                    modal: 'createTaskModal',
+                    order,
+                  })
+                );
+              }
             }}
           >
-            <FormattedMessage id="column.del" defaultMessage="Delete" />
+            <Add />{' '}
+            <ListItemText style={{ fontSize: 20 }}>
+              <FormattedMessage id="column.addTask" defaultMessage="Add task" />
+            </ListItemText>
           </Button>
-          <ListItemText style={{ textAlign: 'right' }} onClick={() => setTitleColumnState(true)}>
-            {titleColumn}
-          </ListItemText>
         </ListItem>
-      )}
-      <Droppable droppableId={props.column.id} type="task">
-        {(provided) => (
-          <List
-            className={props.className ? 'column-scroll' : ''}
-            style={{ background: 'gainsboro', margin: 5, maxHeight: '50vh', overflowY: 'scroll' }}
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            {props.column?.tasks?.map((task, index) => {
-              return (
-                <Draggable key={task.id} draggableId={task.id} index={index}>
-                  {(provided) => (
-                    <List
-                      className={`#${task.id}` === hash ? 'current-task' : ''}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      ref={provided.innerRef}
-                    >
-                      <Task task={task} column={props.column} />
-                    </List>
-                  )}
-                </Draggable>
-              );
-            })}
-            {provided.placeholder}
-          </List>
-        )}
-      </Droppable>
-      <ListItem style={{ margin: '0 auto' }}>
-        <Button
-          style={{ width: '90%', margin: '0 auto' }}
-          color="success"
-          variant="outlined"
-          onClick={() => {
-            let order = 1;
-            const userId = localStorage.getItem('userID') || '';
-            const columnId = props.column.id;
-            const tasks = props.column.tasks;
-            if (tasks?.length > 0) {
-              order = Number(tasks[tasks.length - 1].order) + 1;
-            }
-            if (boardId) {
-              dispatch(
-                openModal({
-                  columnId,
-                  userId,
-                  modal: 'createTaskModal',
-                  order,
-                })
-              );
-            }
-          }}
-        >
-          <Add />{' '}
-          <ListItemText style={{ fontSize: 20 }}>
-            <FormattedMessage id="column.addTask" defaultMessage="Add task" />
-          </ListItemText>
-        </Button>
-      </ListItem>
-    </List>
+      </List>
+    </ThemeProvider>
   );
 };
