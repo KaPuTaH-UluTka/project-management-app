@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { addBoard } from '../../store/api/boardApi';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { Button } from '@mui/material';
+import { Button, ThemeProvider } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { TextField } from '@mui/material';
 import { Box } from '@mui/system';
@@ -12,6 +12,7 @@ import { addColumn } from '../../store/api/columnApi';
 import { useParams } from 'react-router-dom';
 import { addTask } from '../../store/api/taskApi';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { violetTheme } from '../../style/rootStyles';
 
 const CreateBoardModal = () => {
   const dispatch = useAppDispatch();
@@ -108,56 +109,60 @@ const CreateBoardModal = () => {
   };
 
   return (
-    <form className="form" onSubmit={formik.handleSubmit}>
-      <Box sx={{ padding: '10px 0' }}>
-        <TextField
-          label={<FormattedMessage id="boardModal.title" defaultMessage="Title" />}
-          variant="outlined"
-          id="title"
-          name="title"
-          fullWidth
-          value={formik.values.title}
-          onChange={(e) => {
-            formik.handleChange(e);
-          }}
-          error={formik.touched.title && Boolean(formik.errors.title)}
-          helperText={
-            formik.touched.title && formik.errors.title && getTranslate(formik.errors.title)
-          }
-        />
-        {(createBoardModal || createTaskModal || updateTaskModal) && (
+    <ThemeProvider theme={violetTheme}>
+      <form className="form" onSubmit={formik.handleSubmit}>
+        <Box sx={{ padding: '10px 0' }}>
           <TextField
-            style={{ marginTop: 20 }}
-            label={<FormattedMessage id="boardModal.description" defaultMessage="Description" />}
+            label={<FormattedMessage id="boardModal.title" defaultMessage="Title" />}
             variant="outlined"
-            id="description"
-            name="description"
+            id="title"
+            name="title"
+            required
             fullWidth
-            value={formik.values.description}
+            value={formik.values.title}
             onChange={(e) => {
               formik.handleChange(e);
             }}
             error={formik.touched.title && Boolean(formik.errors.title)}
             helperText={
-              formik.touched.description &&
-              formik.errors.description &&
-              getTranslate(formik.errors.description)
+              formik.touched.title && formik.errors.title && getTranslate(formik.errors.title)
             }
           />
-        )}
-        <div className="form__button">
-          <Button
-            variant="contained"
-            color="success"
-            type="submit"
-            endIcon={<AddIcon />}
-            disabled={activeSubmit()}
-          >
-            <FormattedMessage id={'boardModal.create'} defaultMessage={'Create'} />
-          </Button>
-        </div>
-      </Box>
-    </form>
+          {(createBoardModal || createTaskModal || updateTaskModal) && (
+            <TextField
+              style={{ marginTop: 20 }}
+              label={<FormattedMessage id="boardModal.description" defaultMessage="Description" />}
+              variant="outlined"
+              id="description"
+              name="description"
+              required
+              fullWidth
+              value={formik.values.description}
+              onChange={(e) => {
+                formik.handleChange(e);
+              }}
+              error={formik.touched.title && Boolean(formik.errors.title)}
+              helperText={
+                formik.touched.description &&
+                formik.errors.description &&
+                getTranslate(formik.errors.description)
+              }
+            />
+          )}
+          <div className="form__button">
+            <Button
+              variant="contained"
+              color="success"
+              type="submit"
+              endIcon={<AddIcon />}
+              disabled={activeSubmit()}
+            >
+              <FormattedMessage id={'boardModal.create'} defaultMessage={'Create'} />
+            </Button>
+          </div>
+        </Box>
+      </form>
+    </ThemeProvider>
   );
 };
 

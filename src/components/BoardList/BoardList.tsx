@@ -77,7 +77,7 @@ export default function BoardList(props: {
               <FormattedMessage id="taskSearch.valueTitle" defaultMessage="Search task" />
             </InputLabel>
             <TextField
-              style={searchValueStyles}
+              sx={searchValueStyles}
               variant="outlined"
               id="search"
               name="search"
@@ -98,7 +98,7 @@ export default function BoardList(props: {
               <FormattedMessage id="taskSearch.optionTitle" defaultMessage="Search task option" />
             </InputLabel>
             <Select
-              style={selectStyle}
+              sx={selectStyle}
               id="select"
               name="select"
               variant="outlined"
@@ -132,10 +132,10 @@ export default function BoardList(props: {
           </Box>
 
           <Button
-            style={{
+            sx={{
               height: 40,
               position: 'relative',
-              top: 30,
+              mt: 4,
             }}
             variant="contained"
             color="success"

@@ -7,6 +7,8 @@ import { deleteColumn } from '../../store/api/columnApi';
 import { deleteTask } from '../../store/api/taskApi';
 import { FormattedMessage } from 'react-intl';
 import { delUser } from '../../store/api/signApi';
+import { violetTheme } from '../../style/rootStyles';
+import { ThemeProvider } from '@mui/material';
 
 export default function ConfirmationModal() {
   const dispatch = useAppDispatch();
@@ -38,7 +40,7 @@ export default function ConfirmationModal() {
   }
 
   return (
-    <>
+    <ThemeProvider theme={violetTheme}>
       <Typography id="modal-modal-description" sx={{ mt: 2, marginBottom: 2 }}>
         <FormattedMessage
           id="confirmModal.action"
@@ -51,6 +53,6 @@ export default function ConfirmationModal() {
       <Button variant="contained" color="success" onClick={chooseDeleteModal}>
         <FormattedMessage id="confirmModal.return" defaultMessage="Return" />
       </Button>
-    </>
+    </ThemeProvider>
   );
 }
