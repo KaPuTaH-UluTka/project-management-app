@@ -1,7 +1,10 @@
-import { Container } from '@mui/material';
+import { Avatar, Box, Container, Link } from '@mui/material';
 import { useAppSelector } from '../../hooks/hooks';
 import { Navigate } from 'react-router-dom';
 import { pathes } from '../../pathes/pathes';
+import mikel2003 from '../../assets/teamAvatars/mikel2003.jpg';
+import anterebol from '../../assets/teamAvatars/anterebol.jpg';
+import ulutka from '../../assets/teamAvatars/ulutka.jpg';
 
 import './welcome.scss';
 
@@ -23,15 +26,6 @@ const Welcome = () => {
             </h1>
             <div className="welcome__info-descr">
               <FormattedMessage id="welcome.info" />
-            </div>
-            <div className="welcome__info-developers">
-              <b>
-                <FormattedMessage
-                  id="welcome.created"
-                  defaultMessage="The project was created by:"
-                />{' '}
-              </b>
-              <a href="">@KaPuTaH-UluTka</a>, <a href="">@anterebol</a>, <a href="">@Mikel2003</a>
             </div>
           </div>
 
@@ -55,6 +49,62 @@ const Welcome = () => {
           allowFullScreen
         />
       </Container>
+      <Box className="welcome__team">
+        <Typography className="welcome__team-title">
+          <FormattedMessage id="welcome.team" defaultMessage="Our team" />
+        </Typography>
+        <Container className="welcome__team-item">
+          <Container className="avatar-wrapper">
+            <Avatar className="avatar" alt="UluTkA" src={ulutka} />
+          </Container>
+          <Container className="welcome__team-item__info">
+            <Link href="https://github.com/KaPuTaH-UluTka" target="_blank">
+              @KaPuTaH-UluTka
+            </Link>
+            <Typography>
+              <FormattedMessage
+                id="welcome.ulutka"
+                defaultMessage="Setup workflow, Sign In/Sign Up form, localisation, popup for errors, and some small
+            features."
+              />
+            </Typography>
+          </Container>
+        </Container>
+        <Container className="welcome__team-item">
+          <Container className="avatar-wrapper">
+            <Avatar className="avatar" alt="anterebol" src={anterebol} />
+          </Container>
+          <Container className="welcome__team-item__info">
+            <Link href="https://github.com/anterebol" target="_blank">
+              @anterebol
+            </Link>
+            <Typography>
+              <FormattedMessage
+                id="welcome.anterebol"
+                defaultMessage="Routing, board page structure, drag and drop, home page, page 404 and a lot of small
+            tweaks."
+              />
+            </Typography>
+          </Container>
+        </Container>
+        <Container className="welcome__team-item">
+          <Container className="avatar-wrapper">
+            <Avatar className="avatar" alt="Mikel2003" src={mikel2003} />
+          </Container>
+          <Container className="welcome__team-item__info">
+            <Link href="https://github.com/Mikel2003" target="_blank">
+              @Mikel2003
+            </Link>
+            <Typography>
+              <FormattedMessage
+                id="welcome.mikel2003"
+                defaultMessage="Suspense feature, error boundary, lazy loading component, welcome page, header and
+            footer."
+              />
+            </Typography>
+          </Container>
+        </Container>
+      </Box>
     </section>
   );
 };
