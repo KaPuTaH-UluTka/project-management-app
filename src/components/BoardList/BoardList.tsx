@@ -14,7 +14,7 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import { pathes } from '../../pathes/pathes';
-import useWindowDimensions, { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch } from '../../hooks/hooks';
 import { openModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 import './boardList.scss';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -37,7 +37,6 @@ export default function BoardList(props: {
   });
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const { width } = useWindowDimensions();
   const formik = useFormik({
     initialValues: {
       search: '',
@@ -151,13 +150,15 @@ export default function BoardList(props: {
           return (
             <Link to={`${pathes.board}/${board.id}`} key={index}>
               <ListItem className="list__item">
-                <ListItemAvatar>
-                  <Avatar className="list__item-avatar">
-                    <AssignmentTurnedInIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={titleCutter(board.title)} />
-                {width > 600 && <ListItemText primary={descCutter(board.description)} />}
+                <Container className="list__item-info">
+                  <ListItemAvatar>
+                    <Avatar className="list__item-info__avatar">
+                      <AssignmentTurnedInIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={titleCutter(board.title)} />
+                  <ListItemText primary={descCutter(board.description)} />
+                </Container>
                 <Button
                   className="list__item-button"
                   variant="contained"

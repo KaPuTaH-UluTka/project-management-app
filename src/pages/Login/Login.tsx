@@ -124,10 +124,10 @@ const Login = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            {signState ? (
-              <FormattedMessage id="login.signIn" defaultMessage="Sign in" />
-            ) : (
+            {signState === 'signUp' ? (
               <FormattedMessage id="login.signUp" defaultMessage="Sign Up" />
+            ) : (
+              <FormattedMessage id="login.signIn" defaultMessage="Sign in" />
             )}
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={formik.handleSubmit}>

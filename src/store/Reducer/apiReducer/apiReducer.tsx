@@ -106,8 +106,6 @@ const apiSlice = createSlice({
     },
     [checkBoards.rejected.type]: (state, action) => {
       state.apiErrors.push(`${action.payload}`);
-      localStorage.setItem('token', '');
-      state.token = '';
       state.process = 'error';
     },
     [addBoard.fulfilled.type]: (state, action) => {
