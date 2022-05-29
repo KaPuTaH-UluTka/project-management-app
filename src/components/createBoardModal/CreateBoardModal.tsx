@@ -11,7 +11,7 @@ import './createBoardModal.scss';
 import { addColumn } from '../../store/api/columnApi';
 import { useParams } from 'react-router-dom';
 import { addTask } from '../../store/api/taskApi';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const CreateBoardModal = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +26,7 @@ const CreateBoardModal = () => {
     userId,
     columnId,
   } = useAppSelector((state) => state.openModalReducer);
+  const intl = useIntl();
 
   function chooseCloseModal() {
     let modalStatus;
@@ -44,11 +45,20 @@ const CreateBoardModal = () => {
   const validationSchema =
     createBoardModal || createTaskModal
       ? yup.object({
-          title: yup.string().required('Title is required'),
-          description: yup.string().required('Title is required'),
+          title: yup
+            .string()
+            .max(10, 'boardCreateModal.titleLength')
+            .required('boardCreateModal.title'),
+          description: yup
+            .string()
+            .max(20, 'boardCreateModal.descLength')
+            .required('boardCreateModal.title'),
         })
       : yup.object({
-          title: yup.string().required('Title is required'),
+          title: yup
+            .string()
+            .max(10, 'boardCreateModal.titleLength')
+            .required('boardCreateModal.title'),
         });
 
   const formik = useFormik({
@@ -81,8 +91,20 @@ const CreateBoardModal = () => {
     },
   });
 
+  function getTranslate(key: string) {
+    return intl.formatMessage({ id: key });
+  }
+
   const activeSubmit = () => {
-    return formik.errors.title != undefined;
+    if (createBoardModal || createTaskModal) {
+      if (
+        (formik.values.title === '' || formik.errors.title !== undefined) &&
+        (formik.values.description === '' || formik.errors.description !== undefined)
+      )
+        return true;
+    } else {
+      if (formik.values.title === '' || formik.errors.title !== undefined) return true;
+    }
   };
 
   return (
@@ -97,11 +119,13 @@ const CreateBoardModal = () => {
           value={formik.values.title}
           onChange={(e) => {
             formik.handleChange(e);
-            activeSubmit();
           }}
-          error={formik.touched.title}
+          error={formik.touched.title && Boolean(formik.errors.title)}
+          helperText={
+            formik.touched.title && formik.errors.title && getTranslate(formik.errors.title)
+          }
         />
-        {createBoardModal || createTaskModal || updateTaskModal ? (
+        {(createBoardModal || createTaskModal || updateTaskModal) && (
           <TextField
             style={{ marginTop: 20 }}
             label={<FormattedMessage id="boardModal.description" defaultMessage="Description" />}
@@ -112,11 +136,15 @@ const CreateBoardModal = () => {
             value={formik.values.description}
             onChange={(e) => {
               formik.handleChange(e);
-              activeSubmit();
             }}
-            error={formik.touched.title}
+            error={formik.touched.title && Boolean(formik.errors.title)}
+            helperText={
+              formik.touched.description &&
+              formik.errors.description &&
+              getTranslate(formik.errors.description)
+            }
           />
-        ) : null}
+        )}
         <div className="form__button">
           <Button
             variant="contained"
