@@ -29,8 +29,9 @@ const Board = () => {
     if (boardId) {
       dispatch(openBoard({ boardId }));
     }
-    scroll();
   }, []);
+
+  useEffect(scroll, [process]);
 
   return (
     <Container fixed className="board">

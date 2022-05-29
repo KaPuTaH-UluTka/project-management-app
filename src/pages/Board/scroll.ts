@@ -3,7 +3,7 @@ export function scroll() {
   const column1 = column ? column?.offsetTop : 0;
   const column2 = column ? column?.offsetLeft - column.clientWidth / 2 : 0;
   const columnList = document.querySelector('.board__list');
-  for (let i = 0; i < column2; i += 10) {
+  for (let i = 0; i < column2; i += 1) {
     setTimeout(() => columnList?.scrollTo(i, column1), 100);
   }
   const task = document.querySelector('.current-task') as HTMLElement;
