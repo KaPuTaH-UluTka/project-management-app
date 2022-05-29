@@ -118,23 +118,23 @@ const Board = () => {
                     currentColumnTasks,
                   })
                 );
-                const order =
-                  currentColumn.tasks.length > 0
-                    ? currentColumn.tasks[currentColumn.tasks.length - 1].order + 1
-                    : 1;
-                await dispatch(
-                  updateTask({
-                    boardId: boardId,
-                    oldColumnId: droppableId,
-                    newColumnId: droppableId,
-                    userId: currentTask.userId,
-                    title: currentTask.title,
-                    order,
-                    description: currentTask.description,
-                    taskId: currentTask.id,
-                    done: currentTask.done,
-                  })
-                );
+                // const order =
+                //   currentColumn.tasks.length > 0
+                //     ? currentColumn.tasks[currentColumn.tasks.length - 1].order + 1
+                //     : 1;
+                // // await dispatch(
+                // //   updateTask({
+                // //     boardId: boardId,
+                // //     oldColumnId: droppableId,
+                // //     newColumnId: droppableId,
+                // //     userId: currentTask.userId,
+                // //     title: currentTask.title,
+                // //     order,
+                // //     description: currentTask.description,
+                // //     taskId: currentTask.id,
+                // //     done: currentTask.done,
+                // //   })
+                // // );
                 for (let i = 0; i < oldColumnTasks.length; i++) {
                   await dispatch(
                     updateTask({
