@@ -30,7 +30,7 @@ export const Column = (props: { column: ColumnType; className: string }) => {
   const [titleColumn, setTitleColumn] = useState(props.column.title);
 
   const validationSchema = yup.object({
-    titleColumn: yup.string().min(3).required(),
+    titleColumn: yup.string().min(3).max(10).required(),
   });
   const columnForm = useFormik({
     initialValues: {
