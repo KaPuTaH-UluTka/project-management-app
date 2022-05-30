@@ -8,8 +8,39 @@ import './welcome.scss';
 import welcome from '../../assets/welcome.png';
 import Typography from '@mui/material/Typography';
 import { FormattedMessage } from 'react-intl';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { closeModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
+import { useEffect } from 'react';
 
 const Welcome = () => {
+  const {
+    createBoardModal,
+    createColumnModal,
+    createTaskModal,
+    deleteUserModal,
+    updateTaskModal,
+    searchTasksModal,
+  } = useAppSelector((state) => state.openModalReducer);
+  const { token } = useAppSelector((state) => state.apiReducer);
+  const dispatch = useAppDispatch();
+  function chooseDeleteModal() {
+    let modalStatus;
+    if (createBoardModal || createColumnModal || createTaskModal || searchTasksModal) {
+      modalStatus = 'closeCreateModal';
+    } else if (deleteUserModal) {
+      modalStatus = 'deleteUserModal';
+    } else if (updateTaskModal) {
+      modalStatus = 'updateTaskModal';
+    } else {
+      modalStatus = 'confirmModal';
+    }
+    dispatch(closeModal(modalStatus));
+  }
+  useEffect(() => {
+    if (!token) {
+      chooseDeleteModal();
+    }
+  }, []);
   return (
     <section className="welcome">
       <Container maxWidth="lg">
