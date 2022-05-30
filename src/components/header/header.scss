@@ -70,9 +70,10 @@
   }
 
   &__bar-item {
+    margin-top: 3px !important;
     border-radius: 3px !important;
-    background: #9ec6cd !important;
-    opacity: 0.7 !important;
+    background: var(--violet-light) !important;
+    opacity: 0.9 !important;
     transition: ease-in 0.3s;
   }
 

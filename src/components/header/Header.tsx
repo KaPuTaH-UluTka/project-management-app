@@ -89,24 +89,27 @@ const Header = () => {
                 >
                   <Link to={pathes.main}>
                     <MenuItem onClick={toggleBar} className="header__bar-item">
-                      <Typography textAlign="center">Home</Typography>
+                      <Typography textAlign="center">
+                        <FormattedMessage id="nav.home" defaultMessage="Home" />
+                      </Typography>
                     </MenuItem>
                   </Link>
                   <MenuItem onClick={toggleBar} className="header__bar-item">
-                    <Typography textAlign="center">
-                      <Button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          dispatch(openModal({ modal: 'createBoardModal' }));
-                        }}
-                      >
-                        Add board
-                      </Button>
+                    <Typography
+                      textAlign="center"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        dispatch(openModal({ modal: 'createBoardModal' }));
+                      }}
+                    >
+                      <FormattedMessage id="nav.addBoard" defaultMessage="Add board" />
                     </Typography>
                   </MenuItem>
                   <Link to={pathes.edit}>
                     <MenuItem onClick={toggleBar} className="header__bar-item">
-                      <Typography textAlign="center">Edit profile</Typography>
+                      <Typography textAlign="center">
+                        <FormattedMessage id="nav.editProfile" defaultMessage="Edit Profile" />
+                      </Typography>
                     </MenuItem>
                   </Link>
                 </div>
