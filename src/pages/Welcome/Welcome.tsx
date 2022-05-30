@@ -3,14 +3,12 @@ import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import mikel2003 from '../../assets/teamAvatars/mikel2003.jpg';
 import anterebol from '../../assets/teamAvatars/anterebol.jpg';
 import ulutka from '../../assets/teamAvatars/ulutka.jpg';
-
-import './welcome.scss';
-
-import welcome from '../../assets/welcome.png';
 import Typography from '@mui/material/Typography';
 import { FormattedMessage } from 'react-intl';
 import { useEffect } from 'react';
 import { closeModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
+import './welcome.scss';
+import welcome from '../../assets/welcome.png';
 
 const Welcome = () => {
   const {
