@@ -1,7 +1,7 @@
 import PersonIcon from '@mui/icons-material/Person';
 import LoginIcon from '@mui/icons-material/Login';
 import { pathes } from '../../pathes/pathes';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { logout } from '../../store/Reducer/apiReducer/apiReducer';
 import './header.scss';
@@ -32,6 +32,8 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const [posTop, setPosTop] = useState(0);
   const [bgStyle, setBgColor] = useState(rootStyles.violetLight);
+  const location = useLocation();
+  let headerBtns;
   useEffect(() => {
     if (posTop > 1) {
       setBgColor(rootStyles.darkGray);
@@ -42,6 +44,50 @@ const Header = () => {
       setPosTop(window.scrollY);
     });
   }, [posTop]);
+
+  if (token && location.pathname === '/welcome') {
+    headerBtns = (
+      <Box sx={{ position: 'absolute', right: 80 }}>
+        <Link to={pathes.login + '/signIn'}>
+          <button className="header__user-entry output">
+            <Typography sx={{ fontSize: 18, display: { md: 'flex' } }}>Main page</Typography>
+          </button>
+        </Link>
+      </Box>
+    );
+  } else if (token) {
+    headerBtns = (
+      <Box sx={{ position: 'absolute', right: 80 }}>
+        <button className="header__user-entry output" onClick={() => dispatch(logout())}>
+          <LoginIcon />
+          <Typography sx={{ fontSize: 18, display: { xs: 'none', md: 'flex' } }}>
+            <FormattedMessage id="logout" defaultMessage="Logout" />
+          </Typography>
+        </button>
+      </Box>
+    );
+  } else {
+    headerBtns = (
+      <Box sx={{ display: 'flex', position: 'absolute', right: 80 }}>
+        <Link to={pathes.login + '/signIn'}>
+          <button className="header__user-entry">
+            <LoginIcon />
+            <Typography sx={{ fontSize: 18, display: { xs: 'none', md: 'flex' } }}>
+              <FormattedMessage id="nav.login" defaultMessage="Login" />
+            </Typography>
+          </button>
+        </Link>
+        <Link to={pathes.login + '/signUp'}>
+          <button className="header__user-registr">
+            <PersonIcon />
+            <Typography sx={{ fontSize: 18, display: { xs: 'none', md: 'flex' } }}>
+              <FormattedMessage id="nav.signUp" defaultMessage="Sign up" />
+            </Typography>
+          </button>
+        </Link>
+      </Box>
+    );
+  }
 
   return (
     <AppBar
@@ -70,7 +116,7 @@ const Header = () => {
             TRELLO
           </Typography>
 
-          {token && (
+          {token && location.pathname !== '/welcome' && (
             <Box
               sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
               onClick={() => {
@@ -130,7 +176,7 @@ const Header = () => {
           >
             TRELLO
           </Typography>
-          {token && (
+          {token && location.pathname !== '/welcome' && (
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               <Link to={pathes.main}>
                 <div className="header__nav-link">
@@ -154,36 +200,7 @@ const Header = () => {
               </Link>
             </Box>
           )}
-
-          {token ? (
-            <Box sx={{ position: 'absolute', right: 80 }}>
-              <button className="header__user-entry output" onClick={() => dispatch(logout())}>
-                <LoginIcon />
-                <Typography sx={{ fontSize: 18, display: { xs: 'none', md: 'flex' } }}>
-                  <FormattedMessage id="logout" defaultMessage="Logout" />
-                </Typography>
-              </button>
-            </Box>
-          ) : (
-            <Box sx={{ display: 'flex', position: 'absolute', right: 80 }}>
-              <Link to={pathes.login + '/signIn'}>
-                <button className="header__user-entry">
-                  <LoginIcon />
-                  <Typography sx={{ fontSize: 18, display: { xs: 'none', md: 'flex' } }}>
-                    <FormattedMessage id="nav.login" defaultMessage="Login" />
-                  </Typography>
-                </button>
-              </Link>
-              <Link to={pathes.login + '/signUp'}>
-                <button className="header__user-registr">
-                  <PersonIcon />
-                  <Typography sx={{ fontSize: 18, display: { xs: 'none', md: 'flex' } }}>
-                    <FormattedMessage id="nav.signUp" defaultMessage="Sign up" />
-                  </Typography>
-                </button>
-              </Link>
-            </Box>
-          )}
+          {headerBtns}
           <Box sx={{ position: 'absolute', right: 0 }}>
             <LangSwitch />
           </Box>
