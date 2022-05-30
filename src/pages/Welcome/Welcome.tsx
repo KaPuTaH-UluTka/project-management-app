@@ -13,10 +13,7 @@ import Typography from '@mui/material/Typography';
 import { FormattedMessage } from 'react-intl';
 
 const Welcome = () => {
-  const { token } = useAppSelector((state) => state.apiReducer);
-  return token ? (
-    <Navigate to={pathes.main} />
-  ) : (
+  return (
     <section className="welcome">
       <Container maxWidth="lg">
         <div className="welcome__inner">
