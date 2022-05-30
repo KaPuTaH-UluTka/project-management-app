@@ -2,6 +2,7 @@
   "logout": "Logout",
   "nav.home": "Main page",
   "nav.toHome": "Go to Main page",
+  "nav.toHomeSmall": "Main page",
   "nav.addBoard": "Add board",
   "nav.editProfile": "Edit profile",
   "nav.login": "Login",

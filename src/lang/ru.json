@@ -2,6 +2,7 @@
   "logout": "Выход",
   "nav.home": "Главная страница",
   "nav.toHome": "На главную страницу",
+  "nav.toHomeSmall": "На главную",
   "nav.addBoard": "Создать доску",
   "nav.editProfile": "Изменить профиль",
   "nav.login": "Войти",

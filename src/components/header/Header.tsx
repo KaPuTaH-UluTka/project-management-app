@@ -47,11 +47,14 @@ const Header = () => {
 
   if (token && location.pathname === '/welcome') {
     headerBtns = (
-      <Box sx={{ position: 'absolute', right: 80 }}>
+      <Box sx={{ position: 'absolute', right: 60 }}>
         <Link to={pathes.login + '/signIn'}>
           <button className="header__user-entry output">
-            <Typography sx={{ fontSize: 18, display: { md: 'flex' } }}>
+            <Typography sx={{ fontSize: 18, display: { xs: 'none', md: 'flex' } }}>
               <FormattedMessage id="nav.toHome" defaultMessage="Go to Main page" />
+            </Typography>
+            <Typography sx={{ fontSize: 18, display: { xs: 'flex', md: 'none' } }}>
+              <FormattedMessage id="nav.toHomeSmall" defaultMessage="Main page" />
             </Typography>
           </button>
         </Link>
