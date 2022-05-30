@@ -54,6 +54,7 @@ export const deleteColumn = createAsyncThunk(
       if (err instanceof Error) message = err.message;
       else message = String(err);
       if (message === '401') return rejectWithValue('error.unauthorized');
+      if (message === '404') return rejectWithValue('error.getColumn.404');
       else return rejectWithValue(message);
     }
   }
@@ -88,6 +89,7 @@ export const updateColumn = createAsyncThunk(
       if (err instanceof Error) message = err.message;
       else message = String(err);
       if (message === '401') return rejectWithValue('error.unauthorized');
+      if (message === '404') return rejectWithValue('error.getColumn.404');
       else return rejectWithValue(message);
     }
   }

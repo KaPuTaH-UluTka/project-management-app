@@ -66,6 +66,7 @@ export const deleteTask = createAsyncThunk(
       if (err instanceof Error) message = err.message;
       else message = String(err);
       if (message === '401') return rejectWithValue('error.unauthorized');
+      if (message === '404') return rejectWithValue('error.getTask.404');
       else return rejectWithValue(message);
     }
   }
@@ -103,6 +104,7 @@ export const getTask = createAsyncThunk(
       if (err instanceof Error) message = err.message;
       else message = String(err);
       if (message === '401') return rejectWithValue('error.unauthorized');
+      if (message === '404') return rejectWithValue('error.getTask.404');
       else return rejectWithValue(message);
     }
   }

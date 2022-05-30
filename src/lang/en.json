@@ -79,5 +79,8 @@
   "error.updateUser.404": "User was not founded",
   "error.updateUser.500": "User with this email already exists",
   "error.delUser.404": "User was not founded",
-  "error.unauthorized": "Session expired, please login again"
+  "error.unauthorized": "Session expired, please login again",
+  "error.getBoard.404": "Board not found",
+  "error.getTask.404": "Task not found",
+  "error.getColumn.404": "Column not found"
 }

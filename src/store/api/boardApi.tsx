@@ -81,6 +81,7 @@ export const deleteBoard = createAsyncThunk(
       if (err instanceof Error) message = err.message;
       else message = String(err);
       if (message === '401') return rejectWithValue('error.unauthorized');
+      if (message === '404') return rejectWithValue('error.getBoard.404');
       else return rejectWithValue(message);
     }
   }
@@ -111,6 +112,7 @@ export const openBoard = createAsyncThunk(
       if (err instanceof Error) message = err.message;
       else message = String(err);
       if (message === '401') return rejectWithValue('error.unauthorized');
+      if (message === '404') return rejectWithValue('error.getBoard.404');
       else return rejectWithValue(message);
     }
   }
