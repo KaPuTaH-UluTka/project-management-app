@@ -50,7 +50,9 @@ const Header = () => {
       <Box sx={{ position: 'absolute', right: 80 }}>
         <Link to={pathes.login + '/signIn'}>
           <button className="header__user-entry output">
-            <Typography sx={{ fontSize: 18, display: { md: 'flex' } }}>Main page</Typography>
+            <Typography sx={{ fontSize: 18, display: { md: 'flex' } }}>
+              <FormattedMessage id="nav.home" defaultMessage="Home" />
+            </Typography>
           </button>
         </Link>
       </Box>
@@ -158,6 +160,13 @@ const Header = () => {
                       </Typography>
                     </MenuItem>
                   </Link>
+                  <Link to={pathes.welcome}>
+                    <MenuItem onClick={toggleBar} className="header__bar-item">
+                      <Typography textAlign="center">
+                        <FormattedMessage id="nav.welcome" defaultMessage="About us" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
                 </div>
               ) : null}
             </Box>
@@ -199,6 +208,11 @@ const Header = () => {
               <Link to={pathes.edit}>
                 <div className="header__nav-link">
                   <FormattedMessage id="nav.editProfile" defaultMessage="Edit Profile" />
+                </div>
+              </Link>
+              <Link to={pathes.welcome}>
+                <div className="header__nav-link">
+                  <FormattedMessage id="nav.welcome" defaultMessage="About us" />
                 </div>
               </Link>
             </Box>
