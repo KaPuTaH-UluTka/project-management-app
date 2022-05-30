@@ -82,6 +82,7 @@ const apiSlice = createSlice({
     },
     [getUser.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -105,6 +106,7 @@ const apiSlice = createSlice({
     },
     [updateUser.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -120,6 +122,7 @@ const apiSlice = createSlice({
     },
     [checkBoards.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -132,6 +135,7 @@ const apiSlice = createSlice({
     },
     [addBoard.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -151,6 +155,7 @@ const apiSlice = createSlice({
     },
     [deleteBoard.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -173,6 +178,7 @@ const apiSlice = createSlice({
     },
     [openBoard.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -186,6 +192,7 @@ const apiSlice = createSlice({
     },
     [addColumn.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -200,6 +207,7 @@ const apiSlice = createSlice({
     },
     [deleteColumn.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -217,6 +225,7 @@ const apiSlice = createSlice({
     },
     [addTask.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -237,6 +246,7 @@ const apiSlice = createSlice({
     },
     [deleteTask.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -257,6 +267,7 @@ const apiSlice = createSlice({
     },
     [updateColumn.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -265,6 +276,7 @@ const apiSlice = createSlice({
     },
     [updateTask.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -286,6 +298,7 @@ const apiSlice = createSlice({
     },
     [updateTaskViaModal.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -301,6 +314,7 @@ const apiSlice = createSlice({
     },
     [getTask.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
@@ -336,6 +350,7 @@ const apiSlice = createSlice({
     },
     [takeAllTasks.rejected.type]: (state, action) => {
       if (action.payload === 'error.unauthorized') {
+        state.apiErrors.push(`${action.payload}`);
         state.token = '';
         localStorage.setItem('token', '');
       } else {
