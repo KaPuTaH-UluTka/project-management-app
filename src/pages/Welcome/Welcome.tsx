@@ -1,7 +1,5 @@
 import { Avatar, Box, Container, Link } from '@mui/material';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { Navigate } from 'react-router-dom';
-import { pathes } from '../../pathes/pathes';
 import mikel2003 from '../../assets/teamAvatars/mikel2003.jpg';
 import anterebol from '../../assets/teamAvatars/anterebol.jpg';
 import ulutka from '../../assets/teamAvatars/ulutka.jpg';
@@ -25,6 +23,7 @@ const Welcome = () => {
   } = useAppSelector((state) => state.openModalReducer);
   const { token } = useAppSelector((state) => state.apiReducer);
   const dispatch = useAppDispatch();
+
   function chooseDeleteModal() {
     let modalStatus;
     if (createBoardModal || createColumnModal || createTaskModal || searchTasksModal) {
@@ -43,9 +42,7 @@ const Welcome = () => {
       chooseDeleteModal();
     }
   }, []);
-  return token ? (
-    <Navigate to={pathes.main} />
-  ) : (
+  return (
     <section className="welcome">
       <Container maxWidth="lg">
         <div className="welcome__inner">
