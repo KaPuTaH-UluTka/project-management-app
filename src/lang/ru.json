@@ -67,7 +67,7 @@
   "taskSearch.valuePlaceholder": "Введите данные",
   "taskSearch.optionPlaceholder": "Выберите фильтр",
   "taskSearch.optionUserName": "Имя пользователя",
-  "taskSearch.optionTaskDesc": "Описание",
+  "taskSearch.optionTaskDesc": "Подстрока",
   "taskSearch.optionTaskTitle": "Заголовок",
   "taskSearch.submit": "Поиск",
   "task.deletedUser": "Удаленный пользователь",

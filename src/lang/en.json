@@ -67,7 +67,7 @@
   "taskSearch.valuePlaceholder": "Enter search info",
   "taskSearch.optionPlaceholder": "Choose search option",
   "taskSearch.optionUserName": "User name",
-  "taskSearch.optionTaskDesc": "Description",
+  "taskSearch.optionTaskDesc": "Fragment",
   "taskSearch.optionTaskTitle": "Title",
   "taskSearch.submit": "Search",
   "task.deletedUser": "deleted user",
