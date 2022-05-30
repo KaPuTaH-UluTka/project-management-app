@@ -1,6 +1,7 @@
 {
   "logout": "Выход",
-  "nav.home": "Домой",
+  "nav.home": "Главная страница",
+  "nav.toHome": "На главную страницу",
   "nav.addBoard": "Создать доску",
   "nav.editProfile": "Изменить профиль",
   "nav.login": "Войти",
@@ -68,7 +69,7 @@
   "taskSearch.valuePlaceholder": "Введите данные",
   "taskSearch.optionPlaceholder": "Выберите фильтр",
   "taskSearch.optionUserName": "Имя пользователя",
-  "taskSearch.optionTaskDesc": "Подстрока",
+  "taskSearch.optionTaskDesc": "Описание",
   "taskSearch.optionTaskTitle": "Заголовок",
   "taskSearch.submit": "Поиск",
   "task.deletedUser": "Удаленный пользователь",

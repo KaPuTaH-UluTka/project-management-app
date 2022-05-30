@@ -1,6 +1,7 @@
 {
   "logout": "Logout",
-  "nav.home": "Home",
+  "nav.home": "Main page",
+  "nav.toHome": "Go to Main page",
   "nav.addBoard": "Add board",
   "nav.editProfile": "Edit profile",
   "nav.login": "Login",
@@ -68,7 +69,7 @@
   "taskSearch.valuePlaceholder": "Enter search info",
   "taskSearch.optionPlaceholder": "Choose search option",
   "taskSearch.optionUserName": "User name",
-  "taskSearch.optionTaskDesc": "Fragment",
+  "taskSearch.optionTaskDesc": "Description",
   "taskSearch.optionTaskTitle": "Title",
   "taskSearch.submit": "Search",
   "task.deletedUser": "deleted user",

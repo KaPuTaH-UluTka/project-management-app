@@ -51,7 +51,7 @@ const Header = () => {
         <Link to={pathes.login + '/signIn'}>
           <button className="header__user-entry output">
             <Typography sx={{ fontSize: 18, display: { md: 'flex' } }}>
-              <FormattedMessage id="nav.home" defaultMessage="Home" />
+              <FormattedMessage id="nav.toHome" defaultMessage="Go to Main page" />
             </Typography>
           </button>
         </Link>
