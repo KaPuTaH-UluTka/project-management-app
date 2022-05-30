@@ -1,0 +1,10 @@
+*.json
+*.ts
+*.tsx
+.github
+.stylelintignore
+.prettierignore
+.stylelintrc
+.prettierrc
+.eslintignore
+public/_redirects
