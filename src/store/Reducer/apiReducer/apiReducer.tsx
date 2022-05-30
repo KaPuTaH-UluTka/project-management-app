@@ -205,10 +205,6 @@ const apiSlice = createSlice({
           currentColumn.title = title;
           state.board.columns[indexColumn] = { ...currentColumn };
           break;
-        case 'addEndPosition':
-          break;
-        case 'changePosition':
-          break;
       }
     },
     [updateColumn.rejected.type]: (state, action) => {
