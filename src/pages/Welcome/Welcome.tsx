@@ -1,7 +1,4 @@
 import { Avatar, Box, Container, Link } from '@mui/material';
-import { useAppSelector } from '../../hooks/hooks';
-import { Navigate } from 'react-router-dom';
-import { pathes } from '../../pathes/pathes';
 import mikel2003 from '../../assets/teamAvatars/mikel2003.jpg';
 import anterebol from '../../assets/teamAvatars/anterebol.jpg';
 import ulutka from '../../assets/teamAvatars/ulutka.jpg';
