@@ -1,5 +1,5 @@
 import { Avatar, Box, Container, Link } from '@mui/material';
-import { useAppSelector } from '../../hooks/hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { Navigate } from 'react-router-dom';
 import { pathes } from '../../pathes/pathes';
 import mikel2003 from '../../assets/teamAvatars/mikel2003.jpg';
@@ -11,9 +11,38 @@ import './welcome.scss';
 import welcome from '../../assets/welcome.png';
 import Typography from '@mui/material/Typography';
 import { FormattedMessage } from 'react-intl';
+import { useEffect } from 'react';
+import { closeModal } from '../../store/Reducer/confirmationReducer/confirmationReducer';
 
 const Welcome = () => {
+  const {
+    createBoardModal,
+    createColumnModal,
+    createTaskModal,
+    deleteUserModal,
+    updateTaskModal,
+    searchTasksModal,
+  } = useAppSelector((state) => state.openModalReducer);
   const { token } = useAppSelector((state) => state.apiReducer);
+  const dispatch = useAppDispatch();
+  function chooseDeleteModal() {
+    let modalStatus;
+    if (createBoardModal || createColumnModal || createTaskModal || searchTasksModal) {
+      modalStatus = 'closeCreateModal';
+    } else if (deleteUserModal) {
+      modalStatus = 'deleteUserModal';
+    } else if (updateTaskModal) {
+      modalStatus = 'updateTaskModal';
+    } else {
+      modalStatus = 'confirmModal';
+    }
+    dispatch(closeModal(modalStatus));
+  }
+  useEffect(() => {
+    if (!token) {
+      chooseDeleteModal();
+    }
+  }, []);
   return token ? (
     <Navigate to={pathes.main} />
   ) : (
