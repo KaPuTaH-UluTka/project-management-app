@@ -56,14 +56,12 @@ const Board = () => {
             case 'task':
               const beforeDroppableId = result.source.droppableId;
               if (destination) {
-                const droppableId = destination.droppableId;
                 const currentIndexColumn = board.columns.findIndex(
                   (column) => column.id === beforeDroppableId
                 );
                 const currentTask = currentState[currentIndexColumn].tasks.filter(
                   (task) => task.id === draggableId
                 )[0];
-                const currentColumn = currentState.filter((column) => column.id === droppableId)[0];
                 const oldColumnIndex = currentState.findIndex(
                   (column) => column.id === source.droppableId
                 );

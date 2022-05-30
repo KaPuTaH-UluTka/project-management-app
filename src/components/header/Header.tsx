@@ -38,10 +38,10 @@ const Header = () => {
     } else {
       setBgColor(rootStyles.violetDark);
     }
+    window.addEventListener('scroll', () => {
+      setPosTop(window.scrollY);
+    });
   }, [posTop]);
-  window.addEventListener('scroll', () => {
-    setPosTop(window.scrollY);
-  });
 
   return (
     <AppBar

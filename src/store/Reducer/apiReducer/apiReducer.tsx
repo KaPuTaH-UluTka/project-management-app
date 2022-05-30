@@ -81,11 +81,21 @@ const apiSlice = createSlice({
       if (action.payload.updateLs) localStorage.setItem('userName', user.name);
     },
     [getUser.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
     [delUser.fulfilled.type]: (state) => {
       localStorage.setItem('token', '');
       localStorage.setItem('userID', '');
+      state.token = '';
+    },
+    [delUser.rejected.type]: (state, action) => {
+      state.apiErrors.push(`${action.payload}`);
+      localStorage.setItem('token', '');
       state.token = '';
     },
     [updateUser.fulfilled.type]: (state, action) => {
@@ -94,8 +104,12 @@ const apiSlice = createSlice({
       localStorage.setItem('login', updatedUser.login);
     },
     [updateUser.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
-      if (action.payload === 'error.unauthorized') state.token = '';
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
     [checkBoards.pending.type]: (state) => {
       state.process = 'loading';
@@ -105,17 +119,25 @@ const apiSlice = createSlice({
       state.process = 'confirmed';
     },
     [checkBoards.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
-      state.process = 'error';
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+        state.process = 'error';
+      }
     },
     [addBoard.fulfilled.type]: (state, action) => {
       state.boards.push({ ...action.payload.data });
     },
     [addBoard.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
-      localStorage.setItem('token', '');
-      state.token = '';
-      state.process = 'error';
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+        state.process = 'error';
+      }
     },
     [deleteBoard.fulfilled.type]: (state, action) => {
       const boards = state.boards.filter((item) => action.payload.boardId !== item.id) as Array<{
@@ -128,10 +150,13 @@ const apiSlice = createSlice({
       state.boards = boards;
     },
     [deleteBoard.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
-      localStorage.setItem('token', '');
-      state.token = '';
-      state.process = 'error';
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+        state.process = 'error';
+      }
     },
     [openBoard.pending.type]: (state) => {
       state.process = 'loading';
@@ -147,7 +172,12 @@ const apiSlice = createSlice({
       state.process = 'confirmed';
     },
     [openBoard.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
     [addColumn.fulfilled.type]: (state, action) => {
       const column = action.payload.data;
@@ -155,7 +185,12 @@ const apiSlice = createSlice({
       state.board.columns.push(column);
     },
     [addColumn.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
     [deleteColumn.fulfilled.type]: (state, action) => {
       const columnId = action.payload.columnId;
@@ -164,7 +199,12 @@ const apiSlice = createSlice({
       state.board.columns = columns;
     },
     [deleteColumn.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
     [addTask.fulfilled.type]: (state, action) => {
       const columnId = action.payload.data.columnId;
@@ -176,7 +216,12 @@ const apiSlice = createSlice({
       }
     },
     [addTask.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
     [deleteTask.fulfilled.type]: (state, action) => {
       const { columnId, taskId } = action.payload;
@@ -191,7 +236,12 @@ const apiSlice = createSlice({
       }
     },
     [deleteTask.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
     [updateColumn.fulfilled.type]: (state, action) => {
       const columnId = action.payload.data.id;
@@ -206,10 +256,18 @@ const apiSlice = createSlice({
       }
     },
     [updateColumn.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
     [updateTask.rejected.type]: (state, action) => {
-      if (action.payload) {
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
         state.apiErrors.push(`${action.payload}`);
       }
     },
@@ -227,7 +285,10 @@ const apiSlice = createSlice({
       state.board.columns[indexColumn] = currentColumn;
     },
     [updateTaskViaModal.rejected.type]: (state, action) => {
-      if (action.payload) {
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
         state.apiErrors.push(`${action.payload}`);
       }
     },
@@ -239,7 +300,12 @@ const apiSlice = createSlice({
       state.taskFilesInfo = taskInfo.files;
     },
     [getTask.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
     [takeAllTasks.pending.type]: (state) => {
       state.process = 'loading';
@@ -269,7 +335,12 @@ const apiSlice = createSlice({
       state.process = 'confirmed';
     },
     [takeAllTasks.rejected.type]: (state, action) => {
-      state.apiErrors.push(`${action.payload}`);
+      if (action.payload === 'error.unauthorized') {
+        state.token = '';
+        localStorage.setItem('token', '');
+      } else {
+        state.apiErrors.push(`${action.payload}`);
+      }
     },
   },
 });

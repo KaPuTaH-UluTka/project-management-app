@@ -56,8 +56,8 @@ export default function BoardList(props: {
   };
 
   const descCutter = (desc: string) => {
-    if (desc.length > 10) {
-      return desc.slice(0, 10) + '...';
+    if (desc.length > 15) {
+      return desc.slice(0, 15) + '...';
     } else return desc;
   };
 
