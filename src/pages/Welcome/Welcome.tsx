@@ -59,19 +59,21 @@ const Welcome = () => {
         </div>
       </Container>
       <Container
+        className="welcome__video"
         sx={{ mx: 'auto', p: 10, display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
         <Typography sx={{ fontSize: 20 }}>
           <FormattedMessage id="welcome.review" defaultMessage="Short review" />
         </Typography>
-        <iframe
-          className="welcome__iframe"
-          src=""
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
+        <Container className="welcome__video-container">
+          <iframe
+            src="https://www.youtube.com/embed/pRyX2KIPDuc"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </Container>
       </Container>
       <Box className="welcome__team">
         <Typography className="welcome__team-title">

@@ -76,20 +76,51 @@
         }
       }
     }
+  }
 
-    &__iframe {
-      width: 560px;
+  &__video {
+    &-container {
+      width: 800px !important;
+      height: 400px;
+
+      iframe {
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 1600px) {
+  .welcome {
+    &__video {
+      &-container {
+        width: 600px !important;
+        height: 300px;
+      }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .welcome {
+    &__video {
+      &-container {
+        width: 550px !important;
+        height: 280px;
+      }
     }
   }
 }
 
 @media (max-width: 1000px) {
   .welcome {
-    &__team {
-      width: 60%;
-
-      &__iframe {
-        width: 480px;
+    &__video {
+      &-container {
+        width: 500px !important;
+        height: 270px;
       }
     }
   }
@@ -114,9 +145,14 @@
 
     &__team {
       width: 70%;
+    }
 
-      &__iframe {
-        width: 480px;
+    &__video {
+      padding: 10px !important;
+
+      &-container {
+        width: 450px !important;
+        height: 260px;
       }
     }
   }
@@ -126,9 +162,12 @@
   .welcome {
     &__team {
       width: 90%;
+    }
 
-      &__iframe {
-        width: 480px;
+    &__video {
+      &-container {
+        width: 400px !important;
+        height: 250px;
       }
     }
   }
@@ -179,9 +218,12 @@
           align-items: center;
         }
       }
+    }
 
-      &__iframe {
-        width: 300px;
+    &__video {
+      &-container {
+        width: 300px !important;
+        height: 200px;
       }
     }
   }
