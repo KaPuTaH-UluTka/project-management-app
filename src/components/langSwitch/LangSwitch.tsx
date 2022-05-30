@@ -5,15 +5,21 @@ import { setLangEn, setLangRu } from '../../store/Reducer/langReducer/langReduce
 import { useAppDispatch } from '../../hooks/hooks';
 
 const LangSwitch = () => {
-  const [toggled, setToggled] = React.useState(false);
+  const [toggled, setToggled] = React.useState(localStorage.getItem('lang') || 'En');
   const dispatch = useAppDispatch();
   function toggle(e: React.ChangeEvent<HTMLInputElement>) {
-    setToggled(!toggled);
-    e.target.checked ? dispatch(setLangRu()) : dispatch(setLangEn());
+    if (e.target.checked) {
+      setToggled('Ru');
+      dispatch(setLangRu());
+    } else {
+      setToggled('En');
+      dispatch(setLangEn());
+    }
   }
+
   return (
     <div>
-      <Switch sx={langSwitchStyle} checked={toggled} onChange={(e) => toggle(e)} />
+      <Switch sx={langSwitchStyle} checked={toggled !== 'En'} onChange={(e) => toggle(e)} />
     </div>
   );
 };
